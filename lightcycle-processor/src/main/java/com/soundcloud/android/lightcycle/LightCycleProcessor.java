@@ -27,24 +27,24 @@ import java.util.Set;
 public class LightCycleProcessor extends AbstractProcessor {
 
     private static final String LIB_PACKAGE = "com.soundcloud.android.lightcycle";
-    private static final String ANNOTATION_CLASS;
+    private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
     private static final String INJECTOR_CLASS_NAME = "LightCycleInjector";
-    private static final String INJECTOR_CLASS;
-    private static final String ACTIVITY_LIGHT_CYCLE_CLASS;
-    private static final String LIGHT_CYCLE_SUPPORT_FRAGMENT_CLASS;
-    private static final String SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS;
+    private static final String INJECTOR_CLASS = LIB_PACKAGE + "." + INJECTOR_CLASS_NAME;
+    private static final String DISPATCHER_INTERFACE_CLASS = LIB_PACKAGE + ".LightCycleDispatcher";
 
-    static {
-        ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
-        INJECTOR_CLASS = LIB_PACKAGE + "." + INJECTOR_CLASS_NAME;
-        ACTIVITY_LIGHT_CYCLE_CLASS = LIB_PACKAGE + ".ActivityLightCycle";
-        LIGHT_CYCLE_SUPPORT_FRAGMENT_CLASS = LIB_PACKAGE + ".LightCycleSupportFragment";
-        SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS = LIB_PACKAGE + ".SupportFragmentLightCycle";
-    }
+    // Activities
+    private static final String ACTIVITY_LIGHT_CYCLE_CLASS = LIB_PACKAGE + ".ActivityLightCycle";
+    private static final String ACTIVITY_DISPATCHER_CLASS = LIB_PACKAGE + ".ActivityLightCycleDispatcher";
+
+    // support-v4 Fragments
+    private static final String LIGHT_CYCLE_SUPPORT_FRAGMENT_CLASS = LIB_PACKAGE + ".LightCycleSupportFragment";
+    private static final String SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS = LIB_PACKAGE + ".SupportFragmentLightCycle";
+    private static final String SUPPORT_FRAGMENT_DISPATCHER_CLASS = LIB_PACKAGE + ".SupportFragmentLightCycleDispatcher";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
-        Set<? extends Element> annotatedFields = roundEnvironment.getElementsAnnotatedWith(processingEnv.getElementUtils().getTypeElement(ANNOTATION_CLASS));
+        final TypeElement lightCycleAnnotation = processingEnv.getElementUtils().getTypeElement(ANNOTATION_CLASS);
+        final Set<? extends Element> annotatedFields = roundEnvironment.getElementsAnnotatedWith(lightCycleAnnotation);
         if (annotatedFields.isEmpty()) {
             return true;
         }
@@ -101,7 +101,6 @@ public class LightCycleProcessor extends AbstractProcessor {
 
     private void emitClassHeader(PackageElement packageElement, JavaWriter writer) throws IOException {
         writer.emitPackage(packageElement.getQualifiedName().toString());
-        writer.emitImports(LIGHT_CYCLE_SUPPORT_FRAGMENT_CLASS);
         writer.emitEmptyLine();
     }
 
@@ -109,9 +108,9 @@ public class LightCycleProcessor extends AbstractProcessor {
         writer.emitEmptyLine();
         writer.emitAnnotation(Override.class);
         final String fragmentClass = hostFragment.getSimpleName().toString();
-        writer.beginMethod("void", "inject", EnumSet.of(Modifier.PUBLIC), LIGHT_CYCLE_SUPPORT_FRAGMENT_CLASS, "fragment");
+        writer.beginMethod("void", "inject", EnumSet.of(Modifier.PUBLIC), DISPATCHER_INTERFACE_CLASS, "target");
         for (Element element : elements) {
-            writer.emitStatement("fragment.addLifeCycleComponent(((%s) fragment).%s)", fragmentClass, element.getSimpleName());
+            writer.emitStatement("target.attachLightCycle(((%s) target).%s)", fragmentClass, element.getSimpleName());
         }
         writer.endMethod();
     }
@@ -127,11 +126,17 @@ public class LightCycleProcessor extends AbstractProcessor {
 
     private void verifyLightCycleTypeContract(Element hostElement, Element element) {
         if (elementExtends(hostElement, "android.app.Activity")
-                && !elementExtends(element, ACTIVITY_LIGHT_CYCLE_CLASS)) {
-            throw new IllegalStateException("Annotated field must implement " + ACTIVITY_LIGHT_CYCLE_CLASS);
+                || elementExtends(hostElement, ACTIVITY_DISPATCHER_CLASS)) {
+            if (!elementExtends(element, ACTIVITY_LIGHT_CYCLE_CLASS)) {
+                throw new IllegalStateException("Annotated field must implement "
+                        + ACTIVITY_LIGHT_CYCLE_CLASS);
+            }
         } else if (elementExtends(hostElement, "android.support.v4.app.Fragment")
-                && !elementExtends(element, SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS)) {
-            throw new IllegalStateException("Annotated field is not must implement " + SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS);
+                || elementExtends(hostElement, SUPPORT_FRAGMENT_DISPATCHER_CLASS)) {
+            if (!elementExtends(element, SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS)) {
+                throw new IllegalStateException("Annotated field is not must implement "
+                        + SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS);
+            }
         }
     }
 

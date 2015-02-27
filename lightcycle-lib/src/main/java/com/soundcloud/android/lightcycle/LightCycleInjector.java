@@ -2,21 +2,21 @@ package com.soundcloud.android.lightcycle;
 
 public abstract class LightCycleInjector {
 
-    public static void attach(LightCycleSupportFragment fragment) {
+    public static void attach(LightCycleDispatcher<?> target) {
         LightCycleInjector injector;
-        final String injectorClassName = getInjectorClassName(fragment);
+        final String injectorClassName = getInjectorClassName(target);
         try {
-            final Class<?> injectorClass = fragment.getClass().getClassLoader().loadClass(injectorClassName);
+            final Class<?> injectorClass = target.getClass().getClassLoader().loadClass(injectorClassName);
             injector = (LightCycleInjector) injectorClass.newInstance();
-            injector.inject(fragment);
+            injector.inject(target);
         } catch (Exception e) {
             // no injectors found, so ignore.
         }
     }
 
-    private static String getInjectorClassName(Object fragment) {
-        return fragment.getClass().getCanonicalName() + "$LightCycleInjector";
+    private static String getInjectorClassName(Object target) {
+        return target.getClass().getCanonicalName() + "$LightCycleInjector";
     }
 
-    public abstract void inject(LightCycleSupportFragment fragment);
+    public abstract void inject(LightCycleDispatcher<?> target);
 }
