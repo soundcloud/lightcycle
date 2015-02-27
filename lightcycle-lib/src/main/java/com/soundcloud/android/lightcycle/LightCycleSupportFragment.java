@@ -20,6 +20,7 @@ public class LightCycleSupportFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LightCycleInjector.attach(this);
         lifeCycleDispatcher.onCreate(this, savedInstanceState);
     }
 

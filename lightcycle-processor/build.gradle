@@ -1,0 +1,18 @@
+buildscript {
+  repositories { jcenter() }
+
+  dependencies {
+    classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'provided-base'
+
+dependencies {
+  provided 'com.google.android:android:4.1.1.4'
+  provided 'com.google.android:support-v4:r7'
+  compile 'com.squareup:javawriter:2.1.2'
+
+  testCompile 'com.google.testing.compile:compile-testing:0.6'
+}
