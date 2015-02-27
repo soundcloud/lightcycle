@@ -1,0 +1,34 @@
+def lightcycleProject = ':libraries:lightcycle:lightcycle-lib'
+
+evaluationDependsOn(lightcycleProject)
+
+apply plugin: 'java'
+
+dependencies {
+  def lightcycle = project(lightcycleProject)
+  testCompile project(path: lightcycleProject, configuration: 'debugCompile')
+
+  def debugVariant = lightcycle.android.libraryVariants.find({it.name == 'debug'})
+
+  testCompile debugVariant.javaCompile.classpath
+  testCompile debugVariant.javaCompile.outputs.files
+  testCompile files(lightcycle.plugins.findPlugin('com.android.library').getBootClasspath())
+
+  testCompile 'org.mockito:mockito-core:1.9.5'
+  testCompile 'junit:junit:4.11'
+  testCompile 'org.robolectric:robolectric:2.4'
+}
+
+sourceSets {
+  test {
+    java.srcDirs = ['src/test/java']
+  }
+}
+
+tasks.withType(Test) {
+  scanForTestClasses = false
+  include "**/*Should.class"
+  include "**/*Test.class"
+  include "**/*Tests.class"
+  exclude "**/*IT.class"
+}

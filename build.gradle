@@ -20,3 +20,10 @@ allprojects {
   }
 }
 
+//TODO: a little hacky: use depends on
+task lightcycleUnitTest(type: Exec) {
+  description = "Execute lightcycle unit test."
+  workingDir = project.file('../../')
+  commandLine = ['./gradlew', ':libraries:lightcycle:lightcycle-lib-test:test']
+}
+
