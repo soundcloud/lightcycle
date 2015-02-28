@@ -10,7 +10,7 @@ import android.view.View;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SupportFragmentLightCycleDispatcher<T extends Fragment & LightCycleDispatcher>
+public class SupportFragmentLightCycleDispatcher<T extends Fragment>
         implements LightCycleDispatcher<SupportFragmentLightCycle<T>>, SupportFragmentLightCycle<T> {
     private final Set<SupportFragmentLightCycle<T>> fragmentLightCycles;
 

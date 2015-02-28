@@ -25,9 +25,9 @@ public class SupportFragmentLightCycleDispatcherTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        dispatcher = new SupportFragmentLightCycleDispatcher()
-                .addLifeCycleComponent(lifeCycleComponent1)
-                .addLifeCycleComponent(lifeCycleComponent2);
+        dispatcher = new SupportFragmentLightCycleDispatcher();
+        dispatcher.attachLightCycle(lifeCycleComponent1);
+        dispatcher.attachLightCycle(lifeCycleComponent2);
     }
 
     @Test
