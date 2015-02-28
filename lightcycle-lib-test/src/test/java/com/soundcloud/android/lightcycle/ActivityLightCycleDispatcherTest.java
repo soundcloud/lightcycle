@@ -23,9 +23,9 @@ public class ActivityLightCycleDispatcherTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        dispatcher = new ActivityLightCycleDispatcher()
-                .attach(lightCycleComponent1)
-                .attach(lightCycleComponent2);
+        dispatcher = new ActivityLightCycleDispatcher();
+        dispatcher.attachLightCycle(lightCycleComponent1);
+        dispatcher.attachLightCycle(lightCycleComponent2);
     }
 
     @Test
@@ -112,10 +112,9 @@ public class ActivityLightCycleDispatcherTest {
     @Test
     public void dispatchOnlyOnceToDuplicatesComponents() {
         final Bundle bundle = new Bundle();
-        dispatcher
-                .attach(lightCycleComponent1)
-                .attach(lightCycleComponent1)
-                .onCreate(activity, bundle);
+        dispatcher.attachLightCycle(lightCycleComponent1);
+        dispatcher.attachLightCycle(lightCycleComponent1);
+        dispatcher.onCreate(activity, bundle);
 
         verify(lightCycleComponent1, times(1)).onCreate(activity, bundle);
     }

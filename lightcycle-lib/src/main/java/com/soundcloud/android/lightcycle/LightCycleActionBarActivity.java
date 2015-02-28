@@ -5,17 +5,25 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
-public abstract class LightCycleActionBarActivity extends ActionBarActivity {
-    protected final ActivityLightCycleDispatcher<ActionBarActivity> lightCycleDispatcher;
+public abstract class LightCycleActionBarActivity extends ActionBarActivity
+    implements LightCycleDispatcher<ActivityLightCycle<ActionBarActivity>> {
+
+    private final ActivityLightCycleDispatcher<ActionBarActivity> lightCycleDispatcher;
 
     public LightCycleActionBarActivity() {
         lightCycleDispatcher = new ActivityLightCycleDispatcher<>();
     }
 
     @Override
+    public void attachLightCycle(ActivityLightCycle<ActionBarActivity> lightCycle) {
+        lightCycleDispatcher.attachLightCycle(lightCycle);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivityContentView();
+        LightCycleInjector.attach(this);
         lightCycleDispatcher.onCreate(this, savedInstanceState);
     }
 
