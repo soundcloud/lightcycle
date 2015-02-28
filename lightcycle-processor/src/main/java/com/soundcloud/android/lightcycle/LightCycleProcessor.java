@@ -11,7 +11,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
@@ -30,16 +29,6 @@ public class LightCycleProcessor extends AbstractProcessor {
     private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
     private static final String INJECTOR_CLASS_NAME = "LightCycleInjector";
     private static final String INJECTOR_CLASS = LIB_PACKAGE + "." + INJECTOR_CLASS_NAME;
-    private static final String DISPATCHER_INTERFACE_CLASS = LIB_PACKAGE + ".LightCycleDispatcher";
-
-    // Activities
-    private static final String ACTIVITY_LIGHT_CYCLE_CLASS = LIB_PACKAGE + ".ActivityLightCycle";
-    private static final String ACTIVITY_DISPATCHER_CLASS = LIB_PACKAGE + ".ActivityLightCycleDispatcher";
-
-    // support-v4 Fragments
-    private static final String LIGHT_CYCLE_SUPPORT_FRAGMENT_CLASS = LIB_PACKAGE + ".LightCycleSupportFragment";
-    private static final String SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS = LIB_PACKAGE + ".SupportFragmentLightCycle";
-    private static final String SUPPORT_FRAGMENT_DISPATCHER_CLASS = LIB_PACKAGE + ".SupportFragmentLightCycleDispatcher";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
@@ -61,7 +50,6 @@ public class LightCycleProcessor extends AbstractProcessor {
                 lightCycles = new LinkedList<>();
                 lightCyclesByHostElement.put(hostElement, lightCycles);
             }
-            verifyLightCycleTypeContract(hostElement, lightCycle);
             lightCycles.add(lightCycle);
         }
 
@@ -76,10 +64,10 @@ public class LightCycleProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void generateInjector(List<? extends Element> elements, Element hostFragment)
+    private void generateInjector(List<? extends Element> elements, Element hostElement)
             throws IOException {
-        PackageElement packageElement = processingEnv.getElementUtils().getPackageOf(hostFragment);
-        final String simpleClassName = hostFragment.getSimpleName() + "$" + INJECTOR_CLASS_NAME;
+        PackageElement packageElement = processingEnv.getElementUtils().getPackageOf(hostElement);
+        final String simpleClassName = hostElement.getSimpleName() + "$" + INJECTOR_CLASS_NAME;
         final String qualifiedClassName = packageElement.getQualifiedName() + "." + simpleClassName;
 
         log("writing class " + qualifiedClassName);
@@ -91,9 +79,9 @@ public class LightCycleProcessor extends AbstractProcessor {
         emitClassHeader(packageElement, writer);
 
         writer.beginType(qualifiedClassName, "class", EnumSet.of(Modifier.PUBLIC, Modifier.FINAL),
-                INJECTOR_CLASS);
+                INJECTOR_CLASS + "<" + hostElement + ">");
 
-        emitInjectMethod(elements, hostFragment, writer);
+        emitInjectMethod(elements, hostElement, writer);
 
         writer.endType();
         writer.close();
@@ -104,13 +92,13 @@ public class LightCycleProcessor extends AbstractProcessor {
         writer.emitEmptyLine();
     }
 
-    private void emitInjectMethod(List<? extends Element> elements, Element hostFragment, JavaWriter writer) throws IOException {
+    private void emitInjectMethod(List<? extends Element> elements, Element hostElement, JavaWriter writer) throws IOException {
         writer.emitEmptyLine();
         writer.emitAnnotation(Override.class);
-        final String fragmentClass = hostFragment.getSimpleName().toString();
-        writer.beginMethod("void", "inject", EnumSet.of(Modifier.PUBLIC), DISPATCHER_INTERFACE_CLASS, "target");
+        final String hostClass = hostElement.getSimpleName().toString();
+        writer.beginMethod("void", "inject", EnumSet.of(Modifier.PUBLIC), hostClass, "target");
         for (Element element : elements) {
-            writer.emitStatement("target.attachLightCycle(((%s) target).%s)", fragmentClass, element.getSimpleName());
+            writer.emitStatement("target.attachLightCycle(target.%s)", element.getSimpleName());
         }
         writer.endMethod();
     }
@@ -122,30 +110,6 @@ public class LightCycleProcessor extends AbstractProcessor {
                         element.getEnclosingElement() + "#" + element + "(" + element.asType() + ")");
             }
         }
-    }
-
-    private void verifyLightCycleTypeContract(Element hostElement, Element element) {
-        if (elementExtends(hostElement, "android.app.Activity")
-                || elementExtends(hostElement, ACTIVITY_DISPATCHER_CLASS)) {
-            if (!elementExtends(element, ACTIVITY_LIGHT_CYCLE_CLASS)) {
-                throw new IllegalStateException("Annotated field must implement "
-                        + ACTIVITY_LIGHT_CYCLE_CLASS);
-            }
-        } else if (elementExtends(hostElement, "android.support.v4.app.Fragment")
-                || elementExtends(hostElement, SUPPORT_FRAGMENT_DISPATCHER_CLASS)) {
-            if (!elementExtends(element, SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS)) {
-                throw new IllegalStateException("Annotated field is not must implement "
-                        + SUPPORT_FRAGMENT_LIGHT_CYCLE_CLASS);
-            }
-        }
-    }
-
-    private TypeMirror classAsType(String clazz) {
-        return processingEnv.getElementUtils().getTypeElement(clazz).asType();
-    }
-
-    private boolean elementExtends(Element element, String clazz) {
-        return processingEnv.getTypeUtils().isAssignable(element.asType(), classAsType(clazz));
     }
 
     private void log(String message) {

@@ -1,6 +1,6 @@
 package com.soundcloud.android.lightcycle;
 
-public abstract class LightCycleInjector {
+public abstract class LightCycleInjector<TargetT> {
 
     public static void attach(LightCycleDispatcher<?> target) {
         LightCycleInjector injector;
@@ -18,5 +18,5 @@ public abstract class LightCycleInjector {
         return target.getClass().getCanonicalName() + "$LightCycleInjector";
     }
 
-    public abstract void inject(LightCycleDispatcher<?> target);
+    public abstract void inject(TargetT target);
 }
