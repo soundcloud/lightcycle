@@ -12,7 +12,7 @@ dependencies {
 
   testCompile debugVariant.javaCompile.classpath
   testCompile debugVariant.javaCompile.outputs.files
-  testCompile files(lightcycle.plugins.findPlugin('com.android.library').getBootClasspath())
+  testCompile files(lightcycle.android.bootClasspath)
 
   testCompile 'org.mockito:mockito-core:1.9.5'
   testCompile 'junit:junit:4.11'
