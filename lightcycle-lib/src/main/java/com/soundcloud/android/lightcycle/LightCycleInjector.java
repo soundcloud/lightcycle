@@ -3,8 +3,11 @@ package com.soundcloud.android.lightcycle;
 public abstract class LightCycleInjector<TargetT> {
 
     public static void attach(LightCycleDispatcher<?> target) {
+        attach(target, getInjectorClassName(target));
+    }
+
+    public static void attach(LightCycleDispatcher<?> target, String injectorClassName) {
         LightCycleInjector injector;
-        final String injectorClassName = getInjectorClassName(target);
         try {
             final Class<?> injectorClass = target.getClass().getClassLoader().loadClass(injectorClassName);
             injector = (LightCycleInjector) injectorClass.newInstance();
