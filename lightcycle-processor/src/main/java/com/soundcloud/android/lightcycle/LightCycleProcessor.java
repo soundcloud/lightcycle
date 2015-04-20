@@ -131,13 +131,13 @@ public class LightCycleProcessor extends AbstractProcessor {
     private void emitInjectParent(Set<String> erasedTargetNames, Element hostElement, JavaWriter writer) throws IOException {
         final TypeElement typeElement = (TypeElement) hostElement;
 
-        String parentClassFqcn = findParentFqcn(erasedTargetNames, typeElement);
-        if (parentClassFqcn != null) {
-            writer.emitStatement("com.soundcloud.android.lightcycle.LightCycleInjector.attach(target, \"%s\")", getInjectorName(parentClassFqcn));
+        String parentName = findParent(erasedTargetNames, typeElement);
+        if (parentName != null) {
+            writer.emitStatement(LIB_PACKAGE + "." + INJECTOR_CLASS_NAME + ".attach(target, \"%s\")", getInjectorName(parentName));
         }
     }
 
-    private String findParentFqcn(Set<String> erasedTargetNames, TypeElement typeElement) {
+    private String findParent(Set<String> erasedTargetNames, TypeElement typeElement) {
         TypeMirror type;
         while (true) {
             type = typeElement.getSuperclass();
