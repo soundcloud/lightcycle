@@ -20,7 +20,7 @@ public class ActivityLightCycleDispatcher<T extends Activity>
 
 
     @Override
-    public void attachLightCycle(ActivityLightCycle<T> lightCycle) {
+    public void bind(ActivityLightCycle<T> lightCycle) {
         this.activityLightCycles.add(lightCycle);
     }
 

@@ -33,8 +33,8 @@ public class LightCycleProcessor extends AbstractProcessor {
 
     private static final String LIB_PACKAGE = "com.soundcloud.android.lightcycle";
     private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
-    private static final String INJECTOR_CLASS_NAME = "LightCycleInjector";
-    private static final String INJECTOR_CLASS = LIB_PACKAGE + "." + INJECTOR_CLASS_NAME;
+    private static final String BINDER_CLASS_NAME = "LightCycleBinder";
+    private static final String BINDER_CLASS = LIB_PACKAGE + "." + BINDER_CLASS_NAME;
     private Elements elementUtils;
 
     @Override
@@ -71,7 +71,7 @@ public class LightCycleProcessor extends AbstractProcessor {
 
         try {
             for (Map.Entry<Element, List<Element>> entry : lightCyclesByHostElement.entrySet()) {
-                generateInjector(erasedTargetNames, entry.getValue(), entry.getKey());
+                generateBinder(erasedTargetNames, entry.getValue(), entry.getKey());
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed writing class file", e);
@@ -80,10 +80,10 @@ public class LightCycleProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void generateInjector(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement)
+    private void generateBinder(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement)
             throws IOException {
         PackageElement packageElement = processingEnv.getElementUtils().getPackageOf(hostElement);
-        final String simpleClassName = getInjectorName(hostElement.getSimpleName().toString());
+        final String simpleClassName = getBinderName(hostElement.getSimpleName().toString());
         final String qualifiedClassName = packageElement.getQualifiedName() + "." + simpleClassName;
 
         log("writing class " + qualifiedClassName);
@@ -94,17 +94,18 @@ public class LightCycleProcessor extends AbstractProcessor {
 
         emitClassHeader(packageElement, writer);
 
-        writer.beginType(qualifiedClassName, "class", EnumSet.of(Modifier.PUBLIC, Modifier.FINAL),
-                INJECTOR_CLASS + "<" + hostElement + ">");
+        writer.beginType(qualifiedClassName, "class",
+                EnumSet.of(Modifier.PUBLIC, Modifier.FINAL),
+                null);
 
-        emitInjectMethod(erasedTargetNames, elements, hostElement, writer);
+        emitBindMethod(erasedTargetNames, elements, hostElement, writer);
 
         writer.endType();
         writer.close();
     }
 
-    private String getInjectorName(String name) {
-        return name + "$" + INJECTOR_CLASS_NAME;
+    private String getBinderName(String name) {
+        return name + "$" + BINDER_CLASS_NAME;
     }
 
     private void emitClassHeader(PackageElement packageElement, JavaWriter writer) throws IOException {
@@ -112,28 +113,27 @@ public class LightCycleProcessor extends AbstractProcessor {
         writer.emitEmptyLine();
     }
 
-    private void emitInjectMethod(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement, JavaWriter writer) throws IOException {
+    private void emitBindMethod(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement, JavaWriter writer) throws IOException {
         writer.emitEmptyLine();
-        writer.emitAnnotation(Override.class);
         final String hostClass = hostElement.getSimpleName().toString();
-        writer.beginMethod("void", "inject", EnumSet.of(Modifier.PUBLIC), hostClass, "target");
-        emitInjectParent(erasedTargetNames, hostElement, writer);
+        writer.beginMethod("void", "bind", EnumSet.of(Modifier.PUBLIC, Modifier.STATIC), hostClass, "target");
+        emitBindParent(erasedTargetNames, hostElement, writer);
         emitBindLightCycles(elements, writer);
         writer.endMethod();
     }
 
     private void emitBindLightCycles(List<? extends Element> elements, JavaWriter writer) throws IOException {
         for (Element element : elements) {
-            writer.emitStatement("target.attachLightCycle(target.%s)", element.getSimpleName());
+            writer.emitStatement("target.bind(target.%s)", element.getSimpleName());
         }
     }
 
-    private void emitInjectParent(Set<String> erasedTargetNames, Element hostElement, JavaWriter writer) throws IOException {
+    private void emitBindParent(Set<String> erasedTargetNames, Element hostElement, JavaWriter writer) throws IOException {
         final TypeElement typeElement = (TypeElement) hostElement;
 
         String parentName = findParent(erasedTargetNames, typeElement);
         if (parentName != null) {
-            writer.emitStatement(LIB_PACKAGE + "." + INJECTOR_CLASS_NAME + ".attach(target, \"%s\")", getInjectorName(parentName));
+            writer.emitStatement(getBinderName(parentName) + ".bind(target)");
         }
     }
 

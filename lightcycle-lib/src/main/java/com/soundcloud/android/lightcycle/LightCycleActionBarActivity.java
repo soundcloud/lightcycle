@@ -15,15 +15,15 @@ public abstract class LightCycleActionBarActivity extends ActionBarActivity
     }
 
     @Override
-    public void attachLightCycle(ActivityLightCycle<ActionBarActivity> lightCycle) {
-        lightCycleDispatcher.attachLightCycle(lightCycle);
+    public void bind(ActivityLightCycle<ActionBarActivity> lightCycle) {
+        lightCycleDispatcher.bind(lightCycle);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivityContentView();
-        LightCycleInjector.attach(this);
+        LightCycleBinder.bind(this);
         lightCycleDispatcher.onCreate(this, savedInstanceState);
     }
 

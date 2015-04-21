@@ -14,14 +14,14 @@ public class LightCycleSupportFragment extends Fragment implements LightCycleDis
     }
 
     @Override
-    public void attachLightCycle(SupportFragmentLightCycle lifeCycleComponent) {
-        lifeCycleDispatcher.attachLightCycle(lifeCycleComponent);
+    public void bind(SupportFragmentLightCycle lifeCycleComponent) {
+        lifeCycleDispatcher.bind(lifeCycleComponent);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LightCycleInjector.attach(this);
+        LightCycleBinder.bind(this);
         lifeCycleDispatcher.onCreate(this, savedInstanceState);
     }
 

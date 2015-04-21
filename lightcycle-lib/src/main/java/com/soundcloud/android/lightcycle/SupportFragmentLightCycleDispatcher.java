@@ -19,7 +19,7 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
     }
 
     @Override
-    public void attachLightCycle(SupportFragmentLightCycle<T> lightCycle) {
+    public void bind(SupportFragmentLightCycle<T> lightCycle) {
         fragmentLightCycles.add(lightCycle);
     }
 

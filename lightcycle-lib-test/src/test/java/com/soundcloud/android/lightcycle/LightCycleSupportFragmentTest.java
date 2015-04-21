@@ -29,7 +29,7 @@ public class LightCycleSupportFragmentTest {
         MockitoAnnotations.initMocks(this);
         // registers all life cycle components, so need to do it before every test
         fragment = new LightCycleSupportFragment();
-        fragment.attachLightCycle(lightCycle);
+        fragment.bind(lightCycle);
         activityController = attach(fragment);
     }
 
