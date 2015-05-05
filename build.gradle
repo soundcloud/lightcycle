@@ -10,7 +10,7 @@ buildscript {
 
 task wrapper(type: Wrapper) {
   description 'Creates the gradle wrapper.'
-  gradleVersion '2.2.1'
+  gradleVersion '2.3'
 }
 
 allprojects {
@@ -18,12 +18,5 @@ allprojects {
     mavenLocal()
     mavenCentral()
   }
-}
-
-//TODO: a little hacky: use depends on
-task lightcycleUnitTest(type: Exec) {
-  description = "Execute lightcycle unit test."
-  workingDir = project.file('../../')
-  commandLine = ['./gradlew', ':libraries:lightcycle:lightcycle-lib-test:test']
 }
 
