@@ -8,6 +8,11 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'provided-base'
+apply plugin: 'maven'
+
+group = GROUP
+version = VERSION_NAME
+// TODO name = POM_ARTIFACT_ID
 
 dependencies {
   provided 'com.google.android:android:4.1.1.4'
@@ -15,4 +20,30 @@ dependencies {
   compile 'com.squareup:javawriter:2.1.2'
 
   testCompile 'com.google.testing.compile:compile-testing:0.6'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task testJar(type: Jar) {
+  classifier = 'tests'
+  from sourceSets.test.output
+  include '**/test/**/*.class'
+}
+
+artifacts {
+  archives jar
+  archives sourcesJar
+  archives testJar
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: RELEASE_REPOSITORY_URL)
+      snapshotRepository(url: SNAPSHOT_REPOSITORY_URL)
+    }
+  }
 }
