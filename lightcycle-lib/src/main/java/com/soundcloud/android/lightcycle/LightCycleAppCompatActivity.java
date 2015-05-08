@@ -2,21 +2,20 @@ package com.soundcloud.android.lightcycle;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-@Deprecated
-public abstract class LightCycleActionBarActivity extends ActionBarActivity
-    implements LightCycleDispatcher<ActivityLightCycle<ActionBarActivity>> {
+public abstract class LightCycleAppCompatActivity extends AppCompatActivity
+    implements LightCycleDispatcher<ActivityLightCycle<AppCompatActivity>> {
 
-    private final ActivityLightCycleDispatcher<ActionBarActivity> lightCycleDispatcher;
+    private final ActivityLightCycleDispatcher<AppCompatActivity> lightCycleDispatcher;
 
-    public LightCycleActionBarActivity() {
+    public LightCycleAppCompatActivity() {
         lightCycleDispatcher = new ActivityLightCycleDispatcher<>();
     }
 
     @Override
-    public void bind(ActivityLightCycle<ActionBarActivity> lightCycle) {
+    public void bind(ActivityLightCycle<AppCompatActivity> lightCycle) {
         lightCycleDispatcher.bind(lightCycle);
     }
 
