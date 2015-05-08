@@ -1,6 +1,6 @@
 # Light cycle
 
-An Android library to break `BaseActivity` and `BaseFragment` in small testable components. 
+Android library that helps you break `BaseActivity` and `BaseFragment` into smaller testable components. 
 
 ## Usage 
 ```java
@@ -36,7 +36,7 @@ class ScreenStateProvider extends DefaultLightCycleActivity<Activity> {
 }
 ```
 
-Note : The `LightCycle` API is close to the `ActivityLifecycleCallbacks` API available in Andoid 14 [1].
+Note : The `LightCycle` API is close to the `ActivityLifecycleCallbacks` API available since [Android 14][1].
 
 ## Principles
 
@@ -47,13 +47,13 @@ Activities / Fragments are respeonsables for :
 - Setting resources 
 - Hooking up lightcycles 
 
-Lightcycles are responsible for a specific feature, regarless the Activy or Fragment. 
+Lightcycles are responsible for specific features, regarless the Activy or Fragment. 
 
 ### Testing the logic 
 
 A typical Light Cycle Activity or Fragment does not contain any logic and may not be tested. 
 
-A Light Cycle should not depend on any resources, meaning it should not be needed to hook up resourouces or mock up views to test it.
+A Light Cycle should not depend on any Android Framework specific classes, meaning it should not be needed to hook up resources or mock up views to test it.
 
 ```java
 public class ScreenStateProviderTest {
@@ -89,7 +89,7 @@ public class ScreenStateProviderTest {
 
 ## Empower 
 
-LightCycles compose well with an injection library. 
+LightCycles compose well with other injection libraries. 
 
 Exemple : 
 ```java
@@ -105,4 +105,4 @@ public abstract class BaseActivity extends LightCycleActivity {
 }
 ``` 
 
-[1] http://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html
+[1]: http://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html
