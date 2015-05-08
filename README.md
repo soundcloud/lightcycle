@@ -16,6 +16,28 @@ public abstract class BaseActivity extends LightCycleActivity {
 }
 ``` 
 
+```java
+class ScreenStateProvider extends DefaultLightCycleActivity<Activity> {
+    private boolean isForeground;
+
+    boolean isForeground() {
+        return isForeground;
+    }
+
+    @Override
+    public void onResume(Activity activity) {
+        isForeground = true;
+    }
+
+    @Override
+    public void onPause(Activity activity) {
+        isForeground = false;
+    }
+}
+```
+
+Note : The `LightCycle` API is close to the `ActivityLifecycleCallbacks` API available in Andoid 14 [1].
+
 ## Principles
 
 ### Collaborators over inheritance  
@@ -82,3 +104,5 @@ public abstract class BaseActivity extends LightCycleActivity {
   }
 }
 ``` 
+
+[1] http://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html
