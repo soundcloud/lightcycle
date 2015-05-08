@@ -1,0 +1,3 @@
+include ':lightcycle-lib'
+include ':lightcycle-lib-test'
+include ':lightcycle-processor'

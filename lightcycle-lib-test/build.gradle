@@ -1,4 +1,4 @@
-def lightcycleProject = ':libraries:lightcycle:lightcycle-lib'
+def lightcycleProject = ':lightcycle-lib'
 
 evaluationDependsOn(lightcycleProject)
 
