@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
-public class LightCycleSupportFragment extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle> {
+public abstract class LightCycleSupportFragment extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle> {
 
     private final SupportFragmentLightCycleDispatcher<Fragment> lifeCycleDispatcher;
 
