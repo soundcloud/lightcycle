@@ -12,7 +12,7 @@ public final class LightCycleBinder {
     public static void bind(LightCycleDispatcher<?> target) {
         Method bindingMethod;
         try {
-            bindingMethod = findViewBinderForClass(target.getClass());
+            bindingMethod = findBinderForClass(target.getClass());
             if (bindingMethod != null) {
                 bindingMethod.invoke(null, target);
             }
@@ -25,7 +25,8 @@ public final class LightCycleBinder {
         return clsName + "$LightCycleBinder";
     }
 
-    private static Method findViewBinderForClass(Class<?> cls) throws IllegalAccessException, InstantiationException, NoSuchMethodException {
+    private static Method findBinderForClass(Class<?> cls)
+            throws IllegalAccessException, InstantiationException, NoSuchMethodException {
         Method lightCycleInjectionMethod;
         String clsName = cls.getName();
         if (clsName.startsWith(ANDROID_PREFIX) || clsName.startsWith(JAVA_PREFIX)) {
@@ -38,7 +39,7 @@ public final class LightCycleBinder {
             Log.d(TAG, "HIT: Loaded LightCycle binder class.");
         } catch (ClassNotFoundException e) {
             Log.d(TAG, "Not found. Trying superclass " + cls.getSuperclass().getName());
-            lightCycleInjectionMethod = findViewBinderForClass(cls.getSuperclass());
+            lightCycleInjectionMethod = findBinderForClass(cls.getSuperclass());
         }
         return lightCycleInjectionMethod;
     }
