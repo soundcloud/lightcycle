@@ -1,8 +1,7 @@
 package com.soundcloud.android.lightcycle;
 
-import org.jetbrains.annotations.Nullable;
-
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;

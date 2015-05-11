@@ -1,10 +1,9 @@
 package com.soundcloud.android.lightcycle;
 
-import org.jetbrains.annotations.Nullable;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import java.util.HashSet;
