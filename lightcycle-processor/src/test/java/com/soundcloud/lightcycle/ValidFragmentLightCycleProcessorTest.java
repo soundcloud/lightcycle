@@ -1,4 +1,4 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import static com.google.testing.compile.JavaFileObjects.forSourceString;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
@@ -17,10 +17,10 @@ public class ValidFragmentLightCycleProcessorTest {
     private static final String INJECTOR = Joiner.on("\n").join(
             "package com.test;",
             "",
-            "import com.soundcloud.android.lightcycle.LightCycleSupportFragment;",
+            "import com.soundcloud.lightcycle.LightCycleSupportFragment;",
             "",
             "final class ValidTestFragment$LightCycleInjector",
-            "        extends com.soundcloud.android.lightcycle.LightCycleInjector {",
+            "        extends com.soundcloud.lightcycle.LightCycleInjector {",
             "",
             "    @Override",
             "    public void inject(LightCycleSupportFragment fragment) {",

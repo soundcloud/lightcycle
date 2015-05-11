@@ -1,4 +1,4 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

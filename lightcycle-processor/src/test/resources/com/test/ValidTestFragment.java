@@ -1,10 +1,10 @@
 package com.test;
 
-import com.soundcloud.android.lightcycle.DefaultLightCycleActivity;
-import com.soundcloud.android.lightcycle.DefaultSupportFragmentLightCycle;
-import com.soundcloud.android.lightcycle.LightCycle;
-import com.soundcloud.android.lightcycle.LightCycleInjector;
-import com.soundcloud.android.lightcycle.LightCycleSupportFragment;
+import com.soundcloud.lightcycle.DefaultLightCycleActivity;
+import com.soundcloud.lightcycle.DefaultSupportFragmentLightCycle;
+import com.soundcloud.lightcycle.LightCycle;
+import com.soundcloud.lightcycle.LightCycleInjector;
+import com.soundcloud.lightcycle.LightCycleSupportFragment;
 
 import android.os.Bundle;
 
