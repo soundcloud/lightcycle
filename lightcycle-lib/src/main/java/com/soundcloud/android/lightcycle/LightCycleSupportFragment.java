@@ -7,10 +7,10 @@ import android.view.View;
 
 public class LightCycleSupportFragment extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle> {
 
-    private final SupportFragmentLightCycleDispatcher lifeCycleDispatcher;
+    private final SupportFragmentLightCycleDispatcher<Fragment> lifeCycleDispatcher;
 
     public LightCycleSupportFragment() {
-        lifeCycleDispatcher = new SupportFragmentLightCycleDispatcher();
+        lifeCycleDispatcher = new SupportFragmentLightCycleDispatcher<>();
     }
 
     @Override

@@ -7,23 +7,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-@RunWith(LightCycleTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ActivityLightCycleDispatcherTest {
-    @Mock private ActivityLightCycle lightCycleComponent1;
-    @Mock private ActivityLightCycle lightCycleComponent2;
+    @Mock private ActivityLightCycle<Activity> lightCycleComponent1;
+    @Mock private ActivityLightCycle<Activity> lightCycleComponent2;
     @Mock private FragmentActivity activity;
-    private ActivityLightCycleDispatcher dispatcher;
+    private ActivityLightCycleDispatcher<Activity> dispatcher;
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        dispatcher = new ActivityLightCycleDispatcher();
+        dispatcher = new ActivityLightCycleDispatcher<>();
         dispatcher.bind(lightCycleComponent1);
         dispatcher.bind(lightCycleComponent2);
     }

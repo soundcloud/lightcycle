@@ -6,26 +6,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-@RunWith(LightCycleTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class SupportFragmentLightCycleDispatcherTest {
-    @Mock private SupportFragmentLightCycle lifeCycleComponent1;
-    @Mock private SupportFragmentLightCycle lifeCycleComponent2;
+    @Mock private SupportFragmentLightCycle<Fragment> lifeCycleComponent1;
+    @Mock private SupportFragmentLightCycle<Fragment> lifeCycleComponent2;
     @Mock private Fragment fragment;
     @Mock private Activity activity;
-    private SupportFragmentLightCycleDispatcher dispatcher;
+    private SupportFragmentLightCycleDispatcher<Fragment> dispatcher;
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        dispatcher = new SupportFragmentLightCycleDispatcher();
+        dispatcher = new SupportFragmentLightCycleDispatcher<>();
         dispatcher.bind(lifeCycleComponent1);
         dispatcher.bind(lifeCycleComponent2);
     }
@@ -103,7 +101,7 @@ public class SupportFragmentLightCycleDispatcherTest {
     @Test
     public void shouldNotifyOnViewCreated() {
         final Bundle bundle = new Bundle();
-        final View view = new View(Robolectric.application);
+        final View view = new View(activity);
 
         dispatcher.onViewCreated(fragment, view, bundle);
 
