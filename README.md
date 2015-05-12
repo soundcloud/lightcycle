@@ -106,3 +106,22 @@ public abstract class BaseActivity extends LightCycleActivity {
 ``` 
 
 [1]: http://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html
+
+## Integration 
+
+### Dependencies 
+
+Gradle :
+```
+compile com.soundcloud.lightcycle:lightcycle-processor:VERSION
+compile com.soundcloud.lightcycle:lightcycle-lib:VERSION
+```
+### Proguard 
+
+Add this to your config file.
+
+```
+-keep class com.soundcloud.lightcycle.** {
+    *;
+}
+```
