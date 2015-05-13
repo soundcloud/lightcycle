@@ -24,8 +24,10 @@ dependencies {
   testCompile 'com.google.android:android:4.1.1.4'
   testCompile 'com.google.android:support-v4:r7'
   testCompile 'com.google.testing.compile:compile-testing:0.6'
-  // compile-testing fails with JavaCompiler ClassNotFoundException if we don't do this
-  testCompile files(System.getenv("JAVA_HOME") + "/lib/tools.jar")
+  // compile-testing fails with JavacTool ClassNotFoundException, so add tools.jar manually
+  // (this should be the correct cross-platform solution to do this)
+  // cf. http://stackoverflow.com/questions/11345193/gradle-does-not-find-tools-jar
+  testCompile files(((URLClassLoader) javax.tools.ToolProvider.getSystemToolClassLoader()).getURLs())
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
