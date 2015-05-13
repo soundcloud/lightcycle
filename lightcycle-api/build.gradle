@@ -1,49 +1,4 @@
-buildscript {
-  repositories { jcenter() }
-
-  dependencies {
-    classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
-  }
-}
-
-apply plugin: 'java'
-apply plugin: 'provided-base'
-apply plugin: 'maven'
-
-group = GROUP
-version = VERSION_NAME
-// TODO name = POM_ARTIFACT_ID
-
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
-
 dependencies {
   provided 'com.google.android:android:4.1.1.4'
   provided 'com.google.android:support-v4:r7'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
-}
-
-task testJar(type: Jar) {
-  classifier = 'tests'
-  from sourceSets.test.output
-  include '**/test/**/*.class'
-}
-
-artifacts {
-  archives jar
-  archives sourcesJar
-  archives testJar
-}
-
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      repository(url: RELEASE_REPOSITORY_URL)
-      snapshotRepository(url: SNAPSHOT_REPOSITORY_URL)
-    }
-  }
 }
