@@ -1,17 +1,16 @@
 package com.soundcloud.android.lightcycle;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
 public class DefaultSupportFragmentLightCycle<T extends Fragment> implements SupportFragmentLightCycle<T> {
     @Override
-    public void onCreate(T fragment, @Nullable Bundle bundle) { /* no-op */ }
+    public void onCreate(T fragment, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onViewCreated(T fragment, View view, @Nullable Bundle savedInstanceState) { /* no-op */ }
+    public void onViewCreated(T fragment, View view, Bundle savedInstanceState) { /* no-op */ }
 
     @Override
     public void onStart(T fragment) { /* no-op */ }

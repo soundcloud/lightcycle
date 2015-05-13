@@ -3,12 +3,11 @@ package com.soundcloud.android.lightcycle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 public class DefaultLightCycleActivity<T extends Activity> implements ActivityLightCycle<T> {
     @Override
-    public void onCreate(T activity, @Nullable Bundle bundle) { /* no-op */ }
+    public void onCreate(T activity, Bundle bundle) { /* no-op */ }
 
     @Override
     public void onNewIntent(T activity, Intent intent) { /* no-op */ }

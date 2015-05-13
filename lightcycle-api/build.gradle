@@ -18,14 +18,8 @@ sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
-  compile 'com.squareup:javawriter:2.1.2'
-  compile project(':lightcycle-api')
-
-  testCompile 'com.google.android:android:4.1.1.4'
-  testCompile 'com.google.android:support-v4:r7'
-  testCompile 'com.google.testing.compile:compile-testing:0.6'
-  // compile-testing fails with JavaCompiler ClassNotFoundException if we don't do this
-  testCompile files(System.getenv("JAVA_HOME") + "/lib/tools.jar")
+  provided 'com.google.android:android:4.1.1.4'
+  provided 'com.google.android:support-v4:r7'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

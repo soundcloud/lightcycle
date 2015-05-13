@@ -1,14 +1,13 @@
 package com.soundcloud.android.lightcycle;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
 public interface SupportFragmentLightCycle<T extends Fragment> {
-    void onCreate(T fragment, @Nullable Bundle bundle);
-    void onViewCreated(T fragment, View view, @Nullable Bundle savedInstanceState);
+    void onCreate(T fragment, Bundle bundle);
+    void onViewCreated(T fragment, View view, Bundle savedInstanceState);
     void onStart(T fragment);
     void onResume(T fragment);
     boolean onOptionsItemSelected(T fragment, MenuItem item);

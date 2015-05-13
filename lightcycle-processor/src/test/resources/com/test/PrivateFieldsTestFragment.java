@@ -2,21 +2,21 @@ package com.test;
 
 import com.soundcloud.android.lightcycle.DefaultSupportFragmentLightCycle;
 import com.soundcloud.android.lightcycle.LightCycle;
-import com.soundcloud.android.lightcycle.LightCycleInjector;
-import com.soundcloud.android.lightcycle.LightCycleSupportFragment;
+import com.soundcloud.android.lightcycle.LightCycleDispatcher;
+import com.soundcloud.android.lightcycle.SupportFragmentLightCycle;
 
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-public class PrivateFieldsTestFragment extends LightCycleSupportFragment {
+public class PrivateFieldsTestFragment extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle> {
 
-    @LightCycle private LightCycle1 lightCycle1;
-    @LightCycle private LightCycle2 lightCycle2;
+    private @LightCycle LightCycle1 lightCycle1;
+    private @LightCycle LightCycle2 lightCycle2;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LightCycleInjector.attach(this);
+    public void bind(SupportFragmentLightCycle lightCycle) {
+        // nop
     }
+
 }
 
 class LightCycle1 extends DefaultSupportFragmentLightCycle {
