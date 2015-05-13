@@ -1,7 +1,9 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import static org.mockito.Mockito.verify;
 
+import com.soundcloud.lightcycle.SupportFragmentLightCycle;
+import com.soundcloud.lightcycle.SupportFragmentLightCycleDispatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,10 +1,11 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import static com.google.testing.compile.JavaFileObjects.forSourceString;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 import com.google.common.base.Joiner;
 import com.google.testing.compile.JavaFileObjects;
+import com.soundcloud.lightcycle.LightCycleProcessor;
 import org.junit.Test;
 import org.truth0.Truth;
 

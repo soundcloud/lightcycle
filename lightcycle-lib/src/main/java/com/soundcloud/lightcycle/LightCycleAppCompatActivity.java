@@ -1,4 +1,4 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import android.content.Intent;
 import android.os.Bundle;

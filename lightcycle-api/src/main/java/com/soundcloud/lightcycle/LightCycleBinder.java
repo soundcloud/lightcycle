@@ -1,4 +1,4 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import android.util.Log;
 

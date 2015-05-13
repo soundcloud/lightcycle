@@ -1,4 +1,4 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 public interface LightCycleDispatcher<LightCycle> {
 

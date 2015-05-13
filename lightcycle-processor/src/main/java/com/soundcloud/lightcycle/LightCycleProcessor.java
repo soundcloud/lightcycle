@@ -1,4 +1,4 @@
-package com.soundcloud.android.lightcycle;
+package com.soundcloud.lightcycle;
 
 import com.squareup.javawriter.JavaWriter;
 
@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@SupportedAnnotationTypes("com.soundcloud.android.lightcycle.LightCycle")
+@SupportedAnnotationTypes("com.soundcloud.lightcycle.LightCycle")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class LightCycleProcessor extends AbstractProcessor {
 
-    private static final String LIB_PACKAGE = "com.soundcloud.android.lightcycle";
+    private static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
     private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
     private static final String BINDER_CLASS_NAME = "LightCycleBinder";
     private static final String BINDER_CLASS = LIB_PACKAGE + "." + BINDER_CLASS_NAME;
