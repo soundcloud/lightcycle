@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class DefaultLightCycleActivity<T extends Activity> implements ActivityLightCycle<T> {
+public class DefaultActivityLightCycle<T extends Activity> implements ActivityLightCycle<T> {
     @Override
     public void onCreate(T activity, Bundle bundle) { /* no-op */ }
 
