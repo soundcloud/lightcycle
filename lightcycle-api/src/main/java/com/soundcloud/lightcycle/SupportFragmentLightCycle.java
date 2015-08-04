@@ -1,11 +1,13 @@
 package com.soundcloud.lightcycle;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
 public interface SupportFragmentLightCycle<T extends Fragment> {
+    void onAttach(T fragment, Activity activity);
     void onCreate(T fragment, Bundle bundle);
     void onViewCreated(T fragment, View view, Bundle savedInstanceState);
     void onStart(T fragment);
@@ -17,4 +19,5 @@ public interface SupportFragmentLightCycle<T extends Fragment> {
     void onRestoreInstanceState(T fragment, Bundle bundle);
     void onDestroyView(T fragment);
     void onDestroy(T fragment);
+    void onDetach(T fragment);
 }
