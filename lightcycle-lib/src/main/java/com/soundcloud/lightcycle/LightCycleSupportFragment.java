@@ -1,5 +1,6 @@
 package com.soundcloud.lightcycle;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.view.View;
 public abstract class LightCycleSupportFragment extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle> {
 
     private final SupportFragmentLightCycleDispatcher<Fragment> lifeCycleDispatcher;
+    private boolean bound;
 
     public LightCycleSupportFragment() {
         lifeCycleDispatcher = new SupportFragmentLightCycleDispatcher<>();
@@ -19,9 +21,22 @@ public abstract class LightCycleSupportFragment extends Fragment implements Ligh
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        bindIfNecessary();
+        lifeCycleDispatcher.onAttach(this, activity);
+    }
+
+    private void bindIfNecessary() {
+        if (!bound){
+            LightCycleBinder.bind(this);
+            bound = true;
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LightCycleBinder.bind(this);
         lifeCycleDispatcher.onCreate(this, savedInstanceState);
     }
 
@@ -70,5 +85,11 @@ public abstract class LightCycleSupportFragment extends Fragment implements Ligh
     public void onDestroy() {
         lifeCycleDispatcher.onDestroy(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        lifeCycleDispatcher.onDetach(this);
+        super.onDetach();
     }
 }
