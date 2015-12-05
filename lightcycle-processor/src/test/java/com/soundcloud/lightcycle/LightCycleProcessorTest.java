@@ -24,6 +24,18 @@ public class LightCycleProcessorTest {
             "    }",
             "}");
 
+    private static final String SUPPORT_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "",
+            "public final class ValidTestSupportFragment$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestSupportFragment target) {",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
+            "    }",
+            "}");
+
     private static final String ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
             "",
@@ -37,10 +49,20 @@ public class LightCycleProcessorTest {
             "}");
 
     @Test
-    public void shouldGenerateInjectorForSupportFragment() {
+    public void shouldGenerateInjectorForFragment() {
         JavaFileObject expectedSource = forSourceString("com.test.ValidTestFragment$LightCycleBinder", FRAGMENT_BINDER_SRC);
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/ValidTestFragment.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForSupportFragment() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestSupportFragment$LightCycleBinder", FRAGMENT_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestSupportFragment.java"))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
                 .and().generatesSources(expectedSource);
