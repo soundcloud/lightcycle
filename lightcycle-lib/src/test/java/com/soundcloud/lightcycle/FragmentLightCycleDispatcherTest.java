@@ -9,21 +9,21 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SupportFragmentLightCycleDispatcherTest {
-    @Mock private SupportFragmentLightCycle<Fragment> lifeCycleComponent1;
-    @Mock private SupportFragmentLightCycle<Fragment> lifeCycleComponent2;
+public class FragmentLightCycleDispatcherTest {
+    @Mock private FragmentLightCycle<Fragment> lifeCycleComponent1;
+    @Mock private FragmentLightCycle<Fragment> lifeCycleComponent2;
     @Mock private Fragment fragment;
     @Mock private Activity activity;
-    private SupportFragmentLightCycleDispatcher<Fragment> dispatcher;
+    private FragmentLightCycleDispatcher<Fragment> dispatcher;
 
     @Before
     public void setUp() throws Exception {
-        dispatcher = new SupportFragmentLightCycleDispatcher<>();
+        dispatcher = new FragmentLightCycleDispatcher<>();
         dispatcher.bind(lifeCycleComponent1);
         dispatcher.bind(lifeCycleComponent2);
     }
