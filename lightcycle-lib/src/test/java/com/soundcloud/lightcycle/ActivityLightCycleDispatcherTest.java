@@ -1,5 +1,6 @@
 package com.soundcloud.lightcycle;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -30,7 +31,7 @@ public class ActivityLightCycleDispatcherTest {
 
     @Test
     public void dispatchOnCreate() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
 
         dispatcher.onCreate(activity, bundle);
 
@@ -38,10 +39,9 @@ public class ActivityLightCycleDispatcherTest {
         verify(lightCycleComponent2).onCreate(activity, bundle);
     }
 
-
     @Test
     public void dispatchOnNewIntent() {
-        final Intent intent = new Intent();
+        final Intent intent = mock(Intent.class);
 
         dispatcher.onNewIntent(activity, intent);
 
@@ -83,7 +83,7 @@ public class ActivityLightCycleDispatcherTest {
 
     @Test
     public void dispatchOnSaveInstanceState() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
 
         dispatcher.onSaveInstanceState(activity, bundle);
 
@@ -93,7 +93,7 @@ public class ActivityLightCycleDispatcherTest {
 
     @Test
     public void dispatchOnRestoreInstanceState() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
 
         dispatcher.onRestoreInstanceState(activity, bundle);
 
@@ -111,7 +111,7 @@ public class ActivityLightCycleDispatcherTest {
 
     @Test
     public void dispatchOnlyOnceToDuplicatesComponents() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
         dispatcher.bind(lightCycleComponent1);
         dispatcher.bind(lightCycleComponent1);
         dispatcher.onCreate(activity, bundle);
