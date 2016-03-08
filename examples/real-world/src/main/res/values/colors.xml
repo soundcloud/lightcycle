@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#bbbbbb</color>
+    <color name="colorAccent">@color/soundcloud</color>
+    <color name="soundcloud">#ff5500</color>
+</resources>

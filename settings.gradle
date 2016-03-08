@@ -1,3 +1,5 @@
 include 'lightcycle-api'
 include ':lightcycle-lib'
 include ':lightcycle-processor'
+include ':examples:basic'
+include ':examples:real-world'
