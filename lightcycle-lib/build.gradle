@@ -2,20 +2,19 @@ apply plugin: 'com.android.library'
 apply from: 'gradle-mvn-push.gradle'
 
 android {
-  compileSdkVersion 22
+  compileSdkVersion 23
   buildToolsVersion "22.0.1"
 
   defaultConfig {
     minSdkVersion 9
-    targetSdkVersion 22
+    targetSdkVersion 23
     versionCode 1
     versionName "1.0"
   }
 
   buildTypes {
     release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      consumerProguardFiles 'proguard-rules.txt'
     }
   }
 
@@ -29,14 +28,9 @@ android {
   }
 }
 
-ext {
-  androidSupportLibraryVersion = '22.1.1'
-}
-
 dependencies {
   compile project(':lightcycle-api')
-  compile "com.android.support:appcompat-v7:$androidSupportLibraryVersion"
-  provided "com.android.support:support-annotations:$androidSupportLibraryVersion"
+  compile "com.android.support:appcompat-v7:23.2.0"
 
   testCompile 'org.mockito:mockito-core:1.9.5'
   testCompile 'junit:junit:4.11'
