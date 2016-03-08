@@ -1,0 +1,6 @@
+-keep class com.soundcloud.** { *; }
+
+-keep class com.soundcloud.lightcycle.** { *; }
+-dontwarn com.soundcloud.lightcycle.**
+-keep class **$LightCycleBinder { *; }
+
