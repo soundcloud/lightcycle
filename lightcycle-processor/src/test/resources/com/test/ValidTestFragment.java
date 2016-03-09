@@ -4,9 +4,9 @@ import com.soundcloud.lightcycle.DefaultSupportFragmentLightCycle;
 import com.soundcloud.lightcycle.FragmentLightCycle;
 import com.soundcloud.lightcycle.LightCycle;
 import com.soundcloud.lightcycle.LightCycleDispatcher;
-import com.soundcloud.lightcycle.SupportFragmentLightCycle;
+import com.soundcloud.lightcycle.DefaultFragmentLightCycle;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 public class ValidTestFragment extends Fragment implements LightCycleDispatcher<FragmentLightCycle> {
 
@@ -20,8 +20,8 @@ public class ValidTestFragment extends Fragment implements LightCycleDispatcher<
 
 }
 
-class LightCycle1 extends FragmentLightCycle {
+class LightCycle1 extends DefaultFragmentLightCycle<Fragment> {
 }
 
-class LightCycle2 extends FragmentLightCycle {
+class LightCycle2 extends DefaultFragmentLightCycle<Fragment> {
 }

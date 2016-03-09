@@ -60,7 +60,7 @@ public class LightCycleProcessorTest {
 
     @Test
     public void shouldGenerateInjectorForSupportFragment() {
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestSupportFragment$LightCycleBinder", FRAGMENT_BINDER_SRC);
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestSupportFragment$LightCycleBinder", SUPPORT_FRAGMENT_BINDER_SRC);
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/ValidTestSupportFragment.java"))
                 .processedWith(new LightCycleProcessor())

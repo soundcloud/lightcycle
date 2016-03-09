@@ -20,8 +20,8 @@ public class PrivateFieldsTestFragment extends Fragment implements LightCycleDis
 
 }
 
-class LightCycle1 extends FragmentLightCycle {
+class LightCycle1 extends DefaultSupportFragmentLightCycle<Fragment> {
 }
 
-class LightCycle2 extends FragmentLightCycle {
+class LightCycle2 extends DefaultSupportFragmentLightCycle<Fragment> {
 }
