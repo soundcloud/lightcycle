@@ -1,13 +1,17 @@
-package com.soundcloud.lightcycle.sample.real_world;
+package com.soundcloud.lightcycle.sample;
 
 import com.soundcloud.lightcycle.LightCycle;
-import com.soundcloud.lightcycle.sample.real_world.tracker.ScreenTracker;
+import com.soundcloud.lightcycle.sample.tracker.ScreenTracker;
 
 import javax.inject.Inject;
 
 public class SampleActivity extends MyBaseActivity {
     @Inject @LightCycle ScreenTracker screenTracker;
-    @Inject @LightCycle AppForegroundStateProvider foregroundStateProvider;
+    @Inject AppForegroundStateProvider foregroundStateProvider;
+
+    public SampleActivity() {
+        liftAndBind(foregroundStateProvider);
+    }
 
     @Override
     public String getScreenName() {
