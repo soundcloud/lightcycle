@@ -1,5 +1,6 @@
 package com.soundcloud.lightcycle;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class FragmentLightCycleDispatcherTest {
 
     @Test
     public void shouldNotifyOnCreate() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
 
         dispatcher.onCreate(fragment, bundle);
 
@@ -80,7 +81,7 @@ public class FragmentLightCycleDispatcherTest {
 
     @Test
     public void shouldNotifyOnSaveInstanceState() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
 
         dispatcher.onSaveInstanceState(fragment, bundle);
 
@@ -90,7 +91,7 @@ public class FragmentLightCycleDispatcherTest {
 
     @Test
     public void shouldNotifyOnRestoreInstanceState() {
-        final Bundle bundle = new Bundle();
+        final Bundle bundle = Bundle.EMPTY;
 
         dispatcher.onRestoreInstanceState(fragment, bundle);
 
@@ -116,8 +117,8 @@ public class FragmentLightCycleDispatcherTest {
 
     @Test
     public void shouldNotifyOnViewCreated() {
-        final Bundle bundle = new Bundle();
-        final View view = new View(activity);
+        final Bundle bundle = Bundle.EMPTY;
+        final View view = mock(View.class);
 
         dispatcher.onViewCreated(fragment, view, bundle);
 
