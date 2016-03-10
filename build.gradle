@@ -22,6 +22,30 @@ allprojects {
   }
 }
 
+ext {
+  minSdkVersion = 8
+  targetSdkVersion = 23
+  compileSdkVersion = 23
+  buildToolsVersion = '23.0.1'
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+  targetCompatibilityVersion = JavaVersion.VERSION_1_7
+}
+
+ext.deps = [
+  // Android
+  android           : 'com.google.android:android:4.1.1.4',
+  support_v4        : 'com.google.android:support-v4:r7',
+  appcompat_v7      : 'com.android.support:appcompat-v7:23.2.0',
+
+  // Processor
+  javawriter        : 'com.squareup:javawriter:2.1.2',
+
+  // Test dependencies
+  junit             : 'junit:junit:4.12',
+  mockito           : 'org.mockito:mockito-all:1.10.19',
+  compiletesting    : 'com.google.testing.compile:compile-testing:0.7',
+]
+
 // configure Java projects
 [":lightcycle-api", ":lightcycle-processor"].each { name ->
   project(name) {
