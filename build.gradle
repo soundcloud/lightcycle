@@ -58,8 +58,8 @@ ext.deps = [
     version = VERSION_NAME
 // TODO name = POM_ARTIFACT_ID
 
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+    targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
     task sourcesJar(type: Jar, dependsOn: classes) {
       classifier = 'sources'
