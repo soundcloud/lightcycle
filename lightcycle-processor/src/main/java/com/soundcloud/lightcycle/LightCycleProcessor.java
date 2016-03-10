@@ -16,6 +16,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
@@ -33,14 +34,20 @@ public class LightCycleProcessor extends AbstractProcessor {
 
     private static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
     private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
-    private static final String BINDER_CLASS_NAME = "LightCycleBinder";
-    private static final String BINDER_CLASS = LIB_PACKAGE + "." + BINDER_CLASS_NAME;
+    private static final String CLASS_BINDER_NAME = "LightCycleBinder";
+    private static final String METHOD_BIND_NAME = "bind";
+    private static final String METHOD_BIND_ARGUMENT_NAME = "target";
+    private static final String METHOD_LIFT_NAME = "com.soundcloud.lightcycle.LightCycleBinder.lift";
+    private static final String INTERFACE_DISPATCHER_NAME = "LightCycleDispatcher";
+
     private Elements elementUtils;
+    private Types typeUtils;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
 
+        typeUtils = processingEnv.getTypeUtils();
         elementUtils = processingEnv.getElementUtils();
     }
 
@@ -54,7 +61,7 @@ public class LightCycleProcessor extends AbstractProcessor {
 
         verifyFieldsAccessible(annotatedFields);
 
-        log("processing " + annotatedFields.size() + " fields");
+        note("processing " + annotatedFields.size() + " fields");
 
         Map<Element, List<Element>> lightCyclesByHostElement = new HashMap<>();
         Set<String> erasedTargetNames = new HashSet<>();
@@ -86,7 +93,7 @@ public class LightCycleProcessor extends AbstractProcessor {
         final String simpleClassName = getBinderName(hostElement.getSimpleName().toString());
         final String qualifiedClassName = packageElement.getQualifiedName() + "." + simpleClassName;
 
-        log("writing class " + qualifiedClassName);
+        note("writing class " + qualifiedClassName);
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
                 qualifiedClassName, elements.toArray(new Element[elements.size()]));
 
@@ -105,7 +112,7 @@ public class LightCycleProcessor extends AbstractProcessor {
     }
 
     private String getBinderName(String name) {
-        return name + "$" + BINDER_CLASS_NAME;
+        return name + "$" + CLASS_BINDER_NAME;
     }
 
     private void emitClassHeader(PackageElement packageElement, JavaWriter writer) throws IOException {
@@ -116,16 +123,46 @@ public class LightCycleProcessor extends AbstractProcessor {
     private void emitBindMethod(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement, JavaWriter writer) throws IOException {
         writer.emitEmptyLine();
         final String hostClass = hostElement.getSimpleName().toString();
-        writer.beginMethod("void", "bind", EnumSet.of(Modifier.PUBLIC, Modifier.STATIC), hostClass, "target");
+        writer.beginMethod("void", METHOD_BIND_NAME, EnumSet.of(Modifier.PUBLIC, Modifier.STATIC), hostClass, METHOD_BIND_ARGUMENT_NAME);
         emitBindParent(erasedTargetNames, hostElement, writer);
-        emitBindLightCycles(elements, writer);
+        emitBindLightCycles(hostElement, elements, writer);
         writer.endMethod();
     }
 
-    private void emitBindLightCycles(List<? extends Element> elements, JavaWriter writer) throws IOException {
-        for (Element element : elements) {
-            writer.emitStatement("target.bind(target.%s)", element.getSimpleName());
+    private void emitBindLightCycles(Element hostElement, List<? extends Element> elements, JavaWriter writer) throws IOException {
+        final TypeMirror dispatchedType = getDispatchedType((TypeElement) hostElement);
+        if (dispatchedType == null) {
+            error(hostElement, "Could not find the dispatcher. Class may implement " + INTERFACE_DISPATCHER_NAME);
+        } else {
+            for (Element element : elements) {
+                final String liftedName = element.getSimpleName() + "$Lifted";
+
+                writer.emitStatement("final %s %s = %s(%s.%s)",
+                        dispatchedType.toString(),
+                        liftedName,
+                        METHOD_LIFT_NAME,
+                        METHOD_BIND_ARGUMENT_NAME,
+                        element.getSimpleName());
+                writer.emitStatement("%s.%s(%s)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME, liftedName);
+            }
         }
+    }
+
+    private TypeMirror getDispatchedType(TypeElement hostElement) {
+        TypeElement typeElement = hostElement;
+        TypeMirror type = hostElement.asType();
+
+        for (; type.getKind() != TypeKind.NONE; ) {
+            for (TypeMirror anInterface : typeElement.getInterfaces()) {
+                final Element element = typeUtils.asElement(anInterface);
+                if (element.getSimpleName().contentEquals(INTERFACE_DISPATCHER_NAME)) {
+                    return ((DeclaredType) anInterface).getTypeArguments().get(0);
+                }
+            }
+            typeElement = (TypeElement) ((DeclaredType) type).asElement();
+            type = typeElement.getSuperclass();
+        }
+        return null;
     }
 
     private void emitBindParent(Set<String> erasedTargetNames, Element hostElement, JavaWriter writer) throws IOException {
@@ -133,7 +170,7 @@ public class LightCycleProcessor extends AbstractProcessor {
 
         String parentName = findParent(erasedTargetNames, typeElement);
         if (parentName != null) {
-            writer.emitStatement(getBinderName(parentName) + ".bind(target)");
+            writer.emitStatement(getBinderName(parentName) + ".%s(%s)", METHOD_BIND_NAME, METHOD_BIND_ARGUMENT_NAME);
         }
     }
 
@@ -170,7 +207,18 @@ public class LightCycleProcessor extends AbstractProcessor {
         }
     }
 
-    private void log(String message) {
+    private void note(String message) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "LightCycleProcessor: " + message);
+    }
+
+    private void error(Element element, String message, Object... args) {
+        log(Diagnostic.Kind.ERROR, element, message, args);
+    }
+
+    private void log(Diagnostic.Kind error, Element element, String message, Object[] args) {
+        if (args.length > 0) {
+            message = String.format(message, args);
+        }
+        processingEnv.getMessager().printMessage(error, message, element);
     }
 }

@@ -8,13 +8,13 @@ import com.soundcloud.lightcycle.DefaultFragmentLightCycle;
 
 import android.app.Fragment;
 
-public class ValidTestFragment extends Fragment implements LightCycleDispatcher<FragmentLightCycle> {
+public class ValidTestFragment extends Fragment implements LightCycleDispatcher<FragmentLightCycle<ValidTestFragment>> {
 
     @LightCycle LightCycle1 lightCycle1;
     @LightCycle LightCycle2 lightCycle2;
 
     @Override
-    public void bind(FragmentLightCycle lightCycle) {
+    public void bind(FragmentLightCycle<ValidTestFragment> lightCycle) {
         // nop
     }
 

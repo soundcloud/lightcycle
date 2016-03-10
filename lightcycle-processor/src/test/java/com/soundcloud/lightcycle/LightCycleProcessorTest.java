@@ -19,8 +19,10 @@ public class LightCycleProcessorTest {
             "public final class ValidTestFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestFragment target) {",
-            "        target.bind(target.lightCycle1);",
-            "        target.bind(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
 
@@ -31,8 +33,10 @@ public class LightCycleProcessorTest {
             "public final class ValidTestSupportFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestSupportFragment target) {",
-            "        target.bind(target.lightCycle1);",
-            "        target.bind(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
 
@@ -43,8 +47,23 @@ public class LightCycleProcessorTest {
             "public final class ValidTestActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestActivity target) {",
-            "        target.bind(target.lightCycle1);",
-            "        target.bind(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
+    private static final String ACTIVITY_HIERARCHY_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "",
+            "public final class ValidTestHierarchyActivity$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestHierarchyActivity target) {",
+            "        com.test.BaseActivity$LightCycleBinder.bind(target);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.BaseActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
 
@@ -73,6 +92,16 @@ public class LightCycleProcessorTest {
         JavaFileObject expectedSource = forSourceString("com.test.ValidTestActivity$LightCycleBinder", ACTIVITY_BINDER_SRC);
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/ValidTestActivity.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForActivityHierarchy() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestHierarchyActivity$LightCycleBinder", ACTIVITY_HIERARCHY_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestHierarchyActivity.java"))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
                 .and().generatesSources(expectedSource);

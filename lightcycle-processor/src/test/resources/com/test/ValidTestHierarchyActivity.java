@@ -7,13 +7,17 @@ import com.soundcloud.lightcycle.LightCycleDispatcher;
 
 import android.app.Activity;
 
-public class ValidTestActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<ValidTestActivity>> {
-
-    @LightCycle LightCycle1 lightCycle1;
+public class ValidTestHierarchyActivity  extends BaseActivity {
     @LightCycle LightCycle2 lightCycle2;
 
+}
+
+class BaseActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<BaseActivity>> {
+
+    @LightCycle LightCycle1 lightCycle1;
+
     @Override
-    public void bind(ActivityLightCycle<ValidTestActivity> lightCycle) {
+    public void bind(ActivityLightCycle<BaseActivity> lightCycle) {
         // nop
     }
 
