@@ -6,17 +6,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 @Deprecated
-public abstract class LightCycleActionBarActivity extends ActionBarActivity
-    implements LightCycleDispatcher<ActivityLightCycle<ActionBarActivity>> {
+public abstract class LightCycleActionBarActivity<ActivityType extends LightCycleActionBarActivity>
+        extends ActionBarActivity
+        implements LightCycleDispatcher<ActivityLightCycle<ActivityType>> {
 
-    private final ActivityLightCycleDispatcher<ActionBarActivity> lightCycleDispatcher;
+    private final ActivityLightCycleDispatcher<ActivityType> lightCycleDispatcher;
 
     public LightCycleActionBarActivity() {
         lightCycleDispatcher = new ActivityLightCycleDispatcher<>();
     }
 
     @Override
-    public void bind(ActivityLightCycle<ActionBarActivity> lightCycle) {
+    public void bind(ActivityLightCycle<ActivityType> lightCycle) {
         lightCycleDispatcher.bind(lightCycle);
     }
 
@@ -24,8 +25,8 @@ public abstract class LightCycleActionBarActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivityContentView();
-        LightCycleBinder.bind(this);
-        lightCycleDispatcher.onCreate(this, savedInstanceState);
+        LightCycles.bind(this);
+        lightCycleDispatcher.onCreate(activity(), savedInstanceState);
     }
 
     protected abstract void setActivityContentView();
@@ -33,53 +34,58 @@ public abstract class LightCycleActionBarActivity extends ActionBarActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        lightCycleDispatcher.onNewIntent(this, intent);
+        lightCycleDispatcher.onNewIntent(activity(), intent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        lightCycleDispatcher.onStart(this);
+        lightCycleDispatcher.onStart(activity());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lightCycleDispatcher.onOptionsItemSelected(this, item);
+        return lightCycleDispatcher.onOptionsItemSelected(activity(), item);
     }
 
     @Override
     protected void onStop() {
-        lightCycleDispatcher.onStop(this);
+        lightCycleDispatcher.onStop(activity());
         super.onStop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        lightCycleDispatcher.onResume(this);
+        lightCycleDispatcher.onResume(activity());
     }
 
     @Override
     protected void onPause() {
-        lightCycleDispatcher.onPause(this);
+        lightCycleDispatcher.onPause(activity());
         super.onPause();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        lightCycleDispatcher.onSaveInstanceState(this, outState);
+        lightCycleDispatcher.onSaveInstanceState(activity(), outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        lightCycleDispatcher.onRestoreInstanceState(this, savedInstanceState);
+        lightCycleDispatcher.onRestoreInstanceState(activity(), savedInstanceState);
     }
 
     @Override
     protected void onDestroy() {
-        lightCycleDispatcher.onDestroy(this);
+        lightCycleDispatcher.onDestroy(activity());
         super.onDestroy();
+    }
+
+    @SuppressWarnings("unchecked")
+    private ActivityType activity() {
+        return (ActivityType) this;
     }
 }

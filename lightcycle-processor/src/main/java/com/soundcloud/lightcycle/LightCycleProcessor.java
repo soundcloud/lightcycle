@@ -32,13 +32,11 @@ import java.util.Set;
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class LightCycleProcessor extends AbstractProcessor {
 
-    private static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
+    static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
     private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
     private static final String CLASS_BINDER_NAME = "LightCycleBinder";
     private static final String METHOD_BIND_NAME = "bind";
     private static final String METHOD_BIND_ARGUMENT_NAME = "target";
-    private static final String METHOD_LIFT_NAME = "com.soundcloud.lightcycle.LightCycleBinder.lift";
-    private static final String INTERFACE_DISPATCHER_NAME = "LightCycleDispatcher";
 
     private Elements elementUtils;
     private Types typeUtils;
@@ -90,7 +88,7 @@ public class LightCycleProcessor extends AbstractProcessor {
     private void generateBinder(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement)
             throws IOException {
         PackageElement packageElement = processingEnv.getElementUtils().getPackageOf(hostElement);
-        final String simpleClassName = getBinderName(hostElement.getSimpleName().toString());
+        final String simpleClassName = binderName(hostElement.getSimpleName().toString());
         final String qualifiedClassName = packageElement.getQualifiedName() + "." + simpleClassName;
 
         note("writing class " + qualifiedClassName);
@@ -111,7 +109,7 @@ public class LightCycleProcessor extends AbstractProcessor {
         writer.close();
     }
 
-    private String getBinderName(String name) {
+    private String binderName(String name) {
         return name + "$" + CLASS_BINDER_NAME;
     }
 
@@ -129,73 +127,52 @@ public class LightCycleProcessor extends AbstractProcessor {
         writer.endMethod();
     }
 
-    private void emitBindLightCycles(Element hostElement, List<? extends Element> elements, JavaWriter writer) throws IOException {
-        final TypeMirror dispatchedType = getDispatchedType((TypeElement) hostElement);
-        if (dispatchedType == null) {
-            error(hostElement, "Could not find the dispatcher. Class may implement " + INTERFACE_DISPATCHER_NAME);
-        } else {
-            for (Element element : elements) {
-                final String liftedName = element.getSimpleName() + "$Lifted";
-
-                writer.emitStatement("final %s %s = %s(%s.%s)",
-                        dispatchedType.toString(),
-                        liftedName,
-                        METHOD_LIFT_NAME,
-                        METHOD_BIND_ARGUMENT_NAME,
-                        element.getSimpleName());
-                writer.emitStatement("%s.%s(%s)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME, liftedName);
-            }
-        }
-    }
-
-    private TypeMirror getDispatchedType(TypeElement hostElement) {
-        TypeElement typeElement = hostElement;
-        TypeMirror type = hostElement.asType();
-
-        for (; type.getKind() != TypeKind.NONE; ) {
-            for (TypeMirror anInterface : typeElement.getInterfaces()) {
-                final Element element = typeUtils.asElement(anInterface);
-                if (element.getSimpleName().contentEquals(INTERFACE_DISPATCHER_NAME)) {
-                    return ((DeclaredType) anInterface).getTypeArguments().get(0);
-                }
-            }
-            typeElement = (TypeElement) ((DeclaredType) type).asElement();
-            type = typeElement.getSuperclass();
-        }
-        return null;
-    }
-
     private void emitBindParent(Set<String> erasedTargetNames, Element hostElement, JavaWriter writer) throws IOException {
         final TypeElement typeElement = (TypeElement) hostElement;
 
-        String parentName = findParent(erasedTargetNames, typeElement);
-        if (parentName != null) {
-            writer.emitStatement(getBinderName(parentName) + ".%s(%s)", METHOD_BIND_NAME, METHOD_BIND_ARGUMENT_NAME);
+        LightCycleBinder parentName = findParent(erasedTargetNames, typeElement.getSuperclass());
+        parentName.emitBind(processingEnv.getMessager(), writer, hostElement);
+    }
+
+    private void emitBindLightCycles(Element hostElement, List<? extends Element> elements, JavaWriter writer) throws IOException {
+        final LightCycleBinder binder = findBinder((TypeElement) hostElement);
+        for (Element element : elements) {
+            binder.emitBind(processingEnv.getMessager(), writer, element);
         }
     }
 
-    private String findParent(Set<String> erasedTargetNames, TypeElement typeElement) {
-        TypeMirror type;
-        while (true) {
-            type = typeElement.getSuperclass();
-            if (type.getKind() == TypeKind.NONE) {
-                return null;
-            }
-            typeElement = (TypeElement) ((DeclaredType) type).asElement();
-            if (erasedTargetNames.contains(typeElement.toString())) {
-                String packageName = getPackageName(typeElement);
-                return packageName + "." + getClassName(typeElement, packageName);
+    private LightCycleBinder findBinder(TypeElement element) {
+        if (element == null) {
+            return LightCycleBinder.DISPATCHER_NOT_FOUND;
+        }
+
+        final TypeMirror elementType = element.asType();
+        if (elementType.getKind() != TypeKind.DECLARED) {
+            return LightCycleBinder.DISPATCHER_NOT_FOUND;
+        }
+
+        for (TypeMirror typeMirror : typeUtils.directSupertypes(elementType)) {
+            for (LightCycleDispatcherKind dispatcherKind : LightCycleDispatcherKind.values()) {
+                if (dispatcherKind.matches(typeUtils.asElement(typeMirror).getSimpleName())) {
+                    return LightCycleBinder.forFields(dispatcherKind, ((DeclaredType) typeMirror));
+                }
             }
         }
+
+        return findBinder((TypeElement) typeUtils.asElement(element.getSuperclass()));
     }
 
-    private String getPackageName(TypeElement type) {
-        return elementUtils.getPackageOf(type).getQualifiedName().toString();
-    }
+    private LightCycleBinder findParent(Set<String> erasedTargetNames, TypeMirror type) {
+        if (type.getKind() == TypeKind.NONE) {
+            return LightCycleBinder.EMPTY;
+        }
 
-    private static String getClassName(TypeElement type, String packageName) {
-        int packageLen = packageName.length() + 1;
-        return type.getQualifiedName().toString().substring(packageLen).replace('.', '$');
+        final TypeElement typeElement = (TypeElement) ((DeclaredType) type).asElement();
+        if (erasedTargetNames.contains(typeElement.toString())) {
+            final String parentWithLightCycle = elementUtils.getBinaryName(typeElement).toString();
+            return LightCycleBinder.forParent(binderName(parentWithLightCycle));
+        }
+        return findParent(erasedTargetNames, typeElement.getSuperclass());
     }
 
     private void verifyFieldsAccessible(Set<? extends Element> elements) {
@@ -209,16 +186,5 @@ public class LightCycleProcessor extends AbstractProcessor {
 
     private void note(String message) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "LightCycleProcessor: " + message);
-    }
-
-    private void error(Element element, String message, Object... args) {
-        log(Diagnostic.Kind.ERROR, element, message, args);
-    }
-
-    private void log(Diagnostic.Kind error, Element element, String message, Object[] args) {
-        if (args.length > 0) {
-            message = String.format(message, args);
-        }
-        processingEnv.getMessager().printMessage(error, message, element);
     }
 }

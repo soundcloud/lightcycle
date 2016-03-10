@@ -23,8 +23,8 @@ class BaseActivity extends Activity implements LightCycleDispatcher<ActivityLigh
 
 }
 
-class LightCycle1 extends DefaultActivityLightCycle {
+class LightCycle1 extends DefaultActivityLightCycle<BaseActivity> {
 }
 
-class LightCycle2 extends DefaultActivityLightCycle {
+class LightCycle2 extends DefaultActivityLightCycle<BaseActivity> {
 }

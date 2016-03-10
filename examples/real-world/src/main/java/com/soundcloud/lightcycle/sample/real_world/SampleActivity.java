@@ -15,7 +15,7 @@ public class SampleActivity extends MyBaseActivity {
     }
 
     @Override
-    void setActivityContentView() {
+    protected void setActivityContentView() {
         setContentView(R.layout.activity_sample);
     }
 }

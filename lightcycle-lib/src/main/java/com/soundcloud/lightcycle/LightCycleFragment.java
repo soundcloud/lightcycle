@@ -9,9 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public abstract class LightCycleFragment extends Fragment implements LightCycleDispatcher<FragmentLightCycle> {
+public abstract class LightCycleFragment<FragmentType extends Fragment> extends Fragment implements LightCycleDispatcher<FragmentLightCycle<FragmentType>> {
 
-    private final FragmentLightCycleDispatcher<Fragment> lifeCycleDispatcher;
+    private final FragmentLightCycleDispatcher<FragmentType> lifeCycleDispatcher;
     private boolean bound;
 
     public LightCycleFragment() {
@@ -19,7 +19,7 @@ public abstract class LightCycleFragment extends Fragment implements LightCycleD
     }
 
     @Override
-    public void bind(FragmentLightCycle lifeCycleComponent) {
+    public void bind(FragmentLightCycle<FragmentType> lifeCycleComponent) {
         lifeCycleDispatcher.bind(lifeCycleComponent);
     }
 
@@ -27,12 +27,12 @@ public abstract class LightCycleFragment extends Fragment implements LightCycleD
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         bindIfNecessary();
-        lifeCycleDispatcher.onAttach(this, activity);
+        lifeCycleDispatcher.onAttach(fragment(), activity);
     }
 
     private void bindIfNecessary() {
-        if (!bound){
-            LightCycleBinder.bind(this);
+        if (!bound) {
+            LightCycles.bind(this);
             bound = true;
         }
     }
@@ -40,59 +40,64 @@ public abstract class LightCycleFragment extends Fragment implements LightCycleD
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lifeCycleDispatcher.onCreate(this, savedInstanceState);
+        lifeCycleDispatcher.onCreate(fragment(), savedInstanceState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        lifeCycleDispatcher.onStart(this);
+        lifeCycleDispatcher.onStart(fragment());
     }
 
     @Override
     public void onStop() {
-        lifeCycleDispatcher.onStop(this);
+        lifeCycleDispatcher.onStop(fragment());
         super.onStop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        lifeCycleDispatcher.onResume(this);
+        lifeCycleDispatcher.onResume(fragment());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lifeCycleDispatcher.onOptionsItemSelected(this, item);
+        return lifeCycleDispatcher.onOptionsItemSelected(fragment(), item);
     }
 
     @Override
     public void onPause() {
-        lifeCycleDispatcher.onPause(this);
+        lifeCycleDispatcher.onPause(fragment());
         super.onPause();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lifeCycleDispatcher.onViewCreated(this, view, savedInstanceState);
+        lifeCycleDispatcher.onViewCreated(fragment(), view, savedInstanceState);
     }
 
     @Override
     public void onDestroyView() {
-        lifeCycleDispatcher.onDestroyView(this);
+        lifeCycleDispatcher.onDestroyView(fragment());
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        lifeCycleDispatcher.onDestroy(this);
+        lifeCycleDispatcher.onDestroy(fragment());
         super.onDestroy();
     }
 
     @Override
     public void onDetach() {
-        lifeCycleDispatcher.onDetach(this);
+        lifeCycleDispatcher.onDetach(fragment());
         super.onDetach();
+    }
+
+    @SuppressWarnings("unchecked")
+    private FragmentType fragment() {
+        return (FragmentType) this;
     }
 }

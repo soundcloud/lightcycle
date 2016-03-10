@@ -5,7 +5,7 @@ import com.soundcloud.lightcycle.LightCycleAppCompatActivity;
 
 import android.os.Bundle;
 
-public class SampleActivity extends LightCycleAppCompatActivity {
+public class SampleActivity extends LightCycleAppCompatActivity<SampleActivity> {
     @LightCycle ActivityLogger activityLogger = new ActivityLogger();
 
     @Override
