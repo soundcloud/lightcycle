@@ -24,6 +24,11 @@ android {
     targetCompatibility rootProject.ext.targetCompatibilityVersion
   }
 
+  lintOptions {
+    textReport true
+    textOutput "stdout"
+  }
+
   testOptions {
     unitTests.returnDefaultValues = true
   }
@@ -31,7 +36,9 @@ android {
 
 dependencies {
   compile project(':lightcycle-api')
+  provided deps.support_v4
   compile deps.appcompat_v7
+  compile deps.support_annotations
 
   testCompile deps.mockito
   testCompile deps.junit
