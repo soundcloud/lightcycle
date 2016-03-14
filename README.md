@@ -4,20 +4,19 @@ Android library that helps you break `BaseActivity` and `BaseFragment` into smal
 
 ## Usage 
 ```java
-public abstract class BaseActivity extends LightCycleActivity {
+public abstract class MyBaseActivity extends LightCycleAppCompatActivity<MyBaseActivity> {
   @LightCycle ScreenStateProvider screenStateProvider;
-  @LightCycle UserAccountController userAccountController;
-  [...]
   
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  protected abstract void setActivityContentView() {
     setContentView(R.layout.main);
   }
+}
+
 }
 ``` 
 
 ```java
-class ScreenStateProvider extends DefaultLightCycleActivity<Activity> {
+class ScreenStateProvider extends DefaultLightCycleActivity<MyBaseActivity> {
     private boolean isForeground;
 
     boolean isForeground() {
@@ -25,12 +24,12 @@ class ScreenStateProvider extends DefaultLightCycleActivity<Activity> {
     }
 
     @Override
-    public void onResume(Activity activity) {
+    public void onResume(MyBaseActivity activity) {
         isForeground = true;
     }
 
     @Override
-    public void onPause(Activity activity) {
+    public void onPause(MyBaseActivity activity) {
         isForeground = false;
     }
 }
@@ -40,7 +39,7 @@ Note : The `LightCycle` API is close to the `ActivityLifecycleCallbacks` API ava
 
 ## Principles
 
-### Collaborators over inheritance  
+### Composition over inheritance  
 
 Activities / Fragments are respeonsables for : 
 - Inflating layout and views 
@@ -53,7 +52,6 @@ Lightcycles are responsible for specific features, regarless the Activy or Fragm
 
 A typical Light Cycle Activity or Fragment does not contain any logic and may not be tested. 
 
-A Light Cycle should not depend on any Android Framework specific classes, meaning it should not be needed to hook up resources or mock up views to test it.
 
 ```java
 public class ScreenStateProviderTest {
@@ -86,6 +84,12 @@ public class ScreenStateProviderTest {
 [...]
 }
 ```
+
+## Examples
+
+Exmaples:
+- [basic](examples/basic)
+- ["real-world"](examples/real-world)
 
 ## Empower 
 
