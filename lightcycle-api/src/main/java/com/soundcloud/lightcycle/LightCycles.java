@@ -9,8 +9,8 @@ import android.view.View;
 
 import java.lang.reflect.Method;
 
-public final class LightCycleBinder {
-    private static final String TAG = LightCycleBinder.class.getSimpleName();
+public final class LightCycles {
+    private static final String TAG = LightCycles.class.getSimpleName();
     private static final String ANDROID_PREFIX = "android.";
     private static final String JAVA_PREFIX = "java.";
 

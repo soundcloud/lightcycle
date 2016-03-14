@@ -19,9 +19,23 @@ public class LightCycleProcessorTest {
             "public final class ValidTestFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestFragment target) {",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle1);",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
             "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
+    private static final String LC_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "",
+            "public final class ValidTestLightCycleFragment$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestLightCycleFragment target) {",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestLightCycleFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestLightCycleFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
             "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
@@ -33,12 +47,27 @@ public class LightCycleProcessorTest {
             "public final class ValidTestSupportFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestSupportFragment target) {",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle1);",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
             "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
             "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
+
+    private static final String LC_SUPPORT_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "",
+            "public final class ValidTestLightCycleSupportFragment$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestLightCycleSupportFragment target) {",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
 
     private static final String ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
@@ -47,9 +76,9 @@ public class LightCycleProcessorTest {
             "public final class ValidTestActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle1);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
             "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
             "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
@@ -62,7 +91,35 @@ public class LightCycleProcessorTest {
             "",
             "    public static void bind(ValidTestHierarchyActivity target) {",
             "        com.test.BaseActivity$LightCycleBinder.bind(target);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.BaseActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycleBinder.lift(target.lightCycle2);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.BaseActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
+    private static final String LC_APPCOMPAT_ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "",
+            "public final class ValidTestLightCycleAppCompatActivity$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestLightCycleAppCompatActivity target) {",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
+    private static final String LC_ACTION_BAR_ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "",
+            "public final class ValidTestLightCycleActionBarActivity$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestLightCycleActionBarActivity target) {",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
             "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
@@ -107,6 +164,46 @@ public class LightCycleProcessorTest {
                 .and().generatesSources(expectedSource);
     }
 
+    @Test
+    public void shouldGenerateInjectorForLightCycleAppCompatActivity() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleAppCompatActivity$LightCycleBinder", LC_APPCOMPAT_ACTIVITY_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleAppCompatActivity.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForLightCycleActionBarActivity() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleActionBarActivity$LightCycleBinder", LC_ACTION_BAR_ACTIVITY_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleActionBarActivity.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForLightCycleSupportFragment() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleSupportFragment$LightCycleBinder", LC_SUPPORT_FRAGMENT_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleSupportFragment.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForLightCycleFragment() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleFragment$LightCycleBinder", LC_FRAGMENT_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleFragment.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
     //TODO: make this test more specific with a TestRule to catch false positives
     @Test(expected = RuntimeException.class)
     public void shouldThrowExceptionWhenLightCycleFieldIsPrivate() {
@@ -124,4 +221,19 @@ public class LightCycleProcessorTest {
                 .failsToCompile();
     }
 
+    @Test
+    public void MissingGenericTestActivity() {
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/MissingGenericTestActivity.java"))
+                .processedWith(new LightCycleProcessor())
+                .failsToCompile();
+    }
+
+    @Test
+    public void InvalidTestActivity() {
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/InvalidTestActivity.java"))
+                .processedWith(new LightCycleProcessor())
+                .failsToCompile();
+    }
 }
