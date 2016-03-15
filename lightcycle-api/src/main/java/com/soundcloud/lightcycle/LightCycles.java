@@ -14,6 +14,7 @@ public final class LightCycles {
     private static final String ANDROID_PREFIX = "android.";
     private static final String JAVA_PREFIX = "java.";
 
+    @SuppressWarnings("PMD.EmptyCatchBlock")
     public static void bind(LightCycleDispatcher<?> target) {
         Method bindingMethod;
         try {
