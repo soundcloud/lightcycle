@@ -1,0 +1,30 @@
+language: android
+
+before_script:
+  - "export JAVA_OPTS=-Xmx512m"
+
+android:
+  components:
+    - build-tools-23.0.1
+    - android-23
+    - platform-tools
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-5be876d5
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+
+branches:
+  except:
+    - gh-pages
+
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.m2
