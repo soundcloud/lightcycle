@@ -1,131 +1,140 @@
-# Light cycle
+# LightCycle
 
-Android library that helps you break `BaseActivity` and `BaseFragment` into smaller testable components. 
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html)
+
+LightCycle is a library that facilitates breaking out concerns of your Activities and Fragments into small, self-contained components called LightCycles.
+
+Fields implementing the LightCycle's API and annotated with `@LightCycle` within an `LightCycleActivity` or `LightCycleFragment` will be bound to the given Activity or Fragment lifecycle. 
 
 ## Usage 
-```java
-public abstract class MyBaseActivity extends LightCycleAppCompatActivity<MyBaseActivity> {
-  @LightCycle ScreenStateProvider screenStateProvider;
-  
-  protected abstract void setActivityContentView() {
-    setContentView(R.layout.main);
-  }
-}
-
-}
-``` 
 
 ```java
-class ScreenStateProvider extends DefaultLightCycleActivity<MyBaseActivity> {
-    private boolean isForeground;
-
-    boolean isForeground() {
-        return isForeground;
-    }
+public class MyActivity extends LightCycleAppCompatActivity<MyBaseActivity> {
+    @LightCycle MyController controller = new MyController();
 
     @Override
-    public void onResume(MyBaseActivity activity) {
-        isForeground = true;
-    }
-
-    @Override
-    public void onPause(MyBaseActivity activity) {
-        isForeground = false;
+    protected void setActivityContentView() {
+        setContentView(R.layout.main);
     }
 }
 ```
 
-Note : The `LightCycle` API is close to the `ActivityLifecycleCallbacks` API available since [Android 14][1].
-
-## Principles
-
-### Composition over inheritance  
-
-Activities / Fragments are respeonsables for : 
-- Inflating layout and views 
-- Setting resources 
-- Hooking up lightcycles 
-
-Lightcycles are responsible for specific features, regarless the Activy or Fragment. 
-
-### Testing the logic 
-
-A typical Light Cycle Activity or Fragment does not contain any logic and may not be tested. 
-
-
 ```java
-public class ScreenStateProviderTest {
-    @Mock private Activity activity;
+private class MyController extends DefaultActivityLightCycle<MyActivity> {
+
+    @Override
+    public void onPause(MyActivity activity) {
+        // MyActivity was paused
+    }
     
-    private ScreenStateProvider lightCycle;
+    [...]
 
-    @Before
-    public void setUp() throws Exception {
-        lightCycle = new ScreenStateProvider();
+    @Override
+    public void onResume(MyActivity activity) {
+        // MyActivity was resumed
     }
-
-    @Test
-    public void isNotForegroundByDefault() {
-        expect(lightCycle.isForeground()).toBeFalse();
-    }
-
-    @Test
-    public void isForegroundWhenOnResume() {
-        lightCycle.onResume(activity);
-        expect(lightCycle.isForeground()).toBeTrue();
-    }
-
-    @Test
-    public void isNotForegroundOnPause() {
-        lightCycle.onResume(activity);
-        lightCycle.onPause(activity);
-        expect(lightCycle.isForeground()).toBeFalse();
-    }
-[...]
 }
 ```
+
+## Philosophy
+
+LightCycle encourages composition over inheritance. We believe it helps to write more readable, maintainable and testable code. It works particularly well when combined with dependency injection.
+
+The responsibilities are defined as follow:
+- Activities & fragments are responsible for:
+ - Inflating layout - and more generally loading android resources.
+ - Declaring LightCycles
+- LightCycles are responsible for a specific domain logic. They are agnostic to each other. *For example: Presenters, such as PlaylistPresenter, controllers, such as ChromeCastConnectionController*.
+
+It is important to note that there is no guarantee of order when notifying LightCycles. 
 
 ## Examples
 
-Exmaples:
-- [basic](examples/basic)
-- ["real-world"](examples/real-world)
+You can find some examples here:
+- [basic example.](examples/basic)
+- ["real-world" example.](examples/real-world)
 
-## Empower 
+## Documentation 
 
-LightCycles compose well with other injection libraries. 
+### LightCycle
 
-Exemple : 
+There are 3 types of LightCycles - the API is comparable to the  [`ActivityLifecycleCallbacks`](http://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html) from the Android SDK:
+- `ActivityLightCycle`
+- `FragmentLightCycle`
+- `SupportFragmentLightCycle`
+
+For convenience default implementations are provided:
+- `DefaultActivityLightCycle`
+- `DefaultFragmentLightCycle`
+- `DefaultSupportFragmentLightCycle`
+
+### Dispatcher
+
+Like its name indicates, it dispatches an Activity or Fragment's lifecycle to any LightCycles. The API defines a single method: `bind`.
+
+The interface:
+- `LightCycleDispatcher`
+
+### Built-in dispatchers. 
+
+Three types of dispatchers are provided:
+- `ActivityLightCycleDispatcher`
+- `FragmentLightCycleDispatcher`
+- `SupportFragmentLightCycleDispatcher`
+
+Notably, these built-in classes are both dispatchers and LightCycles. This means you can nest `LightCycle`. 
+
 ```java
-public abstract class BaseActivity extends LightCycleActivity {
-  @Inject @Singleton @LightCycle ScreenStateProvider screenStateProvider;
-  @Inject @LightCycle UserAccountController userAccountController;
-  [...]
-  
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.main);
-  }
-}
-``` 
+public class MyActivity extends LightCycleAppCompatActivity<MyBaseActivity> {
+    @LightCycle MyController controller = new MyController();
 
-[1]: http://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html
+    @Override
+    protected void setActivityContentView() {
+        setContentView(R.layout.main);
+    }
+}
+```
+
+```java
+private class MyController extends ActivityLightCycleDispatcher<MyActivity> {
+    @LightCycle MySubController1 controller = new MyController1();
+    @LightCycle MySubController2 controller = new MyController2();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        [...] // <- specific init 
+        super.onCreate(savedInstanceState) // <- call super to dispatch.
+    }
+    
+}
+```
+
+### Provided base activities
+
+Base activities/fragments are also dispatchers. 
+
+The following base activities are provided so far:
+- `LightCycleActionBarActivity`
+- `LightCycleAppCompatActivity`
+- `LightCycleFragment`
+- `LightCycleSupportFragment`
 
 ## Integration 
 
-### Dependencies 
-
-Gradle :
-```
-compile com.soundcloud.lightcycle:lightcycle-processor:VERSION
-compile com.soundcloud.lightcycle:lightcycle-lib:VERSION
-```
-### Proguard 
-
-Add this to your config file.
+### Gradle
 
 ```
--keep class com.soundcloud.lightcycle.** {
-    *;
+buildscript {
+  dependencies {
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+  }
+}
+```
+```
+apply plugin: 'com.neenbedankt.android-apt'
+
+dependencies {
+  compile 'com.soundcloud.lightcycle:lightcycle-lib:VERSION'
+  apt 'com.soundcloud.lightcycle:lightcycle-processor:VERSION'
 }
 ```
