@@ -2,7 +2,7 @@ package com.soundcloud.lightcycle.sample.real_world.tracker;
 
 import javax.inject.Inject;
 
-class TrackingOperations {
+public class TrackingOperations {
     @Inject
     public TrackingOperations() {
     }
@@ -10,4 +10,5 @@ class TrackingOperations {
     public void trackScreen(Screen screen) {
         System.out.println("Tracking screen:" + screen.getScreenName());
     }
+
 }

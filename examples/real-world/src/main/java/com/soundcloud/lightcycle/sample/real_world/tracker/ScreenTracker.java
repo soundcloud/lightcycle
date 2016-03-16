@@ -1,11 +1,11 @@
 package com.soundcloud.lightcycle.sample.real_world.tracker;
 
 import com.soundcloud.lightcycle.DefaultActivityLightCycle;
-import com.soundcloud.lightcycle.sample.real_world.MyBaseActivity;
+import com.soundcloud.lightcycle.sample.real_world.HomeActivity;
 
 import javax.inject.Inject;
 
-public class ScreenTracker extends DefaultActivityLightCycle<MyBaseActivity> {
+public class ScreenTracker extends DefaultActivityLightCycle<HomeActivity> {
 
     private final TrackingOperations operations;
 
@@ -15,7 +15,7 @@ public class ScreenTracker extends DefaultActivityLightCycle<MyBaseActivity> {
     }
 
     @Override
-    public void onResume(MyBaseActivity activity) {
+    public void onResume(HomeActivity activity) {
         operations.trackScreen(activity);
     }
 }
