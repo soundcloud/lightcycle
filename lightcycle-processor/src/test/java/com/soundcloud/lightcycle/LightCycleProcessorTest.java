@@ -222,7 +222,7 @@ public class LightCycleProcessorTest {
     }
 
     @Test
-    public void MissingGenericTestActivity() {
+    public void missingGenericTestActivity() {
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/MissingGenericTestActivity.java"))
                 .processedWith(new LightCycleProcessor())
@@ -230,7 +230,7 @@ public class LightCycleProcessorTest {
     }
 
     @Test
-    public void InvalidTestActivity() {
+    public void invalidTestActivity() {
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/InvalidTestActivity.java"))
                 .processedWith(new LightCycleProcessor())

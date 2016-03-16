@@ -46,6 +46,29 @@ ext.deps = [
   compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
 ]
 
+// Static analysis
+subprojects { project ->
+  apply plugin: 'pmd'
+  apply plugin: 'findbugs'
+
+  task pmd(type: Pmd) {
+    description 'Finds common programming flaws throw static analysis of code.'
+    ignoreFailures false
+  }
+
+  findbugs {
+    ignoreFailures = false
+    toolVersion = "3.0.0"
+  }
+
+  tasks.withType(FindBugs) {
+    reports {
+      xml.enabled = false
+      html.enabled = true
+    }
+  }
+}
+
 // configure Java projects
 [":lightcycle-api", ":lightcycle-processor"].each { name ->
   project(name) {
