@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LightCycle \"real world\" example.</string>
+    <string name="good_morning">Good morning</string>
+    <string name="hello">Hello</string>
 </resources>

@@ -2,7 +2,7 @@ package com.soundcloud.lightcycle.sample.real_world.tracker;
 
 import static org.mockito.Mockito.verify;
 
-import com.soundcloud.lightcycle.sample.real_world.MyBaseActivity;
+import com.soundcloud.lightcycle.sample.real_world.HomeActivity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ScreenTrackerTest {
 
     @Mock private TrackingOperations operations;
-    @Mock private MyBaseActivity activity;
+    @Mock private HomeActivity activity;
     private ScreenTracker tracker;
 
     @Before
