@@ -121,20 +121,4 @@ The following base activities are provided so far:
 
 ## Integration 
 
-### Gradle
-
-```
-buildscript {
-  dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-  }
-}
-```
-```
-apply plugin: 'com.neenbedankt.android-apt'
-
-dependencies {
-  compile 'com.soundcloud.lightcycle:lightcycle-lib:VERSION'
-  apt 'com.soundcloud.lightcycle:lightcycle-processor:VERSION'
-}
-```
+Not yet available on maven central.
