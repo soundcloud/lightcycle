@@ -100,7 +100,6 @@ public class MyController extends ActivityLightCycleDispatcher<MyActivity> {
         [...] // <- specific init 
         super.onCreate(savedInstanceState) // <- call super to dispatch.
     }
-    
 }
 ```
 
@@ -112,7 +111,7 @@ The following base activities are provided so far:
 - `LightCycleFragment`
 - `LightCycleSupportFragment`
 
-#### Adding LightCycle to your base own base `Activity` or `Fragment`
+#### Adding LightCycle to your own base `Activity` or `Fragment`
 
 To add LightCycles to your `MyBaseActivity`, your `Activity` must: 
 - Implement the `LightCycleDispatcher` interface
@@ -121,16 +120,15 @@ To add LightCycles to your `MyBaseActivity`, your `Activity` must:
 
 The same technique applies for `Fragment`. 
 
-```
-public class MyBaseActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<MyBaseActivity>>
+```java
+public class MyBaseActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<MyBaseActivity>> {
 
- private final ActivityLightCycleDispatcher<MyBaseActivity> lightCycleDispatcher;
+    private final ActivityLightCycleDispatcher<MyBaseActivity> lightCycleDispatcher;
 
- @Override
+    @Override
     public void bind(ActivityLightCycle<MyBaseActivity> lightCycle) {
         lightCycleDispatcher.bind(lightCycle);
     }
-    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +144,7 @@ public class MyBaseActivity extends Activity implements LightCycleDispatcher<Act
         lightCycleDispatcher.onDestroy((MyBaseActivity) this);
         super.onDestroy();
     }
-
+}
 ```
 
 See for example [LightCycleActionBarActivity](lightcycle-lib/src/main/java/com/soundcloud/lightcycle/LightCycleActionBarActivity.java) or [LightCycleSupportFragment](lightcycle-lib/src/main/java/com/soundcloud/lightcycle/LightCycleSupportFragment.java). 
@@ -155,7 +153,7 @@ See for example [LightCycleActionBarActivity](lightcycle-lib/src/main/java/com/s
 
 Gradle:
 
-```
+```gradle
 buildscript {
   dependencies {
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
