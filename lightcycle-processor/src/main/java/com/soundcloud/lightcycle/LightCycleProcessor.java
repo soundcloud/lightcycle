@@ -1,6 +1,10 @@
 package com.soundcloud.lightcycle;
 
-import com.squareup.javawriter.JavaWriter;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -20,7 +24,7 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
-import java.util.EnumSet;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -95,17 +99,22 @@ public class LightCycleProcessor extends AbstractProcessor {
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
                 qualifiedClassName, elements.toArray(new Element[elements.size()]));
 
-        JavaWriter writer = new JavaWriter(sourceFile.openWriter());
+        MethodSpec bindMethod = MethodSpec.methodBuilder(METHOD_BIND_NAME)
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .returns(void.class)
+                .addParameter(TypeName.get(hostElement.asType()), METHOD_BIND_ARGUMENT_NAME)
+                .addCode(generateBindMethod(erasedTargetNames, hostElement, elements))
+                .build();
 
-        emitClassHeader(packageElement, writer);
+        TypeSpec classType = TypeSpec.classBuilder(simpleClassName)
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addMethod(bindMethod)
+                .build();
 
-        writer.beginType(qualifiedClassName, "class",
-                EnumSet.of(Modifier.PUBLIC, Modifier.FINAL),
-                null);
-
-        emitBindMethod(erasedTargetNames, elements, hostElement, writer);
-
-        writer.endType();
+        final Writer writer = sourceFile.openWriter();
+        JavaFile.builder(packageElement.getQualifiedName().toString(), classType)
+                .build()
+                .writeTo(writer);
         writer.close();
     }
 
@@ -113,32 +122,27 @@ public class LightCycleProcessor extends AbstractProcessor {
         return name + "$" + CLASS_BINDER_NAME;
     }
 
-    private void emitClassHeader(PackageElement packageElement, JavaWriter writer) throws IOException {
-        writer.emitPackage(packageElement.getQualifiedName().toString());
-        writer.emitEmptyLine();
+    private CodeBlock generateBindMethod(Set<String> erasedTargetNames, Element hostElement, List<? extends Element> elements) {
+        return CodeBlock.builder()
+                .add(emitBindParent(erasedTargetNames, hostElement))
+                .add(emitBindLightCycles(hostElement, elements))
+                .build();
     }
 
-    private void emitBindMethod(Set<String> erasedTargetNames, List<? extends Element> elements, Element hostElement, JavaWriter writer) throws IOException {
-        writer.emitEmptyLine();
-        final String hostClass = hostElement.getSimpleName().toString();
-        writer.beginMethod("void", METHOD_BIND_NAME, EnumSet.of(Modifier.PUBLIC, Modifier.STATIC), hostClass, METHOD_BIND_ARGUMENT_NAME);
-        emitBindParent(erasedTargetNames, hostElement, writer);
-        emitBindLightCycles(hostElement, elements, writer);
-        writer.endMethod();
-    }
-
-    private void emitBindParent(Set<String> erasedTargetNames, Element hostElement, JavaWriter writer) throws IOException {
+    private CodeBlock emitBindParent(Set<String> erasedTargetNames, Element hostElement) {
         final TypeElement typeElement = (TypeElement) hostElement;
 
         LightCycleBinder parentName = findParent(erasedTargetNames, typeElement.getSuperclass());
-        parentName.emitBind(processingEnv.getMessager(), writer, hostElement);
+        return parentName.generateBind(processingEnv.getMessager(), hostElement);
     }
 
-    private void emitBindLightCycles(Element hostElement, List<? extends Element> elements, JavaWriter writer) throws IOException {
+    private CodeBlock emitBindLightCycles(Element hostElement, List<? extends Element> elements) {
         final LightCycleBinder binder = findBinder((TypeElement) hostElement);
+        CodeBlock.Builder cb = CodeBlock.builder();
         for (Element element : elements) {
-            binder.emitBind(processingEnv.getMessager(), writer, element);
+            cb.add(binder.generateBind(processingEnv.getMessager(), element));
         }
+        return cb.build();
     }
 
     private LightCycleBinder findBinder(TypeElement element) {

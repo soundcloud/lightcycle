@@ -38,7 +38,7 @@ ext.deps = [
   appcompat_v7          : 'com.android.support:appcompat-v7:23.1.1',
   support_annotations   : 'com.android.support:support-annotations:23.1.1',
   // Processor
-  javawriter            : 'com.squareup:javawriter:2.1.2',
+  javawriter            : 'com.squareup:javapoet:1.6.1',
 
   // Test dependencies
   junit                 : 'junit:junit:4.12',
