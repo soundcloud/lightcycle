@@ -2,7 +2,7 @@ apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
 dependencies {
   compile project(':lightcycle-api')
-  compile deps.javawriter
+  compile deps.javapoet
 
   testCompile deps.android
   testCompile deps.support_v4

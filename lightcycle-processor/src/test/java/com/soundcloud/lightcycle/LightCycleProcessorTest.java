@@ -15,7 +15,6 @@ public class LightCycleProcessorTest {
     private static final String FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
             "",
-            "",
             "public final class ValidTestFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestFragment target) {",
@@ -28,7 +27,6 @@ public class LightCycleProcessorTest {
 
     private static final String LC_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
-            "",
             "",
             "public final class ValidTestLightCycleFragment$LightCycleBinder {",
             "",
@@ -43,7 +41,6 @@ public class LightCycleProcessorTest {
     private static final String SUPPORT_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
             "",
-            "",
             "public final class ValidTestSupportFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestSupportFragment target) {",
@@ -56,7 +53,6 @@ public class LightCycleProcessorTest {
 
     private static final String LC_SUPPORT_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
-            "",
             "",
             "public final class ValidTestLightCycleSupportFragment$LightCycleBinder {",
             "",
@@ -72,7 +68,6 @@ public class LightCycleProcessorTest {
     private static final String ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
             "",
-            "",
             "public final class ValidTestActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestActivity target) {",
@@ -86,7 +81,6 @@ public class LightCycleProcessorTest {
     private static final String ACTIVITY_HIERARCHY_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
             "",
-            "",
             "public final class ValidTestHierarchyActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestHierarchyActivity target) {",
@@ -98,7 +92,6 @@ public class LightCycleProcessorTest {
 
     private static final String LC_APPCOMPAT_ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
-            "",
             "",
             "public final class ValidTestLightCycleAppCompatActivity$LightCycleBinder {",
             "",
@@ -112,7 +105,6 @@ public class LightCycleProcessorTest {
 
     private static final String LC_ACTION_BAR_ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
-            "",
             "",
             "public final class ValidTestLightCycleActionBarActivity$LightCycleBinder {",
             "",

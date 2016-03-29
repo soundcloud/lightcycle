@@ -1,13 +1,12 @@
 package com.soundcloud.lightcycle;
 
-import com.squareup.javawriter.JavaWriter;
+import com.squareup.javapoet.CodeBlock;
 
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
-import java.io.IOException;
 import java.util.List;
 
 abstract class LightCycleBinder {
@@ -15,42 +14,49 @@ abstract class LightCycleBinder {
     private static final String METHOD_BIND_ARGUMENT_NAME = "target";
     private static final String METHOD_LIFT_NAME = LightCycleProcessor.LIB_PACKAGE + ".LightCycles.lift";
 
+    private static final CodeBlock EMPTY_BLOCK = CodeBlock.builder().build();
+
     static final LightCycleBinder DISPATCHER_NOT_FOUND = new LightCycleBinder() {
         @Override
-        void emitBind(Messager messager, JavaWriter writer, Element element) throws IOException {
+        CodeBlock generateBind(Messager messager, Element element) {
             messager.printMessage(Diagnostic.Kind.ERROR, "Could not find dispatcher type. Did you forget to add the generic type?", element);
+            return EMPTY_BLOCK;
         }
     };
 
     static final LightCycleBinder EMPTY = new LightCycleBinder() {
         @Override
-        void emitBind(Messager messager, JavaWriter writer, Element element) throws IOException {
+        CodeBlock generateBind(Messager messager, Element element) {
+            return EMPTY_BLOCK;
         }
     };
 
     static LightCycleBinder forFields(final LightCycleDispatcherKind dispatcherKind, final DeclaredType type) {
         return new LightCycleBinder() {
             @Override
-            void emitBind(Messager messager, JavaWriter writer, Element element) throws IOException {
+            CodeBlock generateBind(Messager messager, Element element) {
                 final String liftedName = element.getSimpleName() + "$Lifted";
 
                 final List<? extends TypeMirror> typeArguments = type.getTypeArguments();
                 if (typeArguments.size() != 1) {
                     error(messager, typeArguments);
+                    return EMPTY_BLOCK;
                 } else {
-                    emitLiftAndBind(writer, element, liftedName, typeArguments);
+                    return generateLiftAndBind(element, liftedName, typeArguments);
                 }
             }
 
-            private void emitLiftAndBind(JavaWriter writer, Element element, String liftedName, List<? extends TypeMirror> typeArguments) throws IOException {
+            private CodeBlock generateLiftAndBind(Element element, String liftedName, List<? extends TypeMirror> typeArguments) {
                 final String lightCycleLiftedType = dispatcherKind.toTypeName(typeArguments.get(0).toString());
-                writer.emitStatement("final %s %s = %s(%s.%s)",
-                        lightCycleLiftedType,
-                        liftedName,
-                        METHOD_LIFT_NAME,
-                        METHOD_BIND_ARGUMENT_NAME,
-                        element.getSimpleName());
-                writer.emitStatement("%s.%s(%s)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME, liftedName);
+                return CodeBlock.builder()
+                        .addStatement("final $N $N = $N($N.$N)",
+                                lightCycleLiftedType,
+                                liftedName,
+                                METHOD_LIFT_NAME,
+                                METHOD_BIND_ARGUMENT_NAME,
+                                element.getSimpleName())
+                        .addStatement("$N.$N($N)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME, liftedName)
+                        .build();
             }
 
             private void error(Messager messager, List<? extends TypeMirror> typeArguments) {
@@ -66,11 +72,11 @@ abstract class LightCycleBinder {
     static LightCycleBinder forParent(final String parentName) {
         return new LightCycleBinder() {
             @Override
-            void emitBind(Messager messager, JavaWriter writer, Element element) throws IOException {
-                writer.emitStatement("%s.%s(%s)", parentName, METHOD_BIND_NAME, METHOD_BIND_ARGUMENT_NAME);
+            CodeBlock generateBind(Messager messager, Element element) {
+                return CodeBlock.builder().addStatement("$N.$N($N)", parentName, METHOD_BIND_NAME, METHOD_BIND_ARGUMENT_NAME).build();
             }
         };
     }
 
-    abstract void emitBind(Messager messager, JavaWriter writer, Element element) throws IOException;
+    abstract CodeBlock generateBind(Messager messager, Element element);
 }
