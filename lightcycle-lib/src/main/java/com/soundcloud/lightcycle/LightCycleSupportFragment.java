@@ -47,6 +47,12 @@ public abstract class LightCycleSupportFragment<FragmentType extends Fragment> e
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        lifeCycleDispatcher.onActivityCreated(fragment(), savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         lifeCycleDispatcher.onStart(fragment());

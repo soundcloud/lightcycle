@@ -85,6 +85,12 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        lifeCycleDispatcher.onSaveInstanceState(fragment(), outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onDestroyView() {
         lifeCycleDispatcher.onDestroyView(fragment());
         super.onDestroyView();
