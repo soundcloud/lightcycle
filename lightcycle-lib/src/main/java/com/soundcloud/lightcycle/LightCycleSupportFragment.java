@@ -41,15 +41,15 @@ public abstract class LightCycleSupportFragment<FragmentType extends Fragment> e
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        lifeCycleDispatcher.onStart(fragment());
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        lifeCycleDispatcher.onViewCreated(fragment(), view, savedInstanceState);
     }
 
     @Override
-    public void onStop() {
-        lifeCycleDispatcher.onStop(fragment());
-        super.onStop();
+    public void onStart() {
+        super.onStart();
+        lifeCycleDispatcher.onStart(fragment());
     }
 
     @Override
@@ -70,9 +70,15 @@ public abstract class LightCycleSupportFragment<FragmentType extends Fragment> e
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        lifeCycleDispatcher.onViewCreated(fragment(), view, savedInstanceState);
+    public void onStop() {
+        lifeCycleDispatcher.onStop(fragment());
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        lifeCycleDispatcher.onSaveInstanceState(fragment(), outState);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

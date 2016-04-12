@@ -48,6 +48,13 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
     }
 
     @Override
+    public void onActivityCreated(T fragment, Bundle bundle) {
+        for (FragmentLightCycle<T> component : fragmentLightCycles) {
+            component.onActivityCreated(fragment, bundle);
+        }
+    }
+
+    @Override
     public void onStart(T fragment) {
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onStart(fragment);
@@ -89,13 +96,6 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
     public void onSaveInstanceState(T fragment, Bundle bundle) {
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onSaveInstanceState(fragment, bundle);
-        }
-    }
-
-    @Override
-    public void onRestoreInstanceState(T fragment, Bundle bundle) {
-        for (FragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onRestoreInstanceState(fragment, bundle);
         }
     }
 

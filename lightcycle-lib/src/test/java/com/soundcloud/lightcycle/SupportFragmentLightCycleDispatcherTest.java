@@ -90,13 +90,13 @@ public class SupportFragmentLightCycleDispatcherTest {
     }
 
     @Test
-    public void shouldNotifyOnRestoreInstanceState() {
+    public void shouldNotifyOnActivityCreated() {
         final Bundle bundle = Bundle.EMPTY;
 
-        dispatcher.onRestoreInstanceState(fragment, bundle);
+        dispatcher.onActivityCreated(fragment, bundle);
 
-        verify(lifeCycleComponent1).onRestoreInstanceState(fragment, bundle);
-        verify(lifeCycleComponent2).onRestoreInstanceState(fragment, bundle);
+        verify(lifeCycleComponent1).onActivityCreated(fragment, bundle);
+        verify(lifeCycleComponent2).onActivityCreated(fragment, bundle);
     }
 
     @Test

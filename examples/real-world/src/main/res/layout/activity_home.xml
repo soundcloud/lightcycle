@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/hello"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="center"
-        android:textSize="30sp"
-        android:textColor="@color/soundcloud"/>
+        android:textColor="@color/soundcloud"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_centerInParent="true"
         android:gravity="center"
-        android:textSize="30sp"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/description"
-        android:layout_below="@id/title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
         android:gravity="center"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@color/colorPrimaryDark" />
 
+    <fragment
+        android:id="@+id/my_fragment"
+        android:name="com.soundcloud.lightcycle.sample.real_world.LicenseFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

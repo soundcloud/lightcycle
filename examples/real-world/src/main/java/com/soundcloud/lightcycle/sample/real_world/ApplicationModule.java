@@ -5,7 +5,7 @@ import dagger.Provides;
 
 import java.util.Calendar;
 
-@Module(injects = HomeActivity.class)
+@Module(injects = {HomeActivity.class, LicenseFragment.class})
 class ApplicationModule {
 
     @Provides Calendar provideCalendar() {
