@@ -124,6 +124,11 @@ public final class LightCycles {
             }
 
             @Override
+            public void onActivityCreated(Target fragment, Bundle bundle) {
+                lightCycle.onActivityCreated(fragment, bundle);
+            }
+
+            @Override
             public void onStart(Target fragment) {
                 lightCycle.onStart(fragment);
             }
@@ -151,11 +156,6 @@ public final class LightCycles {
             @Override
             public void onSaveInstanceState(Target fragment, Bundle bundle) {
                 lightCycle.onSaveInstanceState(fragment, bundle);
-            }
-
-            @Override
-            public void onRestoreInstanceState(Target fragment, Bundle bundle) {
-                lightCycle.onRestoreInstanceState(fragment, bundle);
             }
 
             @Override
@@ -195,6 +195,11 @@ public final class LightCycles {
             }
 
             @Override
+            public void onActivityCreated(Target fragment, Bundle bundle) {
+                lightCycle.onActivityCreated(fragment, bundle);
+            }
+
+            @Override
             public void onStart(Target fragment) {
                 lightCycle.onStart(fragment);
             }
@@ -222,11 +227,6 @@ public final class LightCycles {
             @Override
             public void onSaveInstanceState(Target fragment, Bundle bundle) {
                 lightCycle.onSaveInstanceState(fragment, bundle);
-            }
-
-            @Override
-            public void onRestoreInstanceState(Target fragment, Bundle bundle) {
-                lightCycle.onRestoreInstanceState(fragment, bundle);
             }
 
             @Override

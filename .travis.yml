@@ -10,7 +10,7 @@ android:
     - platform-tools
     - extra-android-m2repository
   licenses:
-    - android-sdk-license-5be876d5
+    - android-sdk-license-.*
 
 jdk:
   - oraclejdk7

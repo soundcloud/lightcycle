@@ -17,6 +17,9 @@ public class DefaultSupportFragmentLightCycle<T extends Fragment> implements Sup
     public void onViewCreated(T fragment, View view, Bundle savedInstanceState) { /* no-op */ }
 
     @Override
+    public void onActivityCreated(T fragment, Bundle bundle) { /* no-op */ }
+
+    @Override
     public void onStart(T fragment) { /* no-op */ }
 
     @Override
@@ -35,9 +38,6 @@ public class DefaultSupportFragmentLightCycle<T extends Fragment> implements Sup
 
     @Override
     public void onSaveInstanceState(T fragment, Bundle bundle) { /* no-op */ }
-
-    @Override
-    public void onRestoreInstanceState(T fragment, Bundle bundle) { /* no-op */ }
 
     @Override
     public void onDestroyView(T fragment) { /* no-op */ }

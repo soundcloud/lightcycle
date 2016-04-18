@@ -20,6 +20,9 @@ public class DefaultFragmentLightCycle<T extends Fragment> implements FragmentLi
     public void onViewCreated(T fragment, View view, Bundle savedInstanceState) { /* no-op */ }
 
     @Override
+    public void onActivityCreated(T fragment, Bundle bundle) { /* no-op */ }
+
+    @Override
     public void onStart(T fragment) { /* no-op */ }
 
     @Override
@@ -38,9 +41,6 @@ public class DefaultFragmentLightCycle<T extends Fragment> implements FragmentLi
 
     @Override
     public void onSaveInstanceState(T fragment, Bundle bundle) { /* no-op */ }
-
-    @Override
-    public void onRestoreInstanceState(T fragment, Bundle bundle) { /* no-op */ }
 
     @Override
     public void onDestroyView(T fragment) { /* no-op */ }

@@ -80,6 +80,16 @@ public class FragmentLightCycleDispatcherTest {
     }
 
     @Test
+    public void shouldNotifyOnActivityCreated() {
+        final Bundle bundle = Bundle.EMPTY;
+
+        dispatcher.onActivityCreated(fragment, bundle);
+
+        verify(lifeCycleComponent1).onActivityCreated(fragment, bundle);
+        verify(lifeCycleComponent2).onActivityCreated(fragment, bundle);
+    }
+
+    @Test
     public void shouldNotifyOnSaveInstanceState() {
         final Bundle bundle = Bundle.EMPTY;
 
@@ -87,16 +97,6 @@ public class FragmentLightCycleDispatcherTest {
 
         verify(lifeCycleComponent1).onSaveInstanceState(fragment, bundle);
         verify(lifeCycleComponent2).onSaveInstanceState(fragment, bundle);
-    }
-
-    @Test
-    public void shouldNotifyOnRestoreInstanceState() {
-        final Bundle bundle = Bundle.EMPTY;
-
-        dispatcher.onRestoreInstanceState(fragment, bundle);
-
-        verify(lifeCycleComponent1).onRestoreInstanceState(fragment, bundle);
-        verify(lifeCycleComponent2).onRestoreInstanceState(fragment, bundle);
     }
 
     @Test
