@@ -54,15 +54,9 @@ afterEvaluate { project ->
 
                 repository(url: getReleaseRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-                    if (System.getProperty("http.proxyHost") != null && System.getProperty("http.proxyPort") != null) {
-                        proxy(host: System.getProperty("http.proxyHost"), port: System.getProperty("http.proxyPort").toInteger(), type: 'http')
-                    }
                 }
                 snapshotRepository(url: getSnapshotRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-                    if (System.getProperty("http.proxyHost") != null && System.getProperty("http.proxyPort") != null) {
-                        proxy(host: System.getProperty("http.proxyHost"), port: System.getProperty("http.proxyPort").toInteger(), type: 'http')
-                    }
                 }
 
                 pom.project {
