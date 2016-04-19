@@ -116,6 +116,19 @@ public class LightCycleProcessorTest {
             "    }",
             "}");
 
+    private static final String LC_PARAMETERIZED_DISPATCHER_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "public final class ValidTestParameterizedDispatcher$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestParameterizedDispatcher target) {",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<android.app.Fragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.FragmentLightCycle<android.app.Fragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
     @Test
     public void shouldGenerateInjectorForFragment() {
         JavaFileObject expectedSource = forSourceString("com.test.ValidTestFragment$LightCycleBinder", FRAGMENT_BINDER_SRC);
@@ -191,6 +204,16 @@ public class LightCycleProcessorTest {
         JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleFragment$LightCycleBinder", LC_FRAGMENT_BINDER_SRC);
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleFragment.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForParameterizeDispatcher() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestParameterizedDispatcher$LightCycleBinder", LC_PARAMETERIZED_DISPATCHER_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestParameterizedDispatcher.java"))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
                 .and().generatesSources(expectedSource);
