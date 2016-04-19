@@ -99,10 +99,11 @@ public class LightCycleProcessor extends AbstractProcessor {
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
                 qualifiedClassName, elements.toArray(new Element[elements.size()]));
 
+        ClassName hostElementName = ClassName.bestGuess(hostElement.getSimpleName().toString());
         MethodSpec bindMethod = MethodSpec.methodBuilder(METHOD_BIND_NAME)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(void.class)
-                .addParameter(ClassName.get(hostElement.asType()), METHOD_BIND_ARGUMENT_NAME)
+                .addParameter(hostElementName, METHOD_BIND_ARGUMENT_NAME)
                 .addCode(generateBindMethod(erasedTargetNames, hostElement, elements))
                 .build();
 
