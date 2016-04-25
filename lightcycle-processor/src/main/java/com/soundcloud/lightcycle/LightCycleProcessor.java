@@ -1,9 +1,9 @@
 package com.soundcloud.lightcycle;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -99,10 +99,11 @@ public class LightCycleProcessor extends AbstractProcessor {
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
                 qualifiedClassName, elements.toArray(new Element[elements.size()]));
 
+        ClassName hostElementName = ClassName.bestGuess(hostElement.getSimpleName().toString());
         MethodSpec bindMethod = MethodSpec.methodBuilder(METHOD_BIND_NAME)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(void.class)
-                .addParameter(TypeName.get(hostElement.asType()), METHOD_BIND_ARGUMENT_NAME)
+                .addParameter(hostElementName, METHOD_BIND_ARGUMENT_NAME)
                 .addCode(generateBindMethod(erasedTargetNames, hostElement, elements))
                 .build();
 
