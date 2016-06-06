@@ -102,6 +102,18 @@ public class ActivityLightCycleDispatcherTest {
     }
 
     @Test
+    public void dispatchOnActivityResult() {
+        int requestCode = 1;
+        int resultCode = 2;
+        Intent data = new Intent();
+
+        dispatcher.onActivityResult(requestCode, resultCode, data);
+
+        verify(lightCycleComponent1).onActivityResult(requestCode, resultCode, data);
+        verify(lightCycleComponent2).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Test
     public void dispatchOnDestroy() {
         dispatcher.onDestroy(activity);
 

@@ -99,6 +99,11 @@ public final class LightCycles {
             }
 
             @Override
+            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                lightCycle.onActivityResult(requestCode, resultCode, data);
+            }
+
+            @Override
             public void onDestroy(Target activity) {
                 lightCycle.onDestroy(activity);
             }
