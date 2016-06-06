@@ -79,6 +79,12 @@ public abstract class LightCycleActionBarActivity<ActivityType extends LightCycl
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        lightCycleDispatcher.onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
     protected void onDestroy() {
         lightCycleDispatcher.onDestroy(activity());
         super.onDestroy();

@@ -99,6 +99,11 @@ public final class LightCycles {
             }
 
             @Override
+            public void onWindowFocusChanged(boolean hasFocus) {
+                lightCycle.onWindowFocusChanged(hasFocus);
+            }
+
+            @Override
             public void onDestroy(Target activity) {
                 lightCycle.onDestroy(activity);
             }

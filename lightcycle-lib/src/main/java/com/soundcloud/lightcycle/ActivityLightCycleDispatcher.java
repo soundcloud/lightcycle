@@ -90,6 +90,13 @@ public class ActivityLightCycleDispatcher<T extends Activity>
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        for (ActivityLightCycle<T> component : activityLightCycles) {
+            component.onWindowFocusChanged(hasFocus);
+        }
+    }
+
+    @Override
     public void onDestroy(T activity) {
         for (ActivityLightCycle<T> component : activityLightCycles) {
             component.onDestroy(activity);
