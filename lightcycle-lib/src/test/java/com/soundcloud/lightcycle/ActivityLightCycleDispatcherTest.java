@@ -12,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -109,6 +110,16 @@ public class ActivityLightCycleDispatcherTest {
 
         verify(lightCycleComponent1).onRestoreInstanceState(activity, bundle);
         verify(lightCycleComponent2).onRestoreInstanceState(activity, bundle);
+    }
+
+    @Test
+    public void dispatchOnConfigurationChanged() {
+        final Configuration configuration = new Configuration();
+
+        dispatcher.onConfigurationChanged(activity, configuration);
+
+        verify(lightCycleComponent1).onConfigurationChanged(activity, configuration);
+        verify(lightCycleComponent2).onConfigurationChanged(activity, configuration);
     }
 
     @Test

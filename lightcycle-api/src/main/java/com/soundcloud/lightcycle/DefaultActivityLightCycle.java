@@ -2,6 +2,7 @@ package com.soundcloud.lightcycle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -39,6 +40,11 @@ public class DefaultActivityLightCycle<T extends Activity> implements ActivityLi
 
     @Override
     public void onRestoreInstanceState(T activity, Bundle bundle) { /* no-op */ }
+
+    @Override
+    public void onConfigurationChanged(T activity, Configuration newConfig) {
+        /* no-op */
+    }
 
     @Override
     public void onDestroy(T activity) { /* no-op */ }

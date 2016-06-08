@@ -1,6 +1,7 @@
 package com.soundcloud.lightcycle;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -82,6 +83,12 @@ public abstract class LightCycleAppCompatActivity<ActivityType extends LightCycl
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         lightCycleDispatcher.onRestoreInstanceState(activity(), savedInstanceState);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        lightCycleDispatcher.onConfigurationChanged(activity(), newConfig);
     }
 
     @Override

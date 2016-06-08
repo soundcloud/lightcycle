@@ -2,6 +2,7 @@ package com.soundcloud.lightcycle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -101,6 +102,11 @@ public final class LightCycles {
             @Override
             public void onRestoreInstanceState(Target activity, Bundle bundle) {
                 lightCycle.onRestoreInstanceState(activity, bundle);
+            }
+
+            @Override
+            public void onConfigurationChanged(Target activity, Configuration newConfig) {
+                lightCycle.onConfigurationChanged(activity, newConfig);
             }
 
             @Override

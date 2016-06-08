@@ -2,6 +2,7 @@ package com.soundcloud.lightcycle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
@@ -93,6 +94,13 @@ public class ActivityLightCycleDispatcher<T extends Activity>
     public void onRestoreInstanceState(T activity, Bundle bundle) {
         for (ActivityLightCycle<T> component : activityLightCycles) {
             component.onRestoreInstanceState(activity, bundle);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(T activity, Configuration newConfig) {
+        for (ActivityLightCycle<T> component : activityLightCycles) {
+            component.onConfigurationChanged(activity, newConfig);
         }
     }
 
