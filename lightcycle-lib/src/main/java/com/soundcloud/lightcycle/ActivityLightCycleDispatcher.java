@@ -31,6 +31,13 @@ public class ActivityLightCycleDispatcher<T extends Activity>
     }
 
     @Override
+    public void onPostCreate(T activity, Bundle bundle) {
+        for (ActivityLightCycle<T> component : activityLightCycles) {
+            component.onPostCreate(activity, bundle);
+        }
+    }
+
+    @Override
     public void onNewIntent(T activity, Intent intent) {
         for (ActivityLightCycle<T> component : activityLightCycles) {
             component.onNewIntent(activity, intent);

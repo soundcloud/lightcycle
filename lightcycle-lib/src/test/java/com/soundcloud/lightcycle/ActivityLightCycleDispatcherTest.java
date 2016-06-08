@@ -40,6 +40,16 @@ public class ActivityLightCycleDispatcherTest {
     }
 
     @Test
+    public void dispatchOnPostCreate() {
+        final Bundle bundle = Bundle.EMPTY;
+
+        dispatcher.onPostCreate(activity, bundle);
+
+        verify(lightCycleComponent1).onPostCreate(activity, bundle);
+        verify(lightCycleComponent2).onPostCreate(activity, bundle);
+    }
+
+    @Test
     public void dispatchOnNewIntent() {
         final Intent intent = mock(Intent.class);
 

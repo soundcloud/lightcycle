@@ -2,6 +2,7 @@ package com.soundcloud.lightcycle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -26,6 +27,12 @@ public abstract class LightCycleAppCompatActivity<ActivityType extends LightCycl
         setActivityContentView();
         LightCycles.bind(this);
         lightCycleDispatcher.onCreate(activity(), savedInstanceState);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        lightCycleDispatcher.onPostCreate(activity(), savedInstanceState);
     }
 
     protected abstract void setActivityContentView();

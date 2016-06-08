@@ -59,6 +59,11 @@ public final class LightCycles {
             }
 
             @Override
+            public void onPostCreate(Target activity, Bundle bundle) {
+                lightCycle.onPostCreate(activity, bundle);
+            }
+
+            @Override
             public void onNewIntent(Target activity, Intent intent) {
                 lightCycle.onNewIntent(activity, intent);
             }

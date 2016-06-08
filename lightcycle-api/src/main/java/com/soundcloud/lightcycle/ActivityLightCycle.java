@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 public interface ActivityLightCycle<T extends Activity> {
     void onCreate(T activity, Bundle bundle);
+    void onPostCreate(T activity, Bundle bundle);
     void onNewIntent(T activity, Intent intent);
     void onStart(T activity);
     void onResume(T activity);

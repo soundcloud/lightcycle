@@ -10,6 +10,11 @@ public class DefaultActivityLightCycle<T extends Activity> implements ActivityLi
     public void onCreate(T activity, Bundle bundle) { /* no-op */ }
 
     @Override
+    public void onPostCreate(T activity, Bundle bundle) {
+        /* no-op */
+    }
+
+    @Override
     public void onNewIntent(T activity, Intent intent) { /* no-op */ }
 
     @Override
