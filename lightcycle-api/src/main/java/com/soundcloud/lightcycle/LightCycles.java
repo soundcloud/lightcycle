@@ -99,8 +99,8 @@ public final class LightCycles {
             }
 
             @Override
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                lightCycle.onActivityResult(requestCode, resultCode, data);
+            public void onActivityResult(Target activity, int requestCode, int resultCode, Intent data) {
+                lightCycle.onActivityResult(activity, requestCode, resultCode, data);
             }
 
             @Override

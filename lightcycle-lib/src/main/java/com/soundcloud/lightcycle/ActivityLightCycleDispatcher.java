@@ -90,9 +90,9 @@ public class ActivityLightCycleDispatcher<T extends Activity>
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(T activity, int requestCode, int resultCode, Intent data) {
         for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onActivityResult(requestCode, resultCode, data);
+            component.onActivityResult(activity, requestCode, resultCode, data);
         }
     }
 
