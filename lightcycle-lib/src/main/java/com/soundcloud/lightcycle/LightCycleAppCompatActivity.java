@@ -80,7 +80,7 @@ public abstract class LightCycleAppCompatActivity<ActivityType extends LightCycl
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        lightCycleDispatcher.onWindowFocusChanged(hasFocus);
+        lightCycleDispatcher.onWindowFocusChanged(activity(), hasFocus);
     }
 
     @Override

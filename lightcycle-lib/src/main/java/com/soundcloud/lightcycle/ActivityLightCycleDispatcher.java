@@ -90,9 +90,9 @@ public class ActivityLightCycleDispatcher<T extends Activity>
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
+    public void onWindowFocusChanged(T activity, boolean hasFocus) {
         for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onWindowFocusChanged(hasFocus);
+            component.onWindowFocusChanged(activity, hasFocus);
         }
     }
 

@@ -99,8 +99,8 @@ public final class LightCycles {
             }
 
             @Override
-            public void onWindowFocusChanged(boolean hasFocus) {
-                lightCycle.onWindowFocusChanged(hasFocus);
+            public void onWindowFocusChanged(Target activity, boolean hasFocus) {
+                lightCycle.onWindowFocusChanged(activity, hasFocus);
             }
 
             @Override

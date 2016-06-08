@@ -105,10 +105,10 @@ public class ActivityLightCycleDispatcherTest {
     public void dispatchOnWindowFocusChanged() {
         boolean hasFocus = true;
 
-        dispatcher.onWindowFocusChanged(hasFocus);
+        dispatcher.onWindowFocusChanged(activity, hasFocus);
 
-        verify(lightCycleComponent1).onWindowFocusChanged(hasFocus);
-        verify(lightCycleComponent2).onWindowFocusChanged(hasFocus);
+        verify(lightCycleComponent1).onWindowFocusChanged(activity, hasFocus);
+        verify(lightCycleComponent2).onWindowFocusChanged(activity, hasFocus);
     }
 
     @Test

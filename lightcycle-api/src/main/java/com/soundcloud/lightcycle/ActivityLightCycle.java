@@ -15,6 +15,6 @@ public interface ActivityLightCycle<T extends Activity> {
     void onStop(T activity);
     void onSaveInstanceState(T activity, Bundle bundle);
     void onRestoreInstanceState(T activity, Bundle bundle);
-    void onWindowFocusChanged(boolean hasFocus);
+    void onWindowFocusChanged(T activity, boolean hasFocus);
     void onDestroy(T activity);
 }

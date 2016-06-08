@@ -36,7 +36,7 @@ public class DefaultActivityLightCycle<T extends Activity> implements ActivityLi
     public void onRestoreInstanceState(T activity, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
+    public void onWindowFocusChanged(T activity, boolean hasFocus) {
         /* no-op */
     }
 
