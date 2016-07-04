@@ -114,7 +114,7 @@ The following base activities are provided so far:
 #### Adding LightCycle to your own base `Activity` or `Fragment`
 
 To add LightCycles to your `MyBaseActivity`, your `Activity` must: 
-- Implement the `LightCycleDispatcher` interface. _Note: The processor needs to know the exact type beeing dispatched, so if you base activity is templated then the activities inhering from it must explicitaly `implements LightCycleDispatcher<ActivityLightCycle<YourActivity>>`_
+- Implement the `LightCycleDispatcher` interface. _Note: The processor needs to know the exact type being dispatched, so if your base activity is templated then the activities inheriting from it must explicitly `implements LightCycleDispatcher<ActivityLightCycle<YourActivity>>`_
 - Dispatch all the lifecycle methods
 - Bind fields annotated `@LightCycle` with `LightCycles.bind(this)`
 
