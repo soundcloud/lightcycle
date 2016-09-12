@@ -49,8 +49,8 @@ A LightCycle doesn't know about other LightCycles. There is no guarantee for ord
 
 ## Examples
 
-- [basic](examples/basic)
-- ["real world"](examples/real-world)
+- [basic](https://github.com/soundcloud/lightcycle/tree/master/examples/basic)
+- ["real world"](https://github.com/soundcloud/lightcycle/tree/master/examples/real-world)
 
 ## Documentation 
 
