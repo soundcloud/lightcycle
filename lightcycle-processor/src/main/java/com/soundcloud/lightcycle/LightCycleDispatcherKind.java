@@ -47,6 +47,17 @@ enum LightCycleDispatcherKind {
             return typeArgumentAsString("SupportFragmentLightCycle", dispatchedType);
         }
     },
+    DEFAULT_SUPPORT_DIALOG_FRAGMENT {
+        @Override
+        boolean matches(Name name) {
+            return name.contentEquals("LightCycleSupportDialogFragment");
+        }
+
+        @Override
+        String toTypeName(String dispatchedType) {
+            return typeArgumentAsString("SupportFragmentLightCycle", dispatchedType);
+        }
+    },
     BASE_ACTIVITY_DISPATCHER {
         @Override
         boolean matches(Name name) {
