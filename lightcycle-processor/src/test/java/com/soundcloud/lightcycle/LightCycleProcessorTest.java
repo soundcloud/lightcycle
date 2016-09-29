@@ -1,14 +1,15 @@
 package com.soundcloud.lightcycle;
 
-import static com.google.testing.compile.JavaFileObjects.forSourceString;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-
 import com.google.common.base.Joiner;
 import com.google.testing.compile.JavaFileObjects;
+
 import org.junit.Test;
 import org.truth0.Truth;
 
 import javax.tools.JavaFileObject;
+
+import static com.google.testing.compile.JavaFileObjects.forSourceString;
+import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 public class LightCycleProcessorTest {
 
@@ -50,6 +51,20 @@ public class LightCycleProcessorTest {
             "        target.bind(lightCycle2$Lifted);",
             "    }",
             "}");
+
+    private static final String LC_SUPPORT_DIALOG_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
+            "package com.test;",
+            "",
+            "public final class ValidTestLightCycleSupportDialogFragment$LightCycleBinder {",
+            "",
+            "    public static void bind(ValidTestLightCycleSupportDialogFragment target) {",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportDialogFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+            "        target.bind(lightCycle1$Lifted);",
+            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportDialogFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+            "        target.bind(lightCycle2$Lifted);",
+            "    }",
+            "}");
+
 
     private static final String LC_SUPPORT_FRAGMENT_BINDER_SRC = Joiner.on("\n").join(
             "package com.test;",
@@ -194,6 +209,16 @@ public class LightCycleProcessorTest {
         JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleSupportFragment$LightCycleBinder", LC_SUPPORT_FRAGMENT_BINDER_SRC);
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleSupportFragment.java"))
+                .processedWith(new LightCycleProcessor())
+                .compilesWithoutError()
+                .and().generatesSources(expectedSource);
+    }
+
+    @Test
+    public void shouldGenerateInjectorForLightCycleSupportDialogFragment() {
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleSupportDialogFragment$LightCycleBinder", LC_SUPPORT_DIALOG_FRAGMENT_BINDER_SRC);
+        Truth.ASSERT.about(javaSource())
+                .that(JavaFileObjects.forResource("com/test/ValidTestLightCycleSupportDialogFragment.java"))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
                 .and().generatesSources(expectedSource);
