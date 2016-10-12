@@ -23,7 +23,7 @@ allprojects {
 }
 
 ext {
-  minSdkVersion = 8
+  minSdkVersion = 11
   targetSdkVersion = 23
   compileSdkVersion = 23
   buildToolsVersion = '23.0.1'
@@ -69,17 +69,5 @@ subprojects { project ->
       xml.enabled = false
       html.enabled = true
     }
-  }
-}
-
-// configure Java projects
-[":lightcycle-api", ":lightcycle-processor"].each { name ->
-  project(name) {
-
-    apply plugin: 'provided-base'
-    apply plugin: 'java'
-
-    sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
-    targetCompatibility = rootProject.ext.targetCompatibilityVersion
   }
 }

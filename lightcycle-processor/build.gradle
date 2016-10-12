@@ -1,7 +1,11 @@
+apply plugin: 'java'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
 dependencies {
-  compile project(':lightcycle-api')
+  compile project(':lightcycle-lib')
   compile deps.javapoet
 
   testCompile deps.android

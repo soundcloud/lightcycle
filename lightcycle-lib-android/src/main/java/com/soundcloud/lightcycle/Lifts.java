@@ -3,53 +3,10 @@ package com.soundcloud.lightcycle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.lang.reflect.Method;
-
-public final class LightCycles {
-    private static final String TAG = LightCycles.class.getSimpleName();
-    private static final String ANDROID_PREFIX = "android.";
-    private static final String JAVA_PREFIX = "java.";
-
-    @SuppressWarnings("PMD.EmptyCatchBlock")
-    public static void bind(LightCycleDispatcher<?> target) {
-        Method bindingMethod;
-        try {
-            bindingMethod = findBinderForClass(target.getClass());
-            if (bindingMethod != null) {
-                bindingMethod.invoke(null, target);
-            }
-        } catch (Exception e) {
-            // no binder found, so ignore.
-        }
-    }
-
-    private static String getInjectorClassName(String clsName) {
-        return clsName + "$LightCycleBinder";
-    }
-
-    private static Method findBinderForClass(Class<?> cls)
-            throws IllegalAccessException, InstantiationException, NoSuchMethodException {
-        Method lightCycleInjectionMethod;
-        String clsName = cls.getName();
-        if (clsName.startsWith(ANDROID_PREFIX) || clsName.startsWith(JAVA_PREFIX)) {
-            Log.d(TAG, "MISS: Reached framework class. Abandoning search.");
-            return null;
-        }
-        try {
-            Class<?> binder = Class.forName(getInjectorClassName(clsName));
-            lightCycleInjectionMethod = binder.getMethod("bind", cls);
-            Log.d(TAG, "HIT: Loaded LightCycle binder class.");
-        } catch (ClassNotFoundException e) {
-            Log.d(TAG, "Not found. Trying superclass " + cls.getSuperclass().getName());
-            lightCycleInjectionMethod = findBinderForClass(cls.getSuperclass());
-        }
-        return lightCycleInjectionMethod;
-    }
-
+public class Lifts {
     public static <Source extends Activity, Target extends Source> ActivityLightCycle<Target> lift(final ActivityLightCycle<Source> lightCycle) {
         return new ActivityLightCycle<Target>() {
 

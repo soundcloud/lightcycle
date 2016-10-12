@@ -2,17 +2,18 @@ package com.soundcloud.lightcycle;
 
 import com.squareup.javapoet.CodeBlock;
 
+import java.util.List;
+
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
-import java.util.List;
 
 abstract class LightCycleBinder {
     private static final String METHOD_BIND_NAME = "bind";
     private static final String METHOD_BIND_ARGUMENT_NAME = "target";
-    private static final String METHOD_LIFT_NAME = LightCycleProcessor.LIB_PACKAGE + ".LightCycles.lift";
+    private static final String METHOD_LIFT_NAME = LightCycleProcessor.LIB_PACKAGE + ".Lifts.lift";
 
     private static final CodeBlock EMPTY_BLOCK = CodeBlock.builder().build();
 

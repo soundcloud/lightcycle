@@ -1,46 +1,5 @@
-apply plugin: 'com.android.library'
+apply plugin: 'java'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
-android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
-
-  defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
-
-    versionCode 1
-    versionName "1.0"
-  }
-
-  buildTypes {
-    release {
-      consumerProguardFiles 'proguard-rules.txt'
-    }
-  }
-
-  compileOptions {
-    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-    targetCompatibility rootProject.ext.targetCompatibilityVersion
-  }
-
-  lintOptions {
-    textReport true
-    textOutput "stdout"
-  }
-
-  testOptions {
-    unitTests.returnDefaultValues = true
-  }
-}
-
-dependencies {
-  compile project(':lightcycle-api')
-  provided deps.support_v4
-  compile deps.appcompat_v7
-  compile deps.preference_v7
-  compile deps.support_annotations
-
-  testCompile deps.mockito
-  testCompile deps.junit
-}
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion

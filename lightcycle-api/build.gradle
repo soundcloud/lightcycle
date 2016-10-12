@@ -1,6 +1,0 @@
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
-
-dependencies {
-  provided deps.android
-  provided deps.support_v4
-}
