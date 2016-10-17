@@ -165,7 +165,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 ext.lightCycleVersion=<LATEST_VERSION>
 
 dependencies {
-  compile 'com.soundcloud.lightcycle:lightcycle-lib:$lightCycleVersion'
-  apt 'com.soundcloud.lightcycle:lightcycle-processor:$lightCycleVersion'
+  compile "com.soundcloud.lightcycle:lightcycle-lib:$lightCycleVersion"
+  apt "com.soundcloud.lightcycle:lightcycle-processor:$lightCycleVersion"
 }
 ```
