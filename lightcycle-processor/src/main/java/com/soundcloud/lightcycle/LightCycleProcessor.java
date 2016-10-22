@@ -37,9 +37,10 @@ import javax.tools.JavaFileObject;
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class LightCycleProcessor extends AbstractProcessor {
 
-    static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
+    private static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
     private static final String ANNOTATION_CLASS = LIB_PACKAGE + ".LightCycle";
     private static final String CLASS_BINDER_NAME = "LightCycleBinder";
+    private static final String CLASS_DISPATCHER_NAME = "LightCycleDispatcher";
     private static final String METHOD_BIND_NAME = "bind";
     private static final String METHOD_BIND_ARGUMENT_NAME = "target";
 
@@ -158,10 +159,8 @@ public class LightCycleProcessor extends AbstractProcessor {
         }
 
         for (TypeMirror typeMirror : typeUtils.directSupertypes(elementType)) {
-            for (LightCycleDispatcherKind dispatcherKind : LightCycleDispatcherKind.values()) {
-                if (dispatcherKind.matches(typeUtils.asElement(typeMirror).getSimpleName())) {
-                    return LightCycleBinder.forFields(((DeclaredType) typeMirror));
-                }
+            if (typeUtils.asElement(typeMirror).getSimpleName().contentEquals(CLASS_DISPATCHER_NAME)) {
+                return LightCycleBinder.forFields(((DeclaredType) typeMirror));
             }
         }
 
