@@ -68,7 +68,7 @@ public abstract class LightCyclePreferenceFragmentCompat<FragmentType extends Fr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lifeCycleDispatcher.onOptionsItemSelected(fragment(), item);
+        return lifeCycleDispatcher.onOptionsItemSelected(fragment(), item) || super.onOptionsItemSelected(item);
     }
 
     @Override

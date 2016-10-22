@@ -69,7 +69,7 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lifeCycleDispatcher.onOptionsItemSelected(fragment(), item);
+        return lifeCycleDispatcher.onOptionsItemSelected(fragment(), item) || super.onOptionsItemSelected(item);
     }
 
     @Override

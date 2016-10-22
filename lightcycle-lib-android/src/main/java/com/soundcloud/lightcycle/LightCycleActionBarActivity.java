@@ -45,7 +45,7 @@ public abstract class LightCycleActionBarActivity<ActivityType extends LightCycl
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lightCycleDispatcher.onOptionsItemSelected(activity(), item);
+        return lightCycleDispatcher.onOptionsItemSelected(activity(), item) || super.onOptionsItemSelected(item);
     }
 
     @Override

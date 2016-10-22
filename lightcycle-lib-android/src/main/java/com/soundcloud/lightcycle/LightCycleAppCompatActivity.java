@@ -45,7 +45,7 @@ public abstract class LightCycleAppCompatActivity<ActivityType extends Activity>
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lightCycleDispatcher.onOptionsItemSelected(activity(), item);
+        return lightCycleDispatcher.onOptionsItemSelected(activity(), item) || super.onOptionsItemSelected(item);
     }
 
     @Override
