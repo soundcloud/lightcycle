@@ -20,8 +20,8 @@ public class ValidTestFragment extends Fragment implements LightCycleDispatcher<
 
 }
 
-class LightCycle1 extends DefaultFragmentLightCycle<Fragment> {
+class LightCycle1 extends DefaultFragmentLightCycle<ValidTestFragment> {
 }
 
-class LightCycle2 extends DefaultFragmentLightCycle<Fragment> {
+class LightCycle2 extends DefaultFragmentLightCycle<ValidTestFragment> {
 }

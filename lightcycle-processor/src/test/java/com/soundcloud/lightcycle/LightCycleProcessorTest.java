@@ -19,10 +19,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestFragment target) {",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -32,10 +30,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestLightCycleFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestLightCycleFragment target) {",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestLightCycleFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<com.test.ValidTestLightCycleFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -45,10 +41,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestSupportFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestSupportFragment target) {",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestSupportFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -58,10 +52,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestLightCycleSupportDialogFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestLightCycleSupportDialogFragment target) {",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportDialogFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportDialogFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -72,10 +64,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestLightCycleSupportFragment$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestLightCycleSupportFragment target) {",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportFragment> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.SupportFragmentLightCycle<com.test.ValidTestLightCycleSupportFragment> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -86,10 +76,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -100,8 +88,7 @@ public class LightCycleProcessorTest {
             "",
             "    public static void bind(ValidTestHierarchyActivity target) {",
             "        com.test.BaseActivity$LightCycleBinder.bind(target);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.BaseActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -111,10 +98,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestLightCycleAppCompatActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestLightCycleAppCompatActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -124,10 +109,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestLightCycleActionBarActivity$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestLightCycleActionBarActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -137,10 +120,8 @@ public class LightCycleProcessorTest {
             "public final class ValidTestParameterizedDispatcher$LightCycleBinder {",
             "",
             "    public static void bind(ValidTestParameterizedDispatcher target) {",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<android.app.Fragment> lightCycle1$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.FragmentLightCycle<android.app.Fragment> lightCycle2$Lifted = com.soundcloud.lightcycle.Lifts.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
+            "        target.bind(target.lightCycle1);",
+            "        target.bind(target.lightCycle2);",
             "    }",
             "}");
 
@@ -257,14 +238,6 @@ public class LightCycleProcessorTest {
     public void shouldThrowExceptionWhenLightCycleFieldIsNotALightCycle() {
         Truth.ASSERT.about(javaSource())
                 .that(JavaFileObjects.forResource("com/test/FieldsNotLightCyclesTestFragment.java"))
-                .processedWith(new LightCycleProcessor())
-                .failsToCompile();
-    }
-
-    @Test
-    public void missingGenericTestActivity() {
-        Truth.ASSERT.about(javaSource())
-                .that(JavaFileObjects.forResource("com/test/MissingGenericTestActivity.java"))
                 .processedWith(new LightCycleProcessor())
                 .failsToCompile();
     }

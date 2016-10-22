@@ -1,11 +1,12 @@
 package com.soundcloud.lightcycle;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public abstract class LightCycleAppCompatActivity<ActivityType extends LightCycleAppCompatActivity>
+public abstract class LightCycleAppCompatActivity<ActivityType extends Activity>
         extends AppCompatActivity
         implements LightCycleDispatcher<ActivityLightCycle<ActivityType>> {
 

@@ -13,7 +13,6 @@ import javax.tools.Diagnostic;
 abstract class LightCycleBinder {
     private static final String METHOD_BIND_NAME = "bind";
     private static final String METHOD_BIND_ARGUMENT_NAME = "target";
-    private static final String METHOD_LIFT_NAME = LightCycleProcessor.LIB_PACKAGE + ".Lifts.lift";
 
     private static final CodeBlock EMPTY_BLOCK = CodeBlock.builder().build();
 
@@ -32,31 +31,23 @@ abstract class LightCycleBinder {
         }
     };
 
-    static LightCycleBinder forFields(final LightCycleDispatcherKind dispatcherKind, final DeclaredType type) {
+    static LightCycleBinder forFields(final DeclaredType type) {
         return new LightCycleBinder() {
             @Override
             CodeBlock generateBind(Messager messager, Element element) {
-                final String liftedName = element.getSimpleName() + "$Lifted";
-
                 final List<? extends TypeMirror> typeArguments = type.getTypeArguments();
                 if (typeArguments.size() != 1) {
                     error(messager, typeArguments);
                     return EMPTY_BLOCK;
                 } else {
-                    return generateLiftAndBind(element, liftedName, typeArguments);
+                    return generateBind(element);
                 }
             }
 
-            private CodeBlock generateLiftAndBind(Element element, String liftedName, List<? extends TypeMirror> typeArguments) {
-                final String lightCycleLiftedType = dispatcherKind.toTypeName(typeArguments.get(0).toString());
+            private CodeBlock generateBind(Element element) {
                 return CodeBlock.builder()
-                        .addStatement("final $N $N = $N($N.$N)",
-                                lightCycleLiftedType,
-                                liftedName,
-                                METHOD_LIFT_NAME,
-                                METHOD_BIND_ARGUMENT_NAME,
-                                element.getSimpleName())
-                        .addStatement("$N.$N($N)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME, liftedName)
+                        .addStatement("$N.$N($N.$N)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME,
+                                METHOD_BIND_ARGUMENT_NAME, element.getSimpleName())
                         .build();
             }
 

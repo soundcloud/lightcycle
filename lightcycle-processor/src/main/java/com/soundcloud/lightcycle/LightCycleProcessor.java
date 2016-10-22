@@ -6,6 +6,15 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -23,14 +32,6 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @SupportedAnnotationTypes("com.soundcloud.lightcycle.LightCycle")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
@@ -159,7 +160,7 @@ public class LightCycleProcessor extends AbstractProcessor {
         for (TypeMirror typeMirror : typeUtils.directSupertypes(elementType)) {
             for (LightCycleDispatcherKind dispatcherKind : LightCycleDispatcherKind.values()) {
                 if (dispatcherKind.matches(typeUtils.asElement(typeMirror).getSimpleName())) {
-                    return LightCycleBinder.forFields(dispatcherKind, ((DeclaredType) typeMirror));
+                    return LightCycleBinder.forFields(((DeclaredType) typeMirror));
                 }
             }
         }
