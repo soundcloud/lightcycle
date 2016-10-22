@@ -1,5 +1,5 @@
 include ':lightcycle-lib'
-include ':lightcycle-lib-android'
+include ':lightcycle-android-lib'
 include ':lightcycle-processor'
 include ':examples:race'
 include ':examples:basic'

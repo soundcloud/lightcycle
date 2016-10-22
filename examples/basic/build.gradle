@@ -33,8 +33,8 @@ android {
 }
 
 dependencies {
-  apt project(":lightcycle-processor")
+  apt project(':lightcycle-processor')
 
-  compile project(":lightcycle-lib-android")
+  compile project(':lightcycle-android-lib')
   compile deps.appcompat_v7
 }
