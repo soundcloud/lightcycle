@@ -3,7 +3,6 @@ package com.soundcloud.lightcycle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import java.util.HashSet;
@@ -17,14 +16,13 @@ public class ActivityLightCycleDispatcher<T extends Activity>
         this.activityLightCycles = new HashSet<>();
     }
 
-
     @Override
     public void bind(ActivityLightCycle<T> lightCycle) {
         this.activityLightCycles.add(lightCycle);
     }
 
     @Override
-    public void onCreate(T activity, @Nullable Bundle bundle) {
+    public void onCreate(T activity, Bundle bundle) {
         for (ActivityLightCycle<T> component : activityLightCycles) {
             component.onCreate(activity, bundle);
         }

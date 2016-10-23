@@ -37,8 +37,6 @@ android {
 dependencies {
   compile project(':lightcycle-lib')
   provided deps.support_v4
-  compile deps.appcompat_v7
-  compile deps.preference_v7
   compile deps.support_annotations
 
   testCompile deps.mockito

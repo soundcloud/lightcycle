@@ -1,7 +1,6 @@
 package com.soundcloud.lightcycle.sample.real_world;
 
 import com.soundcloud.lightcycle.LightCycle;
-import com.soundcloud.lightcycle.LightCycleSupportFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-public class LicenseFragment extends LightCycleSupportFragment<LicenseFragment> {
+public class LicenseFragment extends LightCycle_BaseFragment<LicenseFragment> {
     @Inject @LightCycle LicensePresenter descriptionPresenter;
 
     public LicenseFragment() {
