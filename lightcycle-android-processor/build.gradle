@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
+dependencies {
+  compile project(':lightcycle-lib')
+  compile project(':lightcycle-processor')
+  compile deps.javapoet
+
+  testCompile deps.android
+  testCompile deps.support_v4
+  testCompile deps.compiletesting
+  // compile-testing fails with JavacTool ClassNotFoundException, so add tools.jar manually
+  // (this should be the correct cross-platform solution to do this)
+  // cf. http://stackoverflow.com/questions/11345193/gradle-does-not-find-tools-jar
+  testCompile files(((URLClassLoader) javax.tools.ToolProvider.getSystemToolClassLoader()).getURLs())
+}
