@@ -3,7 +3,6 @@ set -e
 set -x
 
 VERSION=$1
-SNAPSHOT=$2
 
 updateToVersion() {
         version=$1
@@ -20,12 +19,5 @@ release() {
         ./gradlew uploadArchives
 }
 
-snapshot() {
-        updateToVersion "$SNAPSHOT"
-        git push origin master
-        ./gradlew uploadArchives
-}
-
 git checkout master && git pull
 release
-snapshot
