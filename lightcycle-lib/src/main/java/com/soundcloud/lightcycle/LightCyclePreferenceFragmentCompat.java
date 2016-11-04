@@ -7,6 +7,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 public abstract class LightCyclePreferenceFragmentCompat<FragmentType extends Fragment>
         extends PreferenceFragmentCompat implements LightCycleDispatcher<SupportFragmentLightCycle<FragmentType>> {
 
@@ -19,6 +21,7 @@ public abstract class LightCyclePreferenceFragmentCompat<FragmentType extends Fr
 
     @Override
     public void bind(SupportFragmentLightCycle<FragmentType> lifeCycleComponent) {
+        Preconditions.checkBindingTarget(lifeCycleComponent);
         lifeCycleDispatcher.bind(lifeCycleComponent);
     }
 

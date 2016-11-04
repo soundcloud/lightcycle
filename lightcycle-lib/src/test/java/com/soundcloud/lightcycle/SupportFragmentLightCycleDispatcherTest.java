@@ -133,4 +133,9 @@ public class SupportFragmentLightCycleDispatcherTest {
         verify(lifeCycleComponent1).onDestroyView(fragment);
         verify(lifeCycleComponent2).onDestroyView(fragment);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void nullBinderTarget() {
+        dispatcher.bind(null);
+    }
 }

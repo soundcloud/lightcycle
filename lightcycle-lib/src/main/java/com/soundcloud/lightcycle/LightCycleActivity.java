@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 public abstract class LightCycleActivity<ActivityType extends LightCycleActivity>
         extends Activity
         implements LightCycleDispatcher<ActivityLightCycle<ActivityType>> {
@@ -17,6 +19,7 @@ public abstract class LightCycleActivity<ActivityType extends LightCycleActivity
 
     @Override
     public void bind(ActivityLightCycle<ActivityType> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         lightCycleDispatcher.bind(lightCycle);
     }
 

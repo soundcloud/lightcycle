@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class LightCycleFragment<FragmentType extends Fragment> extends Fragment implements LightCycleDispatcher<FragmentLightCycle<FragmentType>> {
 
@@ -20,6 +22,7 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
 
     @Override
     public void bind(FragmentLightCycle<FragmentType> lifeCycleComponent) {
+        Preconditions.checkBindingTarget(lifeCycleComponent);
         lifeCycleDispatcher.bind(lifeCycleComponent);
     }
 

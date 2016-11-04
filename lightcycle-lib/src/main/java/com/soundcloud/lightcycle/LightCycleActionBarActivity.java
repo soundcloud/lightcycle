@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 @Deprecated
 public abstract class LightCycleActionBarActivity<ActivityType extends LightCycleActionBarActivity>
         extends ActionBarActivity
@@ -18,6 +20,7 @@ public abstract class LightCycleActionBarActivity<ActivityType extends LightCycl
 
     @Override
     public void bind(ActivityLightCycle<ActivityType> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         lightCycleDispatcher.bind(lightCycle);
     }
 
