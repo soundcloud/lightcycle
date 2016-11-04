@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +25,7 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void bind(FragmentLightCycle<T> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         fragmentLightCycles.add(lightCycle);
     }
 

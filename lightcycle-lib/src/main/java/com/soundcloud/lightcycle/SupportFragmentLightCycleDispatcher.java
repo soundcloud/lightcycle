@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +22,7 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void bind(SupportFragmentLightCycle<T> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         fragmentLightCycles.add(lightCycle);
     }
 

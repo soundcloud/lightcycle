@@ -118,4 +118,9 @@ public class ActivityLightCycleDispatcherTest {
 
         verify(lightCycleComponent1, times(1)).onCreate(activity, bundle);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void nullBinderTarget() {
+        dispatcher.bind(null);
+    }
 }

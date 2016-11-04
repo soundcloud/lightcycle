@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +22,7 @@ public class ActivityLightCycleDispatcher<T extends Activity>
 
     @Override
     public void bind(ActivityLightCycle<T> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         this.activityLightCycles.add(lightCycle);
     }
 
