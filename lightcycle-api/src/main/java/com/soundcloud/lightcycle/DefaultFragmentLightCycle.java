@@ -3,6 +3,7 @@ package com.soundcloud.lightcycle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +13,9 @@ import android.view.View;
 public class DefaultFragmentLightCycle<T extends Fragment> implements FragmentLightCycle<T> {
     @Override
     public void onAttach(T fragment, Activity activity) { /* no-op */ }
+
+    @Override
+    public void onAttach(T fragment, Context context) { /* no-op */ }
 
     @Override
     public void onCreate(T fragment, Bundle bundle) { /* no-op */ }

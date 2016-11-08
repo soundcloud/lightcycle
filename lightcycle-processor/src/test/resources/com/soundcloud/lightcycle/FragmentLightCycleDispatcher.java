@@ -3,6 +3,7 @@ package com.soundcloud.lightcycle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,6 +24,9 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void onAttach(T fragment, Activity activity) { }
+
+    @Override
+    public void onAttach(T fragment, Context context) { }
 
     @Override
     public void onCreate(T fragment, Bundle bundle) { }

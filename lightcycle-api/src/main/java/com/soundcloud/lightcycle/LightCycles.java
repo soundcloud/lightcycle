@@ -1,7 +1,10 @@
 package com.soundcloud.lightcycle;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -105,12 +108,18 @@ public final class LightCycles {
         };
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static <Source extends android.app.Fragment, Target extends Source> FragmentLightCycle<Target> lift(final FragmentLightCycle<Source> lightCycle) {
         return new FragmentLightCycle<Target>() {
 
             @Override
             public void onAttach(Target fragment, Activity activity) {
                 lightCycle.onAttach(fragment, activity);
+            }
+
+            @Override
+            public void onAttach(Target fragment, Context context) {
+                lightCycle.onAttach(fragment, context);
             }
 
             @Override
