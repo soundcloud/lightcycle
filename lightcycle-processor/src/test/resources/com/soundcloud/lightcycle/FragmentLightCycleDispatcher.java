@@ -25,6 +25,9 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
     public void onAttach(T fragment, Activity activity) { }
 
     @Override
+    public void onAttach(T fragment, Context context) { }
+
+    @Override
     public void onCreate(T fragment, Bundle bundle) { }
 
     @Override
