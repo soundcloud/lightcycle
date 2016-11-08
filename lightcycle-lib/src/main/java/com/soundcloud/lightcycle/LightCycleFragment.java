@@ -3,6 +3,7 @@ package com.soundcloud.lightcycle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -27,6 +28,19 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     }
 
     @Override
+    @TargetApi(23)
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        bindIfNecessary();
+        lifeCycleDispatcher.onAttach(fragment(), context);
+    }
+
+    /*
+     * Deprecated on API 23
+     * Use onAttach(Context) instead
+     */
+    @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         bindIfNecessary();

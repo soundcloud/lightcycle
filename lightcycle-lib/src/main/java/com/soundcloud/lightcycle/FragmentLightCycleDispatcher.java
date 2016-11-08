@@ -3,6 +3,7 @@ package com.soundcloud.lightcycle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +34,13 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
     public void onAttach(T fragment, Activity activity) {
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onAttach(fragment, activity);
+        }
+    }
+
+    @Override
+    public void onAttach(T fragment, Context context) {
+        for (FragmentLightCycle<T> component : fragmentLightCycles) {
+            component.onAttach(fragment, context);
         }
     }
 
