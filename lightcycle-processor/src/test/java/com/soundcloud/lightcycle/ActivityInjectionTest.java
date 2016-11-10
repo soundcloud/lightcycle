@@ -12,57 +12,54 @@ import static com.google.testing.compile.JavaFileObjects.forSourceString;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
 
-/**
- * Created by yuwono-niko on 11/9/16.
- */
-
 public class ActivityInjectionTest {
-
-    private static final String VALID_TEST_ACTIVITY = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "import com.soundcloud.lightcycle.ActivityLightCycle;",
-            "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
-            "import com.soundcloud.lightcycle.LightCycle;",
-            "import com.soundcloud.lightcycle.LightCycleDispatcher;",
-            "",
-            "import android.app.Activity;",
-            "",
-            "public class ValidTestActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<ValidTestActivity>> {",
-            "",
-            "    @LightCycle LightCycle1 lightCycle1;",
-            "    @LightCycle LightCycle2 lightCycle2;",
-            "",
-            "    @Override",
-            "    public void bind(ActivityLightCycle<ValidTestActivity> lightCycle) {",
-            "        // nop",
-            "    }",
-            "",
-            "}",
-            "",
-            "class LightCycle1 extends DefaultActivityLightCycle<ValidTestActivity> {",
-            "}",
-            "",
-            "class LightCycle2 extends DefaultActivityLightCycle<ValidTestActivity> {",
-            "}");
-
-    private static final String ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "public final class ValidTestActivity$LightCycleBinder {",
-            "",
-            "    public static void bind(ValidTestActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
-            "    }",
-            "}");
 
     @Test
     public void shouldGenerateInjectorForActivity() {
-        JavaFileObject validTestActivity = forSourceString("com/test/ValidTestActivity", VALID_TEST_ACTIVITY);
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestActivity$LightCycleBinder", ACTIVITY_BINDER_SRC);
+        JavaFileObject validTestActivity = forSourceString("com/test/ValidTestActivity", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "import com.soundcloud.lightcycle.ActivityLightCycle;",
+                "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
+                "import com.soundcloud.lightcycle.LightCycle;",
+                "import com.soundcloud.lightcycle.LightCycleDispatcher;",
+                "",
+                "import android.app.Activity;",
+                "",
+                "public class ValidTestActivity ",
+                "        extends Activity ",
+                "        implements LightCycleDispatcher<ActivityLightCycle<ValidTestActivity>> {",
+                "",
+                "    @LightCycle LightCycle1 lightCycle1;",
+                "    @LightCycle LightCycle2 lightCycle2;",
+                "",
+                "    @Override",
+                "    public void bind(ActivityLightCycle<ValidTestActivity> lightCycle) {",
+                "        // nop",
+                "    }",
+                "",
+                "}",
+                "",
+                "class LightCycle1 extends DefaultActivityLightCycle<ValidTestActivity> {",
+                "}",
+                "",
+                "class LightCycle2 extends DefaultActivityLightCycle<ValidTestActivity> {",
+                "}"));
+
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestActivity$LightCycleBinder", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "public final class ValidTestActivity$LightCycleBinder {",
+                "",
+                "    public static void bind(ValidTestActivity target) {",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle1$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+                "        target.bind(lightCycle1$Lifted);",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestActivity> lightCycle2$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+                "        target.bind(lightCycle2$Lifted);",
+                "    }",
+                "}"));
 
         assertAbout(javaSource())
                 .that(validTestActivity)
@@ -71,54 +68,54 @@ public class ActivityInjectionTest {
                 .and().generatesSources(expectedSource);
     }
 
-    private static final String VALID_TEST_HIERARCHY_ACTIVITY = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "import com.soundcloud.lightcycle.ActivityLightCycle;",
-            "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
-            "import com.soundcloud.lightcycle.LightCycle;",
-            "import com.soundcloud.lightcycle.LightCycleDispatcher;",
-            "",
-            "import android.app.Activity;",
-            "",
-            "public class ValidTestHierarchyActivity  extends BaseActivity {",
-            "    @LightCycle LightCycle2 lightCycle2;",
-            "",
-            "}",
-            "",
-            "class BaseActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<BaseActivity>> {",
-            "",
-            "    @LightCycle LightCycle1 lightCycle1;",
-            "",
-            "    @Override",
-            "    public void bind(ActivityLightCycle<BaseActivity> lightCycle) {",
-            "        // nop",
-            "    }",
-            "",
-            "}",
-            "",
-            "class LightCycle1 extends DefaultActivityLightCycle<BaseActivity> {",
-            "}",
-            "",
-            "class LightCycle2 extends DefaultActivityLightCycle<BaseActivity> {",
-            "}");
-
-    private static final String ACTIVITY_HIERARCHY_BINDER_SRC = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "public final class ValidTestHierarchyActivity$LightCycleBinder {",
-            "",
-            "    public static void bind(ValidTestHierarchyActivity target) {",
-            "        com.test.BaseActivity$LightCycleBinder.bind(target);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.BaseActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
-            "    }",
-            "}");
-
     @Test
     public void shouldGenerateInjectorForActivityHierarchy() {
-        JavaFileObject validTestHierarchyActivity = forSourceString("com/test/ValidTestHierarchyActivity", VALID_TEST_HIERARCHY_ACTIVITY);
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestHierarchyActivity$LightCycleBinder", ACTIVITY_HIERARCHY_BINDER_SRC);
+        JavaFileObject validTestHierarchyActivity = forSourceString("com/test/ValidTestHierarchyActivity", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "import com.soundcloud.lightcycle.ActivityLightCycle;",
+                "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
+                "import com.soundcloud.lightcycle.LightCycle;",
+                "import com.soundcloud.lightcycle.LightCycleDispatcher;",
+                "",
+                "import android.app.Activity;",
+                "",
+                "public class ValidTestHierarchyActivity  extends BaseActivity {",
+                "    @LightCycle LightCycle2 lightCycle2;",
+                "",
+                "}",
+                "",
+                "class BaseActivity ",
+                "        extends Activity ",
+                "        implements LightCycleDispatcher<ActivityLightCycle<BaseActivity>> {",
+                "",
+                "    @LightCycle LightCycle1 lightCycle1;",
+                "",
+                "    @Override",
+                "    public void bind(ActivityLightCycle<BaseActivity> lightCycle) {",
+                "        // nop",
+                "    }",
+                "",
+                "}",
+                "",
+                "class LightCycle1 extends DefaultActivityLightCycle<BaseActivity> {",
+                "}",
+                "",
+                "class LightCycle2 extends DefaultActivityLightCycle<BaseActivity> {",
+                "}"));
+
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestHierarchyActivity$LightCycleBinder", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "public final class ValidTestHierarchyActivity$LightCycleBinder {",
+                "",
+                "    public static void bind(ValidTestHierarchyActivity target) {",
+                "        com.test.BaseActivity$LightCycleBinder.bind(target);",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.BaseActivity> lightCycle2$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+                "        target.bind(lightCycle2$Lifted);",
+                "    }",
+                "}"));
 
         assertAbout(javaSource())
                 .that(validTestHierarchyActivity)
@@ -127,63 +124,62 @@ public class ActivityInjectionTest {
                 .and().generatesSources(expectedSource);
     }
 
-    private static final String VALID_TEST_LIGHTCYCLE_APP_COMPAT_ACTIVITY = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "import com.soundcloud.lightcycle.ActivityLightCycle;",
-            "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
-            "import com.soundcloud.lightcycle.LightCycle;",
-            "import com.soundcloud.lightcycle.LightCycleDispatcher;",
-            "import com.soundcloud.lightcycle.LightCycleAppCompatActivity;",
-            "",
-            "import android.app.Activity;",
-            "",
-            "public class ValidTestLightCycleAppCompatActivity extends LightCycleAppCompatActivity<ValidTestLightCycleAppCompatActivity> {",
-            "    @LightCycle LightCycle1 lightCycle1;",
-            "    @LightCycle LightCycle2 lightCycle2;",
-            "",
-            "}",
-            "",
-            "class LightCycle1 extends DefaultActivityLightCycle<ValidTestLightCycleAppCompatActivity> {",
-            "}",
-            "",
-            "class LightCycle2 extends DefaultActivityLightCycle<ValidTestLightCycleAppCompatActivity> {",
-            "}");
-
-    // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
-    // we have to create a fake `LightCycleAppCompatActivity` here for testing purpose.
-    private static final String FAKE_LIGHTCYCLE_APP_COMPAT_ACTIVITY = Joiner.on("\n").join(
-            "package com.soundcloud.lightcycle;",
-            "",
-            "import android.app.Activity;",
-            "",
-            "public abstract class LightCycleAppCompatActivity<T extends Activity>",
-            "        extends Activity",
-            "        implements LightCycleDispatcher<ActivityLightCycle<T>> {",
-            "",
-            "    @Override",
-            "    public void bind(ActivityLightCycle<T> lightCycle) { }",
-            "",
-            "}");
-
-    private static final String LC_APPCOMPAT_ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "public final class ValidTestLightCycleAppCompatActivity$LightCycleBinder {",
-            "",
-            "    public static void bind(ValidTestLightCycleAppCompatActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
-            "    }",
-            "}");
-
     @Test
     public void shouldGenerateInjectorForLightCycleAppCompatActivity() {
-        JavaFileObject validTestLightCycleAppCompatActivity = forSourceString("com/test/ValidTestLightCycleAppCompatActivity", VALID_TEST_LIGHTCYCLE_APP_COMPAT_ACTIVITY);
-        JavaFileObject fakeLightCycleAppCompatActivity = forSourceString("com/soundcloud/lightcycle/LightCycleAppCompatActivity", FAKE_LIGHTCYCLE_APP_COMPAT_ACTIVITY);
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleAppCompatActivity$LightCycleBinder", LC_APPCOMPAT_ACTIVITY_BINDER_SRC);
+        JavaFileObject validTestLightCycleAppCompatActivity = forSourceString("com/test/ValidTestLightCycleAppCompatActivity", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "import com.soundcloud.lightcycle.ActivityLightCycle;",
+                "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
+                "import com.soundcloud.lightcycle.LightCycle;",
+                "import com.soundcloud.lightcycle.LightCycleDispatcher;",
+                "import com.soundcloud.lightcycle.LightCycleAppCompatActivity;",
+                "",
+                "import android.app.Activity;",
+                "",
+                "public class ValidTestLightCycleAppCompatActivity ",
+                "        extends LightCycleAppCompatActivity<ValidTestLightCycleAppCompatActivity> {",
+                "    @LightCycle LightCycle1 lightCycle1;",
+                "    @LightCycle LightCycle2 lightCycle2;",
+                "",
+                "}",
+                "",
+                "class LightCycle1 extends DefaultActivityLightCycle<ValidTestLightCycleAppCompatActivity> {",
+                "}",
+                "",
+                "class LightCycle2 extends DefaultActivityLightCycle<ValidTestLightCycleAppCompatActivity> {",
+                "}"));
+
+        // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
+        // we have to create a fake `LightCycleAppCompatActivity` here for testing purpose.
+        JavaFileObject fakeLightCycleAppCompatActivity = forSourceString("com/soundcloud/lightcycle/LightCycleAppCompatActivity", Joiner.on("\n").join(
+                "package com.soundcloud.lightcycle;",
+                "",
+                "import android.app.Activity;",
+                "",
+                "public abstract class LightCycleAppCompatActivity<T extends Activity>",
+                "        extends Activity",
+                "        implements LightCycleDispatcher<ActivityLightCycle<T>> {",
+                "",
+                "    @Override",
+                "    public void bind(ActivityLightCycle<T> lightCycle) { }",
+                "",
+                "}"));
+
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleAppCompatActivity$LightCycleBinder", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "public final class ValidTestLightCycleAppCompatActivity$LightCycleBinder {",
+                "",
+                "    public static void bind(ValidTestLightCycleAppCompatActivity target) {",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle1$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+                "        target.bind(lightCycle1$Lifted);",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleAppCompatActivity> lightCycle2$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+                "        target.bind(lightCycle2$Lifted);",
+                "    }",
+                "}"));
 
         assertAbout(javaSources())
                 .that(ImmutableList.of(validTestLightCycleAppCompatActivity, fakeLightCycleAppCompatActivity))
@@ -192,63 +188,62 @@ public class ActivityInjectionTest {
                 .and().generatesSources(expectedSource);
     }
 
-    private static final String VALID_TEST_LIGHTCYCLE_ACTION_BAR_ACTIVITY = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "import com.soundcloud.lightcycle.ActivityLightCycle;",
-            "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
-            "import com.soundcloud.lightcycle.LightCycle;",
-            "import com.soundcloud.lightcycle.LightCycleDispatcher;",
-            "import com.soundcloud.lightcycle.LightCycleActionBarActivity;",
-            "",
-            "import android.app.Activity;",
-            "",
-            "public class ValidTestLightCycleActionBarActivity extends LightCycleActionBarActivity<ValidTestLightCycleActionBarActivity> {",
-            "    @LightCycle LightCycle1 lightCycle1;",
-            "    @LightCycle LightCycle2 lightCycle2;",
-            "",
-            "}",
-            "",
-            "class LightCycle1 extends DefaultActivityLightCycle<ValidTestLightCycleActionBarActivity> {",
-            "}",
-            "",
-            "class LightCycle2 extends DefaultActivityLightCycle<ValidTestLightCycleActionBarActivity> {",
-            "}");
-
-    // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
-    // we have to create a fake `LightCycleActionBarActivity` here for testing purpose.
-    private static final String FAKE_LIGHTCYCLE_ACTION_BAR_ACTIVITY = Joiner.on("\n").join(
-            "package com.soundcloud.lightcycle;",
-            "",
-            "import android.app.Activity;",
-            "",
-            "public abstract class LightCycleActionBarActivity<T extends Activity>",
-            "        extends Activity",
-            "        implements LightCycleDispatcher<ActivityLightCycle<T>> {",
-            "",
-            "    @Override",
-            "    public void bind(ActivityLightCycle<T> lightCycle) { }",
-            "",
-            "}");
-
-    private static final String LC_ACTION_BAR_ACTIVITY_BINDER_SRC = Joiner.on("\n").join(
-            "package com.test;",
-            "",
-            "public final class ValidTestLightCycleActionBarActivity$LightCycleBinder {",
-            "",
-            "    public static void bind(ValidTestLightCycleActionBarActivity target) {",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle1$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
-            "        target.bind(lightCycle1$Lifted);",
-            "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle2$Lifted = com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
-            "        target.bind(lightCycle2$Lifted);",
-            "    }",
-            "}");
-
     @Test
     public void shouldGenerateInjectorForLightCycleActionBarActivity() {
-        JavaFileObject validTestLightCycleActionBarActivity = forSourceString("com/test/ValidTestLightCycleActionBarActivity", VALID_TEST_LIGHTCYCLE_ACTION_BAR_ACTIVITY);
-        JavaFileObject fakeLightCycleActionBarActivity = forSourceString("com/soundcloud/lightcycle/LightCycleActionBarActivity", FAKE_LIGHTCYCLE_ACTION_BAR_ACTIVITY);
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleActionBarActivity$LightCycleBinder", LC_ACTION_BAR_ACTIVITY_BINDER_SRC);
+        JavaFileObject validTestLightCycleActionBarActivity = forSourceString("com/test/ValidTestLightCycleActionBarActivity", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "import com.soundcloud.lightcycle.ActivityLightCycle;",
+                "import com.soundcloud.lightcycle.DefaultActivityLightCycle;",
+                "import com.soundcloud.lightcycle.LightCycle;",
+                "import com.soundcloud.lightcycle.LightCycleDispatcher;",
+                "import com.soundcloud.lightcycle.LightCycleActionBarActivity;",
+                "",
+                "import android.app.Activity;",
+                "",
+                "public class ValidTestLightCycleActionBarActivity ",
+                "        extends LightCycleActionBarActivity<ValidTestLightCycleActionBarActivity> {",
+                "    @LightCycle LightCycle1 lightCycle1;",
+                "    @LightCycle LightCycle2 lightCycle2;",
+                "",
+                "}",
+                "",
+                "class LightCycle1 extends DefaultActivityLightCycle<ValidTestLightCycleActionBarActivity> {",
+                "}",
+                "",
+                "class LightCycle2 extends DefaultActivityLightCycle<ValidTestLightCycleActionBarActivity> {",
+                "}"));
+
+        // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
+        // we have to create a fake `LightCycleActionBarActivity` here for testing purpose.
+        JavaFileObject fakeLightCycleActionBarActivity = forSourceString("com/soundcloud/lightcycle/LightCycleActionBarActivity", Joiner.on("\n").join(
+                "package com.soundcloud.lightcycle;",
+                "",
+                "import android.app.Activity;",
+                "",
+                "public abstract class LightCycleActionBarActivity<T extends Activity>",
+                "        extends Activity",
+                "        implements LightCycleDispatcher<ActivityLightCycle<T>> {",
+                "",
+                "    @Override",
+                "    public void bind(ActivityLightCycle<T> lightCycle) { }",
+                "",
+                "}"));
+
+        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleActionBarActivity$LightCycleBinder", Joiner.on("\n").join(
+                "package com.test;",
+                "",
+                "public final class ValidTestLightCycleActionBarActivity$LightCycleBinder {",
+                "",
+                "    public static void bind(ValidTestLightCycleActionBarActivity target) {",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle1$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle1);",
+                "        target.bind(lightCycle1$Lifted);",
+                "        final com.soundcloud.lightcycle.ActivityLightCycle<com.test.ValidTestLightCycleActionBarActivity> lightCycle2$Lifted = ",
+                "                com.soundcloud.lightcycle.LightCycles.lift(target.lightCycle2);",
+                "        target.bind(lightCycle2$Lifted);",
+                "    }",
+                "}"));
 
         assertAbout(javaSources())
                 .that(ImmutableList.of(validTestLightCycleActionBarActivity, fakeLightCycleActionBarActivity))
