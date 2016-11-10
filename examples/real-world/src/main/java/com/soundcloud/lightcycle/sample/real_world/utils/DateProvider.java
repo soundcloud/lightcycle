@@ -2,8 +2,9 @@ package com.soundcloud.lightcycle.sample.real_world.utils;
 
 import android.support.annotation.VisibleForTesting;
 
-import javax.inject.Inject;
 import java.util.Calendar;
+
+import javax.inject.Inject;
 
 public class DateProvider {
 
@@ -17,11 +18,6 @@ public class DateProvider {
     @VisibleForTesting
     public DateProvider() {
         this.calendar = null;
-    }
-
-
-    public long currentTimeMillis() {
-        return System.currentTimeMillis();
     }
 
     public boolean isMorning() {

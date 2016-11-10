@@ -15,6 +15,8 @@ import java.io.Writer;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 
 class LightCycleAndroidBaseActivityClassWriter {
@@ -24,13 +26,17 @@ class LightCycleAndroidBaseActivityClassWriter {
     private static final String INTENT_PARAM_NAME = "intent";
     private static final String ITEM_PARAM_NAME = "item";
     private static final String OUT_STATE_PARAM_NAME = "outState";
+    private static final String OBJECT_METHOD_NAME = "activity";
+    private static final String GENERATED_PREFIX = "LightCycle_";
 
     private final Filer filer;
-    private final TypeElement activityClass;
+    private final DeclaredType activityDeclaredType;
+    private final TypeMirror objectTypeMirror;
 
-    LightCycleAndroidBaseActivityClassWriter(Filer filer, TypeElement activityClass) {
+    LightCycleAndroidBaseActivityClassWriter(Filer filer, DeclaredType activityDeclaredType, TypeMirror objectTypeMirror) {
         this.filer = filer;
-        this.activityClass = activityClass;
+        this.activityDeclaredType = activityDeclaredType;
+        this.objectTypeMirror = objectTypeMirror;
     }
 
     void write() throws IOException {
@@ -40,7 +46,7 @@ class LightCycleAndroidBaseActivityClassWriter {
     }
 
     private JavaFileObject javaFileObject() throws IOException {
-        return filer.createSourceFile(String.format("%s.%s", elementPackageName(), typeName()), activityClass);
+        return filer.createSourceFile(javaFileResourceName(), activityType());
     }
 
     private JavaFile javaFile() {
@@ -50,7 +56,7 @@ class LightCycleAndroidBaseActivityClassWriter {
     private TypeSpec type() {
         return TypeSpec.classBuilder(typeName())
                 .addModifiers(Modifier.PUBLIC)
-                .superclass(ClassName.get(activityClass))
+                .superclass(activityTypeName())
                 .addField(dispatcherField())
                 .addMethod(bindMethod())
                 .addMethod(onCreateMethod())
@@ -90,7 +96,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .addParameter(bundleTypeName(), SAVED_INSTANCE_STATE_PARAM_NAME)
                 .addStatement("super.onCreate($N)", SAVED_INSTANCE_STATE_PARAM_NAME)
                 .addStatement("$T.bind(this)", lightCyclesTypeName())
-                .addStatement("$N.onCreate($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName(),
+                .addStatement("$N.onCreate($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
                         SAVED_INSTANCE_STATE_PARAM_NAME)
                 .build();
     }
@@ -101,7 +107,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .addModifiers(Modifier.PROTECTED)
                 .addParameter(intentTypeName(), INTENT_PARAM_NAME)
                 .addStatement("super.onNewIntent($N)", INTENT_PARAM_NAME)
-                .addStatement("$N.onNewIntent($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName(),
+                .addStatement("$N.onNewIntent($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
                         INTENT_PARAM_NAME)
                 .build();
     }
@@ -111,7 +117,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
                 .addStatement("super.onStart()")
-                .addStatement("$N.onStart($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName())
+                .addStatement("$N.onStart($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .build();
     }
 
@@ -120,7 +126,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
                 .addStatement("super.onResume()")
-                .addStatement("$N.onResume($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName())
+                .addStatement("$N.onResume($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .build();
     }
 
@@ -131,7 +137,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .returns(TypeName.BOOLEAN)
                 .addParameter(menuItemTypeName(), ITEM_PARAM_NAME)
                 .addStatement("return $N.onOptionsItemSelected($N(), $N) || super.onOptionsItemSelected($N)",
-                        LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName(), ITEM_PARAM_NAME, ITEM_PARAM_NAME)
+                        LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME, ITEM_PARAM_NAME, ITEM_PARAM_NAME)
                 .build();
     }
 
@@ -139,7 +145,7 @@ class LightCycleAndroidBaseActivityClassWriter {
         return MethodSpec.methodBuilder("onPause")
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
-                .addStatement("$N.onPause($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName())
+                .addStatement("$N.onPause($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .addStatement("super.onPause()")
                 .build();
     }
@@ -148,7 +154,7 @@ class LightCycleAndroidBaseActivityClassWriter {
         return MethodSpec.methodBuilder("onStop")
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
-                .addStatement("$N.onStop($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName())
+                .addStatement("$N.onStop($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .addStatement("super.onStop()")
                 .build();
     }
@@ -160,7 +166,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .addParameter(bundleTypeName(), OUT_STATE_PARAM_NAME)
                 .addStatement("super.onSaveInstanceState($N)", OUT_STATE_PARAM_NAME)
                 .addStatement("$N.onSaveInstanceState($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME,
-                        objectMethodName(), OUT_STATE_PARAM_NAME)
+                        OBJECT_METHOD_NAME, OUT_STATE_PARAM_NAME)
                 .build();
     }
 
@@ -171,7 +177,7 @@ class LightCycleAndroidBaseActivityClassWriter {
                 .addParameter(bundleTypeName(), SAVED_INSTANCE_STATE_PARAM_NAME)
                 .addStatement("super.onRestoreInstanceState($N)", SAVED_INSTANCE_STATE_PARAM_NAME)
                 .addStatement("$N.onRestoreInstanceState($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME,
-                        objectMethodName(), SAVED_INSTANCE_STATE_PARAM_NAME)
+                        OBJECT_METHOD_NAME, SAVED_INSTANCE_STATE_PARAM_NAME)
                 .build();
     }
 
@@ -179,13 +185,13 @@ class LightCycleAndroidBaseActivityClassWriter {
         return MethodSpec.methodBuilder("onDestroy")
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
-                .addStatement("$N.onDestroy($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, objectMethodName())
+                .addStatement("$N.onDestroy($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .addStatement("super.onDestroy()")
                 .build();
     }
 
     private MethodSpec objectMethod() {
-        return MethodSpec.methodBuilder(objectMethodName())
+        return MethodSpec.methodBuilder(OBJECT_METHOD_NAME)
                 .addAnnotation(suppressUncheckedWarningAnnotation())
                 .addModifiers(Modifier.PRIVATE)
                 .returns(objectTypeName())
@@ -223,31 +229,35 @@ class LightCycleAndroidBaseActivityClassWriter {
         return ClassName.get("android.view", "MenuItem");
     }
 
-    // TODO: Change dispatcher type depending on lightcycle-type
     private ClassName lightCycleDispatcherTypeName() {
         return ClassName.get("com.soundcloud.lightcycle", "ActivityLightCycleDispatcher");
     }
 
-    // TODO: Change dispatcher type depending on lightcycle-type
     private ClassName lightCycleTypeName() {
         return ClassName.get("com.soundcloud.lightcycle", "ActivityLightCycle");
     }
 
-    // TODO: Change dispatcher type depending on lightcycle-type
-    private ClassName objectTypeName() {
-        return ClassName.get("android.app", "Activity");
+    private TypeName objectTypeName() {
+        return TypeName.get(objectTypeMirror);
     }
 
-    // TODO: Change dispatcher type depending on lightcycle-type
-    private String objectMethodName() {
-        return "activity";
+    private TypeName activityTypeName() {
+        return TypeName.get(activityDeclaredType);
+    }
+
+    private String javaFileResourceName() {
+        return String.format("%s.%s", elementPackageName(), typeName());
     }
 
     private String typeName() {
-        return String.format("LightCycle_%s", activityClass.getSimpleName().toString());
+        return String.format("%s%s", GENERATED_PREFIX, activityType().getSimpleName());
     }
 
     private String elementPackageName() {
-        return activityClass.getEnclosingElement().getSimpleName().toString();
+        return activityType().getEnclosingElement().toString();
+    }
+
+    private TypeElement activityType() {
+        return (TypeElement) activityDeclaredType.asElement();
     }
 }

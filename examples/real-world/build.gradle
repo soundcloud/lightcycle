@@ -34,6 +34,7 @@ android {
 dependencies {
   apt project(':lightcycle-processor')
   apt project(':lightcycle-android-processor')
+
   compile project(':lightcycle-android-lib')
 
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
