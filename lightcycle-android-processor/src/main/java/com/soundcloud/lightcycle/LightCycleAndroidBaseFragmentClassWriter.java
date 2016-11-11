@@ -19,23 +19,26 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 
-class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseClassWriter {
+class LightCycleAndroidBaseFragmentClassWriter implements LightCycleAndroidBaseClassWriter {
     private static final String LIGHT_CYCLE_DISPATCHER_FIELD_NAME = "lightCycleDispatcher";
+    private static final String BOUND_FIELD_NAME = "bound";
     private static final String LIGHT_CYCLE_PARAM_NAME = "lightCycle";
+    private static final String ACTIVITY_PARAM_NAME = "activity";
+    private static final String BIND_IF_NECESSARY_METHOD_NAME = "bindIfNecessary";
     private static final String SAVED_INSTANCE_STATE_PARAM_NAME = "savedInstanceState";
-    private static final String INTENT_PARAM_NAME = "intent";
+    private static final String VIEW_PARAM_NAME = "view";
     private static final String ITEM_PARAM_NAME = "item";
     private static final String OUT_STATE_PARAM_NAME = "outState";
-    private static final String OBJECT_METHOD_NAME = "activity";
+    private static final String OBJECT_METHOD_NAME = "fragment";
     private static final String GENERATED_PREFIX = "LightCycle_";
 
     private final Filer filer;
-    private final DeclaredType activityDeclaredType;
+    private final DeclaredType fragmentDeclaredType;
     private final TypeMirror objectTypeMirror;
 
-    LightCycleAndroidBaseActivityClassWriter(Filer filer, DeclaredType activityDeclaredType, TypeMirror objectTypeMirror) {
+    LightCycleAndroidBaseFragmentClassWriter(Filer filer, DeclaredType fragmentDeclaredType, TypeMirror objectTypeMirror) {
         this.filer = filer;
-        this.activityDeclaredType = activityDeclaredType;
+        this.fragmentDeclaredType = fragmentDeclaredType;
         this.objectTypeMirror = objectTypeMirror;
     }
 
@@ -47,7 +50,7 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     }
 
     private JavaFileObject javaFileObject() throws IOException {
-        return filer.createSourceFile(javaFileResourceName(), activityType());
+        return filer.createSourceFile(javaFileResourceName(), fragmentType());
     }
 
     private JavaFile javaFile() {
@@ -57,20 +60,25 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     private TypeSpec type() {
         return TypeSpec.classBuilder(typeName())
                 .addModifiers(Modifier.PUBLIC)
-                .superclass(activityTypeName())
+                .superclass(fragmentTypeName())
                 .addField(dispatcherField())
+                .addField(boundField())
                 .addMethod(bindMethod())
+                .addMethod(onAttachMethod())
+                .addMethod(onViewCreatedMethod())
+                .addMethod(onActivityCreatedMethod())
                 .addMethod(onCreateMethod())
-                .addMethod(onNewIntentMethod())
                 .addMethod(onStartMethod())
                 .addMethod(onResumeMethod())
                 .addMethod(onOptionsItemSelectedMethod())
                 .addMethod(onPauseMethod())
                 .addMethod(onStopMethod())
                 .addMethod(onSaveInstanceStateMethod())
-                .addMethod(onRestoreInstanceStateMethod())
+                .addMethod(onDestroyViewMethod())
                 .addMethod(onDestroyMethod())
+                .addMethod(onDetachMethod())
                 .addMethod(objectMethod())
+                .addMethod(bindIfNecessaryMethod())
                 .build();
     }
 
@@ -78,6 +86,12 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
         return FieldSpec.builder(objectLightCycleDispatcherTypeName(), LIGHT_CYCLE_DISPATCHER_FIELD_NAME)
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                 .initializer("new $T()", objectLightCycleDispatcherTypeName())
+                .build();
+    }
+
+    private FieldSpec boundField() {
+        return FieldSpec.builder(TypeName.BOOLEAN, BOUND_FIELD_NAME)
+                .addModifiers(Modifier.PRIVATE)
                 .build();
     }
 
@@ -90,33 +104,56 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
                 .build();
     }
 
+    private MethodSpec onAttachMethod() {
+        return MethodSpec.methodBuilder("onAttach")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(activityTypeName(), ACTIVITY_PARAM_NAME)
+                .addStatement("super.onAttach($N)", ACTIVITY_PARAM_NAME)
+                .addStatement("$N()", BIND_IF_NECESSARY_METHOD_NAME)
+                .addStatement("$N.onAttach($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
+                        ACTIVITY_PARAM_NAME)
+                .build();
+    }
+
     private MethodSpec onCreateMethod() {
         return MethodSpec.methodBuilder("onCreate")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(bundleTypeName(), SAVED_INSTANCE_STATE_PARAM_NAME)
                 .addStatement("super.onCreate($N)", SAVED_INSTANCE_STATE_PARAM_NAME)
-                .addStatement("$T.bind(this)", lightCyclesTypeName())
                 .addStatement("$N.onCreate($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
                         SAVED_INSTANCE_STATE_PARAM_NAME)
                 .build();
     }
 
-    private MethodSpec onNewIntentMethod() {
-        return MethodSpec.methodBuilder("onNewIntent")
+    private MethodSpec onViewCreatedMethod() {
+        return MethodSpec.methodBuilder("onViewCreated")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
-                .addParameter(intentTypeName(), INTENT_PARAM_NAME)
-                .addStatement("super.onNewIntent($N)", INTENT_PARAM_NAME)
-                .addStatement("$N.onNewIntent($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
-                        INTENT_PARAM_NAME)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(viewTypeName(), VIEW_PARAM_NAME)
+                .addParameter(bundleTypeName(), SAVED_INSTANCE_STATE_PARAM_NAME)
+                .addStatement("super.onViewCreated($N, $N)", VIEW_PARAM_NAME, SAVED_INSTANCE_STATE_PARAM_NAME)
+                .addStatement("$N.onViewCreated($N(), $N, $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
+                        VIEW_PARAM_NAME, SAVED_INSTANCE_STATE_PARAM_NAME)
+                .build();
+    }
+
+    private MethodSpec onActivityCreatedMethod() {
+        return MethodSpec.methodBuilder("onActivityCreated")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(bundleTypeName(), SAVED_INSTANCE_STATE_PARAM_NAME)
+                .addStatement("super.onActivityCreated($N)", SAVED_INSTANCE_STATE_PARAM_NAME)
+                .addStatement("$N.onActivityCreated($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME,
+                        SAVED_INSTANCE_STATE_PARAM_NAME)
                 .build();
     }
 
     private MethodSpec onStartMethod() {
         return MethodSpec.methodBuilder("onStart")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addStatement("super.onStart()")
                 .addStatement("$N.onStart($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .build();
@@ -125,7 +162,7 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     private MethodSpec onResumeMethod() {
         return MethodSpec.methodBuilder("onResume")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addStatement("super.onResume()")
                 .addStatement("$N.onResume($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .build();
@@ -145,7 +182,7 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     private MethodSpec onPauseMethod() {
         return MethodSpec.methodBuilder("onPause")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addStatement("$N.onPause($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .addStatement("super.onPause()")
                 .build();
@@ -154,7 +191,7 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     private MethodSpec onStopMethod() {
         return MethodSpec.methodBuilder("onStop")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addStatement("$N.onStop($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .addStatement("super.onStop()")
                 .build();
@@ -163,7 +200,7 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     private MethodSpec onSaveInstanceStateMethod() {
         return MethodSpec.methodBuilder("onSaveInstanceState")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(bundleTypeName(), OUT_STATE_PARAM_NAME)
                 .addStatement("super.onSaveInstanceState($N)", OUT_STATE_PARAM_NAME)
                 .addStatement("$N.onSaveInstanceState($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME,
@@ -171,23 +208,30 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
                 .build();
     }
 
-    private MethodSpec onRestoreInstanceStateMethod() {
-        return MethodSpec.methodBuilder("onRestoreInstanceState")
+    private MethodSpec onDestroyViewMethod() {
+        return MethodSpec.methodBuilder("onDestroyView")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
-                .addParameter(bundleTypeName(), SAVED_INSTANCE_STATE_PARAM_NAME)
-                .addStatement("super.onRestoreInstanceState($N)", SAVED_INSTANCE_STATE_PARAM_NAME)
-                .addStatement("$N.onRestoreInstanceState($N(), $N)", LIGHT_CYCLE_DISPATCHER_FIELD_NAME,
-                        OBJECT_METHOD_NAME, SAVED_INSTANCE_STATE_PARAM_NAME)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("$N.onDestroyView($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
+                .addStatement("super.onDestroyView()")
                 .build();
     }
 
     private MethodSpec onDestroyMethod() {
         return MethodSpec.methodBuilder("onDestroy")
                 .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
+                .addModifiers(Modifier.PUBLIC)
                 .addStatement("$N.onDestroy($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
                 .addStatement("super.onDestroy()")
+                .build();
+    }
+
+    private MethodSpec onDetachMethod() {
+        return MethodSpec.methodBuilder("onDetach")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("$N.onDetach($N())", LIGHT_CYCLE_DISPATCHER_FIELD_NAME, OBJECT_METHOD_NAME)
+                .addStatement("super.onDetach()")
                 .build();
     }
 
@@ -197,6 +241,16 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
                 .addModifiers(Modifier.PRIVATE)
                 .returns(objectTypeName())
                 .addStatement("return ($T) this", objectTypeName())
+                .build();
+    }
+
+    private MethodSpec bindIfNecessaryMethod() {
+        return MethodSpec.methodBuilder(BIND_IF_NECESSARY_METHOD_NAME)
+                .addModifiers(Modifier.PRIVATE)
+                .addStatement("if (!$N) {", BOUND_FIELD_NAME)
+                .addStatement("$T.bind(this)", lightCyclesTypeName())
+                .addStatement("$N = true", BOUND_FIELD_NAME)
+                .addStatement("}")
                 .build();
     }
 
@@ -218,12 +272,16 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
         return ClassName.get(LightCycles.class);
     }
 
+    private ClassName activityTypeName() {
+        return ClassName.get("android.app", "Activity");
+    }
+
     private ClassName bundleTypeName() {
         return ClassName.get("android.os", "Bundle");
     }
 
-    private ClassName intentTypeName() {
-        return ClassName.get("android.content", "Intent");
+    private ClassName viewTypeName() {
+        return ClassName.get("android.view", "View");
     }
 
     private ClassName menuItemTypeName() {
@@ -231,19 +289,19 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     }
 
     private ClassName lightCycleDispatcherTypeName() {
-        return ClassName.get("com.soundcloud.lightcycle", "ActivityLightCycleDispatcher");
+        return ClassName.get("com.soundcloud.lightcycle", "FragmentLightCycleDispatcher");
     }
 
     private ClassName lightCycleTypeName() {
-        return ClassName.get("com.soundcloud.lightcycle", "ActivityLightCycle");
+        return ClassName.get("com.soundcloud.lightcycle", "FragmentLightCycle");
     }
 
     private TypeName objectTypeName() {
         return TypeName.get(objectTypeMirror);
     }
 
-    private TypeName activityTypeName() {
-        return TypeName.get(activityDeclaredType);
+    private TypeName fragmentTypeName() {
+        return TypeName.get(fragmentDeclaredType);
     }
 
     private String javaFileResourceName() {
@@ -251,14 +309,14 @@ class LightCycleAndroidBaseActivityClassWriter implements LightCycleAndroidBaseC
     }
 
     private String typeName() {
-        return String.format("%s%s", GENERATED_PREFIX, activityType().getSimpleName());
+        return String.format("%s%s", GENERATED_PREFIX, fragmentType().getSimpleName());
     }
 
     private String elementPackageName() {
-        return activityType().getEnclosingElement().toString();
+        return fragmentType().getEnclosingElement().toString();
     }
 
-    private TypeElement activityType() {
-        return (TypeElement) activityDeclaredType.asElement();
+    private TypeElement fragmentType() {
+        return (TypeElement) fragmentDeclaredType.asElement();
     }
 }

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -34,14 +33,14 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
     }
 
     @Override
-    public void onCreate(T fragment, @Nullable Bundle bundle) {
+    public void onCreate(T fragment, Bundle bundle) {
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onCreate(fragment, bundle);
         }
     }
 
     @Override
-    public void onViewCreated(T fragment, View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(T fragment, View view, Bundle savedInstanceState) {
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onViewCreated(fragment, view, savedInstanceState);
         }

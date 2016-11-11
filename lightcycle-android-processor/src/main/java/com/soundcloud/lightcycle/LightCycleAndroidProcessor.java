@@ -65,14 +65,20 @@ public class LightCycleAndroidProcessor extends AbstractProcessor {
             addError(String.format("%s must be a LightCycleDispatcher for either %s", annotatedTypeElement,
                     LIGHT_CYCLE_NAMES));
         } else {
+            LightCycleAndroidBaseClassWriter baseClassWriter;
             if (lightCycleTypeName(annotatedTypeElement).equals(ACTIVITY_LIGHT_CYCLE_NAME)) {
-                try {
-                    new LightCycleAndroidBaseActivityClassWriter(processingEnv.getFiler(),
-                            (DeclaredType) annotatedTypeElement.asType(),
-                            objectTypeMirror(annotatedTypeElement)).write();
-                } catch (IOException e) {
-                    addError(e.toString());
-                }
+                baseClassWriter = new LightCycleAndroidBaseActivityClassWriter(processingEnv.getFiler(),
+                        (DeclaredType) annotatedTypeElement.asType(),
+                        objectTypeMirror(annotatedTypeElement));
+            } else {
+                baseClassWriter = new LightCycleAndroidBaseFragmentClassWriter(processingEnv.getFiler(),
+                        (DeclaredType) annotatedTypeElement.asType(),
+                        objectTypeMirror(annotatedTypeElement));
+            }
+            try {
+                baseClassWriter.write();
+            } catch (IOException e) {
+                addError(e.toString());
             }
         }
     }
