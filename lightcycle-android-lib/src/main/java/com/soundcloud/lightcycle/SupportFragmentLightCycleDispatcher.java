@@ -2,7 +2,6 @@ package com.soundcloud.lightcycle;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +30,14 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
     }
 
     @Override
-    public void onCreate(T fragment, @Nullable Bundle bundle) {
+    public void onCreate(T fragment, Bundle bundle) {
         for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
             component.onCreate(fragment, bundle);
         }
     }
 
     @Override
-    public void onViewCreated(T fragment, View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(T fragment, View view, Bundle savedInstanceState) {
         for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
             component.onViewCreated(fragment, view, savedInstanceState);
         }

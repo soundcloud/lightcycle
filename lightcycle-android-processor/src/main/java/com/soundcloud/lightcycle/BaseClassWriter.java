@@ -2,6 +2,6 @@ package com.soundcloud.lightcycle;
 
 import java.io.IOException;
 
-interface LightCycleAndroidBaseClassWriter {
+interface BaseClassWriter {
     void write() throws IOException;
 }
