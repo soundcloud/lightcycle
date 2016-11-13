@@ -183,8 +183,8 @@ public class LightCycleProcessor extends AbstractProcessor {
     private void verifyFieldsAccessible(Set<? extends Element> elements) {
         for (Element element : elements) {
             if (element.getModifiers().contains(Modifier.PRIVATE)) {
-                throw new IllegalStateException("Annotated fields cannot be private: " +
-                        element.getEnclosingElement() + "#" + element + "(" + element.asType() + ")");
+                throw new IllegalStateException("Annotated fields cannot be private: "
+                        + element.getEnclosingElement() + "#" + element + "(" + element.asType() + ")");
             }
         }
     }

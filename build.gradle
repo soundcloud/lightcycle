@@ -12,7 +12,7 @@ buildscript {
 
 task wrapper(type: Wrapper) {
   description 'Creates the gradle wrapper.'
-  gradleVersion '2.5'
+  gradleVersion '2.14.1'
 }
 
 allprojects {
@@ -51,8 +51,23 @@ ext.deps = [
 
 // Static analysis
 subprojects { project ->
+  apply plugin: 'checkstyle'
   apply plugin: 'pmd'
   apply plugin: 'findbugs'
+
+  checkstyle {
+    toolVersion = "7.2"
+    configFile rootProject.file('checkstyle.xml')
+  }
+
+  task checkstyle(type: Checkstyle) {
+    source 'src/main/java'
+    ignoreFailures false
+    showViolations true
+    include '**/*.java'
+
+    classpath = files()
+  }
 
   task pmd(type: Pmd) {
     description 'Finds common programming flaws throw static analysis of code.'
