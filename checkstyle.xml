@@ -93,9 +93,7 @@
         <!-- See http://checkstyle.sourceforge.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
         <module name="LeftCurly"/>
-        <module name="NeedBraces">
-            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
-        </module>
+        <module name="NeedBraces"/>
         <module name="RightCurly"/>
 
 
