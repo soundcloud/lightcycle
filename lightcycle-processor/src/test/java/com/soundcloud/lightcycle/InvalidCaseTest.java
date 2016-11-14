@@ -20,8 +20,8 @@ public class InvalidCaseTest {
     @Test
     public void shouldThrowExceptionWhenLightCycleFieldIsPrivate() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Annotated fields cannot be private: " +
-                "com.test.PrivateFieldsTestFragment#lightCycle1(com.test.LightCycle1)");
+        expectedException.expectMessage("Annotated fields cannot be private: "
+                + "com.test.PrivateFieldsTestFragment#lightCycle1(com.test.LightCycle1)");
 
         JavaFileObject privateFieldsTestFragment = forSourceString("com/test/PrivateFieldsTestFragment", Joiner.on("\n").join(
                 "package com.test;",
@@ -131,8 +131,8 @@ public class InvalidCaseTest {
                 .that(missingGenericTestActivity)
                 .processedWith(new LightCycleProcessor())
                 .failsToCompile()
-                .withErrorContaining("Expected 1 type argument but found 0. TypeArguments:[]. " +
-                        "Did you forget to add generic types?");
+                .withErrorContaining("Expected 1 type argument but found 0. TypeArguments:[]. "
+                        + "Did you forget to add generic types?");
     }
 
     @Test
@@ -164,7 +164,7 @@ public class InvalidCaseTest {
                 .that(dispatcherNotFoundTestActivity)
                 .processedWith(new LightCycleProcessor())
                 .failsToCompile()
-                .withErrorContaining("Could not find dispatcher type. " +
-                        "Did you forget to add the generic type?");
+                .withErrorContaining("Could not find dispatcher type. "
+                        + "Did you forget to add the generic type?");
     }
 }

@@ -1,4 +1,10 @@
+apply plugin: 'checkstyle'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+
+checkstyle {
+  configFile rootProject.file('checkstyle.xml')
+  showViolations true
+}
 
 dependencies {
   compile project(':lightcycle-api')

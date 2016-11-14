@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
 android {
@@ -32,6 +33,11 @@ android {
   testOptions {
     unitTests.returnDefaultValues = true
   }
+}
+
+checkstyle {
+  configFile rootProject.file('checkstyle.xml')
+  showViolations true
 }
 
 dependencies {
