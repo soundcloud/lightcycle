@@ -251,10 +251,10 @@ abstract class AbstractFragmentClassWriter implements BaseClassWriter {
     private MethodSpec bindIfNecessaryMethod() {
         return MethodSpec.methodBuilder(BIND_IF_NECESSARY_METHOD_NAME)
                 .addModifiers(Modifier.PRIVATE)
-                .addStatement("if (!$N) {", BOUND_FIELD_NAME)
+                .beginControlFlow("if (!$N)", BOUND_FIELD_NAME)
                 .addStatement("$T.bind(this)", lightCyclesTypeName())
                 .addStatement("$N = true", BOUND_FIELD_NAME)
-                .addStatement("}")
+                .endControlFlow()
                 .build();
     }
 
