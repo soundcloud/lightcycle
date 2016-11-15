@@ -8,6 +8,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeVariableName;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -15,6 +16,7 @@ import java.io.Writer;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
@@ -62,7 +64,11 @@ abstract class AbstractFragmentClassWriter implements BaseClassWriter {
     }
 
     private TypeSpec type() {
-        return TypeSpec.classBuilder(typeName())
+        TypeSpec.Builder classBuilder = TypeSpec.classBuilder(typeName());
+        for (TypeParameterElement typeParameterElement : fragmentType().getTypeParameters()) {
+            classBuilder.addTypeVariable(typeVariableName(typeParameterElement));
+        }
+        return classBuilder
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(fragmentTypeName())
                 .addField(dispatcherField())
@@ -262,6 +268,10 @@ abstract class AbstractFragmentClassWriter implements BaseClassWriter {
         return AnnotationSpec.builder(SuppressWarnings.class)
                 .addMember("value", "$S", "unchecked")
                 .build();
+    }
+
+    private TypeVariableName typeVariableName(TypeParameterElement typeParameterElement) {
+        return TypeVariableName.get(typeParameterElement);
     }
 
     private ParameterizedTypeName objectLightCycleDispatcherTypeName() {

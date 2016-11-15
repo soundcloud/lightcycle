@@ -80,10 +80,6 @@ class BaseActivityClassWriter implements BaseClassWriter {
                 .build();
     }
 
-    private TypeVariableName typeVariableName(TypeParameterElement typeParameterElement) {
-        return TypeVariableName.get(typeParameterElement);
-    }
-
     private FieldSpec dispatcherField() {
         return FieldSpec.builder(objectLightCycleDispatcherTypeName(), LIGHT_CYCLE_DISPATCHER_FIELD_NAME)
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
@@ -214,6 +210,10 @@ class BaseActivityClassWriter implements BaseClassWriter {
         return AnnotationSpec.builder(SuppressWarnings.class)
                 .addMember("value", "$S", "unchecked")
                 .build();
+    }
+
+    private TypeVariableName typeVariableName(TypeParameterElement typeParameterElement) {
+        return TypeVariableName.get(typeParameterElement);
     }
 
     private ParameterizedTypeName objectLightCycleDispatcherTypeName() {
