@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+}
+
+dependencies {
+    apt project(":lightcycle-processor")
+
+    compile project(":lightcycle-lib")
+    compile deps.appcompat_v7
+
+    testCompile deps.roboelectric
+    testCompile deps.junit
+    testCompile deps.compiletesting
+    // To fix Roboelectric bug that will fail when trying to mock Canvas class
+    // In our case this only happens when running test from the terminal
+    // Reference : https://github.com/robolectric/robolectric/issues/1932
+    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+    // compile-testing fails with JavacTool ClassNotFoundException, so add tools.jar manually
+    // (this should be the correct cross-platform solution to do this)
+    // cf. http://stackoverflow.com/questions/11345193/gradle-does-not-find-tools-jar
+    testCompile files(((URLClassLoader) javax.tools.ToolProvider.getSystemToolClassLoader()).getURLs())
+}
