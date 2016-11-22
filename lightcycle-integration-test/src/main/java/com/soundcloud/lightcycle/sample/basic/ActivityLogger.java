@@ -2,7 +2,6 @@ package com.soundcloud.lightcycle.sample.basic;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.soundcloud.lightcycle.sample.basic.callback.ActivityCallback;

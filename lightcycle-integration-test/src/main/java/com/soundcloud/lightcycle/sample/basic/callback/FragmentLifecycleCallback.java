@@ -1,12 +1,16 @@
 package com.soundcloud.lightcycle.sample.basic.callback;
 
-public enum ActivityLifecycleCallback {
+public enum FragmentLifecycleCallback {
+    onAttach,
     onCreate,
+    onViewCreated,
+    onActivityCreated,
     onStart,
     onResume,
     onPause,
     onStop,
-    onDestroy,
     onSaveInstanceState,
-    onRestoreInstanceState
+    onDestroyView,
+    onDestroy,
+    onDetach
 }
