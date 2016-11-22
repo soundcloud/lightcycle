@@ -2,17 +2,12 @@ package com.soundcloud.lightcycle.sample.basic;
 
 import android.view.Menu;
 
-import com.soundcloud.lightcycle.ActivityLightCycle;
 import com.soundcloud.lightcycle.LightCycle;
-import com.soundcloud.lightcycle.LightCycleActivity;
-import com.soundcloud.lightcycle.LightCycleDispatcher;
+import com.soundcloud.lightcycle.LightCycleAppCompatActivity;
 
-public class SampleActivity
-        extends LightCycleActivity<SampleActivity>
-        implements LightCycleDispatcher<ActivityLightCycle<SampleActivity>> {
-
+public class SampleAppCompatActivity extends LightCycleAppCompatActivity<SampleAppCompatActivity> {
     @LightCycle
-    ActivityLogger activityLogger = new ActivityLogger();
+    AppCompatActivityLogger appCompatActivityLogger = new AppCompatActivityLogger();
 
     @Override
     protected void setActivityContentView() {
