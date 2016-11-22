@@ -1,7 +1,5 @@
 package com.soundcloud.lightcycle.sample.basic;
 
-import android.os.Bundle;
-
 import com.soundcloud.lightcycle.sample.basic.callback.FragmentLifecycleCallback;
 
 import org.junit.Test;
@@ -9,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
-import org.robolectric.util.FragmentController;
 
 import static com.google.common.truth.Truth.assertThat;
 

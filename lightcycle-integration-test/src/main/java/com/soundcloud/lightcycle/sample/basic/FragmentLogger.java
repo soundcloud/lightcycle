@@ -3,7 +3,6 @@ package com.soundcloud.lightcycle.sample.basic;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.soundcloud.lightcycle.DefaultFragmentLightCycle;
