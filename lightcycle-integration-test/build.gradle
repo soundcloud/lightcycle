@@ -35,7 +35,6 @@ dependencies {
     compile deps.appcompat_v7
 
     testCompile deps.roboelectric
-    testCompile deps.junit
     testCompile deps.compiletesting
     // To fix Roboelectric bug that will fail when trying to mock Canvas class
     // In our case this only happens when running test from the terminal
