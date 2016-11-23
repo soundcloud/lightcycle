@@ -21,56 +21,67 @@ public class SupportFragmentLogger extends DefaultSupportFragmentLightCycle<Samp
 
     @Override
     public void onAttach(SampleSupportFragment fragment, Activity activity) {
+        super.onAttach(fragment, activity);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onAttach, true);
     }
 
     @Override
     public void onCreate(SampleSupportFragment fragment, Bundle bundle) {
+        super.onCreate(fragment, bundle);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onCreate, true);
     }
 
     @Override
     public void onViewCreated(SampleSupportFragment fragment, View view, Bundle savedInstanceState) {
+        super.onViewCreated(fragment, view, savedInstanceState);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onViewCreated, true);
     }
 
     @Override
     public void onActivityCreated(SampleSupportFragment fragment, Bundle bundle) {
+        super.onActivityCreated(fragment, bundle);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onActivityCreated, true);
     }
 
     @Override
     public void onStart(SampleSupportFragment fragment) {
+        super.onStart(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onStart, true);
     }
 
     @Override
     public void onResume(SampleSupportFragment fragment) {
+        super.onResume(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onResume, true);
     }
 
     @Override
     public void onPause(SampleSupportFragment fragment) {
+        super.onPause(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onPause, true);
     }
 
     @Override
     public void onStop(SampleSupportFragment fragment) {
+        super.onStop(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onStop, true);
     }
 
     @Override
     public void onDestroyView(SampleSupportFragment fragment) {
+        super.onDestroyView(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onDestroyView, true);
     }
 
     @Override
     public void onDestroy(SampleSupportFragment fragment) {
+        super.onDestroy(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onDestroy, true);
     }
 
     @Override
     public void onDetach(SampleSupportFragment fragment) {
+        super.onDetach(fragment);
         lifecycleCallbackCallState.put(FragmentLifecycleCallback.onDetach, true);
     }
 

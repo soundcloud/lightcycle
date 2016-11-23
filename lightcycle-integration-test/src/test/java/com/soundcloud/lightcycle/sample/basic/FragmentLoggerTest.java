@@ -2,6 +2,7 @@ package com.soundcloud.lightcycle.sample.basic;
 
 import android.os.Bundle;
 
+import com.google.common.truth.BooleanSubject;
 import com.soundcloud.lightcycle.sample.basic.callback.FragmentLifecycleCallback;
 
 import org.junit.Test;
@@ -10,50 +11,132 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.FragmentController;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 23)
 public class FragmentLoggerTest {
+    private final SampleFragment sampleFragment = new SampleFragment();
+    private final FragmentLogger fragmentLogger = sampleFragment.fragmentLogger;
+    private final FragmentController controller = FragmentController.of(sampleFragment);
 
     @Test
-    public void verifyFragmentLifecycleCallback() {
-        final SampleFragment sampleFragment = new SampleFragment();
-        final FragmentLogger fragmentLogger = sampleFragment.fragmentLogger;
-        final FragmentController controller = FragmentController.of(sampleFragment);
-        final Bundle dummyBundle = new Bundle();
-
+    public void onCreate() {
         controller.create();
-        // In Robolectric's FragmentController, onAttach is called after FragmentController.create().
-        // which is different with normal Fragment's lifecycle
-        // reference : https://github.com/robolectric/robolectric/issues/1951
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onAttach)).isTrue();
-
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onCreate)).isTrue();
-
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onViewCreated)).isTrue();
-
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onActivityCreated)).isTrue();
-
-        controller.start();
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onStart)).isTrue();
-
-        controller.resume();
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onResume)).isTrue();
-
-        controller.pause();
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onPause)).isTrue();
-
-        controller.saveInstanceState(dummyBundle);
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onSaveInstanceState)).isTrue();
-
-        controller.stop();
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onStop)).isTrue();
-
-        controller.destroy();
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onDestroy)).isTrue();
-
-        assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(FragmentLifecycleCallback.onDetach)).isTrue();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated)
+        );
     }
 
+    @Test
+    public void onStart() {
+        controller.create()
+                .start();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart)
+        );
+    }
+
+    @Test
+    public void onResume() {
+        controller.create()
+                .start()
+                .resume();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart,
+                        FragmentLifecycleCallback.onResume)
+        );
+    }
+
+    @Test
+    public void onPause() {
+        controller.create()
+                .start()
+                .resume()
+                .pause();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart,
+                        FragmentLifecycleCallback.onResume,
+                        FragmentLifecycleCallback.onPause)
+        );
+    }
+
+    @Test
+    public void onSaveInstanceState() {
+        controller.create()
+                .start()
+                .resume()
+                .pause()
+                .saveInstanceState(new Bundle());
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart,
+                        FragmentLifecycleCallback.onResume,
+                        FragmentLifecycleCallback.onPause,
+                        FragmentLifecycleCallback.onSaveInstanceState)
+        );
+    }
+
+    @Test
+    public void onStop() {
+        controller.create()
+                .start()
+                .stop();
+
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart,
+                        FragmentLifecycleCallback.onStop)
+        );
+    }
+
+    @Test
+    public void onDestroy() {
+        controller.create()
+                .destroy();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onDestroyView,
+                        FragmentLifecycleCallback.onDestroy,
+                        FragmentLifecycleCallback.onDetach)
+        );
+    }
+
+    private void assertLifecycleCallbackCallIsCorrect(List<FragmentLifecycleCallback> callbacks) {
+        for (FragmentLifecycleCallback fragmentLifecycleCallback : FragmentLifecycleCallback.values()) {
+            BooleanSubject subject = assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(fragmentLifecycleCallback));
+            if (callbacks.contains(fragmentLifecycleCallback)) {
+                subject.isTrue();
+            } else {
+                subject.isFalse();
+            }
+        }
+    }
 }

@@ -41,8 +41,4 @@ dependencies {
     // In our case this only happens when running test from the terminal
     // Reference : https://github.com/robolectric/robolectric/issues/1932
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-    // compile-testing fails with JavacTool ClassNotFoundException, so add tools.jar manually
-    // (this should be the correct cross-platform solution to do this)
-    // cf. http://stackoverflow.com/questions/11345193/gradle-does-not-find-tools-jar
-    testCompile files(((URLClassLoader) javax.tools.ToolProvider.getSystemToolClassLoader()).getURLs())
 }

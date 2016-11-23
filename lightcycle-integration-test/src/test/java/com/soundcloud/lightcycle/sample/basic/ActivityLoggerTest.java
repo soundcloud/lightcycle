@@ -3,6 +3,7 @@ package com.soundcloud.lightcycle.sample.basic;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.common.truth.BooleanSubject;
 import com.soundcloud.lightcycle.sample.basic.callback.ActivityCallback;
 import com.soundcloud.lightcycle.sample.basic.callback.ActivityLifecycleCallback;
 
@@ -15,56 +16,136 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.util.ActivityController;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 23)
 public class ActivityLoggerTest {
+    private final ActivityController<SampleActivity> controller = Robolectric.buildActivity(SampleActivity.class);
+    private final SampleActivity sampleActivity = controller.get();
+    private final ActivityLogger activityLogger = sampleActivity.activityLogger;
 
     @Test
-    public void verifyActivityLifecycleCallback() {
-        final ActivityController<SampleActivity> controller = Robolectric.buildActivity(SampleActivity.class);
-        final SampleActivity sampleActivity = controller.get();
-        final ActivityLogger activityLogger = sampleActivity.activityLogger;
-        final Bundle dummyBundle = new Bundle();
-
+    public void onCreate() {
         controller.create();
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onCreate)).isTrue();
-
-        controller.start();
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onStart)).isTrue();
-
-        controller.restoreInstanceState(dummyBundle);
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onRestoreInstanceState)).isTrue();
-
-        controller.resume();
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onResume)).isTrue();
-
-        controller.pause();
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onPause)).isTrue();
-
-        controller.saveInstanceState(dummyBundle);
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onSaveInstanceState)).isTrue();
-
-        controller.stop();
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onStop)).isTrue();
-
-        controller.destroy();
-        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onDestroy)).isTrue();
+        assertLifecycleCallbackCallIsCorrect(
+                Collections.singletonList(ActivityLifecycleCallback.onCreate)
+        );
     }
 
+    @Test
+    public void onStart() {
+        controller.create()
+                .start();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onStart)
+        );
+    }
 
     @Test
-    public void verifyActivityCallback() {
-        final ActivityController<SampleActivity> controller = Robolectric.buildActivity(SampleActivity.class).setup();
-        final SampleActivity sampleActivity = controller.get();
-        final ActivityLogger activityLogger = sampleActivity.activityLogger;
+    public void onRestoreInstance() {
+        controller.create()
+                .start()
+                .restoreInstanceState(new Bundle());
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onStart,
+                        ActivityLifecycleCallback.onRestoreInstanceState)
+        );
+    }
 
-        controller.newIntent(new Intent());
+    @Test
+    public void onResume() {
+        controller.create()
+                .start()
+                .resume();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onStart,
+                        ActivityLifecycleCallback.onResume)
+        );
+    }
+
+    @Test
+    public void onPause() {
+        controller.create()
+                .start()
+                .resume()
+                .pause();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onStart,
+                        ActivityLifecycleCallback.onResume,
+                        ActivityLifecycleCallback.onPause)
+        );
+    }
+
+    @Test
+    public void onSaveInstanceState() {
+        controller.create()
+                .start()
+                .resume()
+                .pause()
+                .saveInstanceState(new Bundle());
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onStart,
+                        ActivityLifecycleCallback.onResume,
+                        ActivityLifecycleCallback.onPause,
+                        ActivityLifecycleCallback.onSaveInstanceState)
+        );
+    }
+
+    @Test
+    public void onStop() {
+        controller.create()
+                .start()
+                .stop();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onStart,
+                        ActivityLifecycleCallback.onStop)
+        );
+    }
+
+    @Test
+    public void onDestroy() {
+        controller.create()
+                .destroy();
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(ActivityLifecycleCallback.onCreate,
+                        ActivityLifecycleCallback.onDestroy)
+        );
+    }
+
+    @Test
+    public void onNewIntent() {
+        controller.setup()
+                .newIntent(new Intent());
         assertThat(activityLogger.isActivityCallbackCalled(ActivityCallback.onNewIntent)).isTrue();
+    }
 
-        ShadowActivity shadowActivity = Shadows.shadowOf(sampleActivity);
+    @Test
+    public void onOptionsItemSelected() {
+        controller.setup();
+        ShadowActivity shadowActivity = Shadows.shadowOf(controller.get());
         shadowActivity.clickMenuItem(R.id.action_search);
         assertThat(activityLogger.isActivityCallbackCalled(ActivityCallback.onOptionsItemSelected)).isTrue();
+    }
+
+    private void assertLifecycleCallbackCallIsCorrect(List<ActivityLifecycleCallback> callbacks) {
+        for (ActivityLifecycleCallback activityLifecycleCallback : ActivityLifecycleCallback.values()) {
+            BooleanSubject subject = assertThat(activityLogger.isActivityLifecycleCallbackCalled(activityLifecycleCallback));
+            if (callbacks.contains(activityLifecycleCallback)) {
+                subject.isTrue();
+            } else {
+                subject.isFalse();
+            }
+        }
     }
 }
