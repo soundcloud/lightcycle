@@ -47,6 +47,8 @@ ext.deps = [
   junit                 : 'junit:junit:4.12',
   mockito               : 'org.mockito:mockito-all:1.10.19',
   compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
+  roboelectric          : 'org.robolectric:robolectric:3.1.2',
+  robolectric_support   : 'org.robolectric:shadows-support-v4:3.1.2',
 ]
 
 // Static analysis
