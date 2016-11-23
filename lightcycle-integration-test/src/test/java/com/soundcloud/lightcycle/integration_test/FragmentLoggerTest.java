@@ -1,13 +1,16 @@
-package com.soundcloud.lightcycle.sample.basic;
+package com.soundcloud.lightcycle.integration_test;
+
+import android.os.Bundle;
 
 import com.google.common.truth.BooleanSubject;
-import com.soundcloud.lightcycle.sample.basic.callback.FragmentLifecycleCallback;
+import com.soundcloud.lightcycle.integration_test.callback.FragmentLifecycleCallback;
+import com.soundcloud.lightcycle.sample.basic.BuildConfig;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.support.v4.SupportFragmentController;
+import org.robolectric.util.FragmentController;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,18 +18,20 @@ import java.util.List;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23)
-public class SupportFragmentLoggerTest {
-    private final SampleSupportFragment sampleSupportFragment = new SampleSupportFragment();
-    private final SupportFragmentLogger supportFragmentLogger = sampleSupportFragment.supportFragmentLogger;
-    private final SupportFragmentController controller = SupportFragmentController.of(sampleSupportFragment);
+@Config(constants = BuildConfig.class, sdk = 22)
+public class FragmentLoggerTest {
+    private final SampleFragment sampleFragment = new SampleFragment();
+    private final FragmentLogger fragmentLogger = sampleFragment.fragmentLogger;
+    private final FragmentController controller = FragmentController.of(sampleFragment);
 
     @Test
     public void onCreate() {
         controller.create();
         assertLifecycleCallbackCallIsCorrect(
                 Arrays.asList(FragmentLifecycleCallback.onAttach,
-                        FragmentLifecycleCallback.onCreate)
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated)
         );
     }
 
@@ -37,9 +42,9 @@ public class SupportFragmentLoggerTest {
         assertLifecycleCallbackCallIsCorrect(
                 Arrays.asList(FragmentLifecycleCallback.onAttach,
                         FragmentLifecycleCallback.onCreate,
-                        FragmentLifecycleCallback.onStart,
                         FragmentLifecycleCallback.onViewCreated,
-                        FragmentLifecycleCallback.onActivityCreated)
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart)
         );
     }
 
@@ -76,6 +81,25 @@ public class SupportFragmentLoggerTest {
     }
 
     @Test
+    public void onSaveInstanceState() {
+        controller.create()
+                .start()
+                .resume()
+                .pause()
+                .saveInstanceState(new Bundle());
+        assertLifecycleCallbackCallIsCorrect(
+                Arrays.asList(FragmentLifecycleCallback.onAttach,
+                        FragmentLifecycleCallback.onCreate,
+                        FragmentLifecycleCallback.onViewCreated,
+                        FragmentLifecycleCallback.onActivityCreated,
+                        FragmentLifecycleCallback.onStart,
+                        FragmentLifecycleCallback.onResume,
+                        FragmentLifecycleCallback.onPause,
+                        FragmentLifecycleCallback.onSaveInstanceState)
+        );
+    }
+
+    @Test
     public void onStop() {
         controller.create()
                 .start()
@@ -108,7 +132,7 @@ public class SupportFragmentLoggerTest {
 
     private void assertLifecycleCallbackCallIsCorrect(List<FragmentLifecycleCallback> callbacks) {
         for (FragmentLifecycleCallback fragmentLifecycleCallback : FragmentLifecycleCallback.values()) {
-            BooleanSubject subject = assertThat(supportFragmentLogger.isFragmentLifecycleCallbackCalled(fragmentLifecycleCallback));
+            BooleanSubject subject = assertThat(fragmentLogger.isFragmentLifecycleCallbackCalled(fragmentLifecycleCallback));
             if (callbacks.contains(fragmentLifecycleCallback)) {
                 subject.isTrue();
             } else {
@@ -116,5 +140,4 @@ public class SupportFragmentLoggerTest {
             }
         }
     }
-
 }

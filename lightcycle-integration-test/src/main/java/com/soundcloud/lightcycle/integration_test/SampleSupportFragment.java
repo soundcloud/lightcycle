@@ -1,13 +1,13 @@
-package com.soundcloud.lightcycle.sample.basic;
+package com.soundcloud.lightcycle.integration_test;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.soundcloud.lightcycle.LightCycle;
 import com.soundcloud.lightcycle.LightCycleSupportFragment;
+import com.soundcloud.lightcycle.sample.basic.R;
 
 public class SampleSupportFragment extends LightCycleSupportFragment<SampleSupportFragment> {
 

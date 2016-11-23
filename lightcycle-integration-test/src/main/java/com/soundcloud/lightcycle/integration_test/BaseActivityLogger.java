@@ -1,10 +1,9 @@
-package com.soundcloud.lightcycle.sample.basic;
+package com.soundcloud.lightcycle.integration_test;
 
 import android.app.Activity;
 
 import com.soundcloud.lightcycle.DefaultActivityLightCycle;
-import com.soundcloud.lightcycle.sample.basic.callback.ActivityCallback;
-import com.soundcloud.lightcycle.sample.basic.callback.ActivityLifecycleCallback;
+import com.soundcloud.lightcycle.integration_test.callback.ActivityLifecycleCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +11,9 @@ import java.util.Map;
 class BaseActivityLogger<T extends Activity> extends DefaultActivityLightCycle<T> {
 
     Map<ActivityLifecycleCallback, Boolean> lifecycleCallbackCallState;
-    Map<ActivityCallback, Boolean> callbackCallState;
 
     BaseActivityLogger() {
         initializeLifecycleCallbackCallStateMap();
-        initializeCallbackCallStateMap();
     }
 
     private void initializeLifecycleCallbackCallStateMap() {
@@ -29,19 +26,11 @@ class BaseActivityLogger<T extends Activity> extends DefaultActivityLightCycle<T
         this.lifecycleCallbackCallState.put(ActivityLifecycleCallback.onSaveInstanceState, false);
         this.lifecycleCallbackCallState.put(ActivityLifecycleCallback.onStop, false);
         this.lifecycleCallbackCallState.put(ActivityLifecycleCallback.onDestroy, false);
-    }
-
-    private void initializeCallbackCallStateMap() {
-        this.callbackCallState = new HashMap<>();
-        this.callbackCallState.put(ActivityCallback.onNewIntent, false);
-        this.callbackCallState.put(ActivityCallback.onOptionsItemSelected, false);
+        this.lifecycleCallbackCallState.put(ActivityLifecycleCallback.onNewIntent, false);
+        this.lifecycleCallbackCallState.put(ActivityLifecycleCallback.onOptionsItemSelected, false);
     }
 
     boolean isActivityLifecycleCallbackCalled(ActivityLifecycleCallback callback) {
         return lifecycleCallbackCallState.get(callback);
-    }
-
-    boolean isActivityCallbackCalled(ActivityCallback callback) {
-        return callbackCallState.get(callback);
     }
 }

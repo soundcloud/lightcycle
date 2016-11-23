@@ -1,4 +1,4 @@
-package com.soundcloud.lightcycle.sample.basic.callback;
+package com.soundcloud.lightcycle.integration_test.callback;
 
 public enum ActivityLifecycleCallback {
     onCreate,
@@ -8,5 +8,7 @@ public enum ActivityLifecycleCallback {
     onStop,
     onDestroy,
     onSaveInstanceState,
-    onRestoreInstanceState
+    onRestoreInstanceState,
+    onNewIntent,
+    onOptionsItemSelected
 }

@@ -1,11 +1,12 @@
-package com.soundcloud.lightcycle.sample.basic;
+package com.soundcloud.lightcycle.integration_test;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.common.truth.BooleanSubject;
-import com.soundcloud.lightcycle.sample.basic.callback.ActivityCallback;
-import com.soundcloud.lightcycle.sample.basic.callback.ActivityLifecycleCallback;
+import com.soundcloud.lightcycle.integration_test.callback.ActivityLifecycleCallback;
+import com.soundcloud.lightcycle.sample.basic.BuildConfig;
+import com.soundcloud.lightcycle.sample.basic.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ import java.util.List;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23)
+@Config(constants = BuildConfig.class, sdk = 22)
 public class ActivityLoggerTest {
     private final ActivityController<SampleActivity> controller = Robolectric.buildActivity(SampleActivity.class);
     private final SampleActivity sampleActivity = controller.get();
@@ -127,7 +128,7 @@ public class ActivityLoggerTest {
     public void onNewIntent() {
         controller.setup()
                 .newIntent(new Intent());
-        assertThat(activityLogger.isActivityCallbackCalled(ActivityCallback.onNewIntent)).isTrue();
+        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onNewIntent)).isTrue();
     }
 
     @Test
@@ -135,7 +136,7 @@ public class ActivityLoggerTest {
         controller.setup();
         ShadowActivity shadowActivity = Shadows.shadowOf(controller.get());
         shadowActivity.clickMenuItem(R.id.action_search);
-        assertThat(activityLogger.isActivityCallbackCalled(ActivityCallback.onOptionsItemSelected)).isTrue();
+        assertThat(activityLogger.isActivityLifecycleCallbackCalled(ActivityLifecycleCallback.onOptionsItemSelected)).isTrue();
     }
 
     private void assertLifecycleCallbackCallIsCorrect(List<ActivityLifecycleCallback> callbacks) {

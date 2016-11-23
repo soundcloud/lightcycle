@@ -1,4 +1,4 @@
-package com.soundcloud.lightcycle.sample.basic;
+package com.soundcloud.lightcycle.integration_test;
 
 import android.view.Menu;
 
@@ -6,6 +6,7 @@ import com.soundcloud.lightcycle.ActivityLightCycle;
 import com.soundcloud.lightcycle.LightCycle;
 import com.soundcloud.lightcycle.LightCycleActivity;
 import com.soundcloud.lightcycle.LightCycleDispatcher;
+import com.soundcloud.lightcycle.sample.basic.R;
 
 public class SampleActivity
         extends LightCycleActivity<SampleActivity>

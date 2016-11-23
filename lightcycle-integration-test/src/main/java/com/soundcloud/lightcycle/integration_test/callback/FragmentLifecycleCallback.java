@@ -1,4 +1,4 @@
-package com.soundcloud.lightcycle.sample.basic.callback;
+package com.soundcloud.lightcycle.integration_test.callback;
 
 public enum FragmentLifecycleCallback {
     onAttach,

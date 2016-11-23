@@ -37,8 +37,4 @@ dependencies {
     testCompile deps.roboelectric
     testCompile deps.robolectric_support
     testCompile deps.compiletesting
-    // To fix Roboelectric bug that will fail when trying to mock Canvas class
-    // In our case this only happens when running test from the terminal
-    // Reference : https://github.com/robolectric/robolectric/issues/1932
-    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
 }

@@ -4,7 +4,7 @@
     <application
         android:label="@string/app_name">
         <activity
-            android:name=".SampleAppCompatActivity"
+            android:name="com.soundcloud.lightcycle.integration_test.SampleAppCompatActivity"
             android:label="@string/app_name"
             android:theme="@style/AppCompatTheme">
             <intent-filter>
@@ -14,7 +14,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SampleActivity"
+            android:name="com.soundcloud.lightcycle.integration_test.SampleActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>

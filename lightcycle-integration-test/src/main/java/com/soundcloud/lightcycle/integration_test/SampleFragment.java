@@ -1,4 +1,4 @@
-package com.soundcloud.lightcycle.sample.basic;
+package com.soundcloud.lightcycle.integration_test;
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.soundcloud.lightcycle.LightCycle;
 import com.soundcloud.lightcycle.LightCycleFragment;
+import com.soundcloud.lightcycle.sample.basic.R;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SampleFragment extends LightCycleFragment<SampleFragment> {
