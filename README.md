@@ -156,6 +156,17 @@ See for example [LightCycleActionBarActivity](lightcycle-lib/src/main/java/com/s
 Gradle:
 
 ```gradle
+ext.lightCycleVersion=<LATEST_VERSION>
+
+dependencies {
+  compile "com.soundcloud.lightcycle:lightcycle-lib:$lightCycleVersion"
+  annotationProcessor "com.soundcloud.lightcycle:lightcycle-processor:$lightCycleVersion"
+}
+```
+
+Or if you're using a version of the Android gradle plugin below `2.2.0`
+
+```gradle
 buildscript {
   dependencies {
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
