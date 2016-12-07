@@ -97,6 +97,7 @@ public class MyController extends ActivityLightCycleDispatcher<MyActivity> {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        LightCycles.bind(this) // <- bind the lightcycles
         [...] // <- specific init 
         super.onCreate(savedInstanceState) // <- call super to dispatch.
     }
