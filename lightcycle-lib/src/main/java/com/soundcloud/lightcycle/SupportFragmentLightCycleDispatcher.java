@@ -1,13 +1,13 @@
 package com.soundcloud.lightcycle;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.soundcloud.lightcycle.util.Preconditions;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +28,7 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void onAttach(T fragment, Activity activity) {
+        LightCycles.bind(this);
         for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
             component.onAttach(fragment, activity);
         }
