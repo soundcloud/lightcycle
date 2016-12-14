@@ -17,18 +17,15 @@ a.dl {
 
 header menu li a:hover,
 a.dl:hover {
-  background-color: #40a776;
+  background-color: #f50;
+}
+header menu li a:visited, a:link {
+  color: #fff;
+  text-decoration: none;
 }
 a {
-  color: #40a776;
+  color: #f50;
 }
-
-/*** Three steps left on the monochromatic scale ***/
-
-a:hover {
-  color: #32835c;
-}
-
 
 /****************************************************************\
  **** Syntax highlighting styles ********************************
