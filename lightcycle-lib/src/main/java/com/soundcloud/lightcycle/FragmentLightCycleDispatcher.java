@@ -18,7 +18,9 @@ import java.util.Set;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class FragmentLightCycleDispatcher<T extends Fragment>
         implements LightCycleDispatcher<FragmentLightCycle<T>>, FragmentLightCycle<T> {
+
     private final Set<FragmentLightCycle<T>> fragmentLightCycles;
+    private boolean bound;
 
     public FragmentLightCycleDispatcher() {
         this.fragmentLightCycles = new HashSet<>();
@@ -32,7 +34,7 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void onAttach(T fragment, Activity activity) {
-        LightCycles.bind(this);
+        bindIfNecessary();
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onAttach(fragment, activity);
         }
@@ -40,9 +42,16 @@ public class FragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void onAttach(T fragment, Context context) {
-        LightCycles.bind(this);
+        bindIfNecessary();
         for (FragmentLightCycle<T> component : fragmentLightCycles) {
             component.onAttach(fragment, context);
+        }
+    }
+
+    private void bindIfNecessary() {
+        if (!bound) {
+            LightCycles.bind(this);
+            bound = true;
         }
     }
 

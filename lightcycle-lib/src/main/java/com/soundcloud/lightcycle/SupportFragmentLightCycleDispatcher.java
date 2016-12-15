@@ -14,7 +14,9 @@ import java.util.Set;
 
 public class SupportFragmentLightCycleDispatcher<T extends Fragment>
         implements LightCycleDispatcher<SupportFragmentLightCycle<T>>, SupportFragmentLightCycle<T> {
+
     private final Set<SupportFragmentLightCycle<T>> fragmentLightCycles;
+    private boolean bound;
 
     public SupportFragmentLightCycleDispatcher() {
         this.fragmentLightCycles = new HashSet<>();
@@ -28,9 +30,16 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void onAttach(T fragment, Activity activity) {
-        LightCycles.bind(this);
+        bindIfNecessary();
         for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
             component.onAttach(fragment, activity);
+        }
+    }
+
+    private void bindIfNecessary() {
+        if (!bound) {
+            LightCycles.bind(this);
+            bound = true;
         }
     }
 
