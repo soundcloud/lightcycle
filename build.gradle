@@ -48,6 +48,7 @@ ext.deps = [
   compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
   roboelectric          : 'org.robolectric:robolectric:3.1.2',
   robolectric_support   : 'org.robolectric:shadows-support-v4:3.1.2',
+  equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8'
 ]
 
 // Static analysis
