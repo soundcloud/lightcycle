@@ -5,9 +5,10 @@
     <title>Lightcycle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A type-safe HTTP client for Android and Java">
-    <link href="static/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="static/app.css" rel="stylesheet">
-    <link href="static/app-theme.css" rel="stylesheet">
+    <link href="assets/stylesheets/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="assets/stylesheets/app.css" rel="stylesheet">
+    <link href="assets/stylesheets/app-theme.css" rel="stylesheet">
+    <link href="assets/stylesheets/idea.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300" rel="stylesheet" type="text/css">
   </head>
   <body data-target=".content-nav">
@@ -22,8 +23,7 @@
             <menu>
               <ul>
                 <li><a href="#download" class="menu download">Download <span class="version-tag">Latest</span></a></li>
-                <li><a href="https://github.com/soundcloud/lightcycle" data-title="View GitHub Project" class="menu github"><img src="static/icon-github.png" alt="GitHub"/></a></li>
-                <li><a href="https://developers.soundcloud.com/blog" data-title="Soundcloud Backstage Blog" class="menu soundcloud"><img src="static/icon-soundcloud.png" alt="Soundcloud"/></a></li>
+                <li><a href="https://github.com/soundcloud/lightcycle" data-title="View GitHub Project" class="menu github"><img src="assets/images/icon-github.png" alt="GitHub"/></a></li>
               </ul>
             </menu>
           </div>
@@ -45,7 +45,7 @@
           <div class="span9">
 
             <section id="introduction">
-                          <h3 style="padding-top:100px">Introduction</h3>
+                          <h3 style="padding-top: 100px; margin-top: 0px">Introduction</h3>
                           <p>LightCycle is an Android library that helps break logic out of <code>Activity</code> and <code>Fragment</code> classes into small, self-contained components called LightCycles.</p>
                           <p>Fields that are annotated <code>@LightCycle</code> and implement the LightCycle API within a <code>LightCycleActivity</code> or <code>LightCycleFragment</code> will be bound to that <code>Activity</code> or <code>Fragment</code> lifecycle.</p>
 
@@ -63,16 +63,16 @@
 
                           <h4>Usage</h4>
                           <p>Do your view initialization in your Activity</p>
-                          <pre class="prettyprint">public class MyActivity extends LightCycleAppCompatActivity<MyActivity> {
+                          <pre><code class="language-java">public class MyActivity extends LightCycleAppCompatActivity<MyActivity> {
     @LightCycle MyController controller = new MyController();
 
     @Override
     protected void setActivityContentView() {
         setContentView(R.layout.main);
     }
-}</pre>
+}</code></pre>
                           <p>And put your logic inside your LightCycle</p>
-                          <pre class="prettyprint">public class MyController extends DefaultActivityLightCycle<MyActivity> {
+                          <pre><code class="language-java">public class MyController extends DefaultActivityLightCycle<MyActivity> {
 
     @Override
     public void onPause(MyActivity activity) {
@@ -85,7 +85,7 @@
     public void onResume(MyActivity activity) {
         // MyActivity was resumed
     }
-}</pre>
+}</code></pre>
             </section>
 
             <section id="examples">
@@ -94,7 +94,7 @@
               <p>● <a href="https://github.com/soundcloud/lightcycle/tree/master/examples/real-world">"Real World"</a></p>
             </section>
 
-            <section>
+            <section id="documentation">
               <h3>Documentation</h3>
               <h4>LightCycle</h4>
               <p>There are 3 types of LightCycles - the API is comparable to the <a href="https://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html">ActivityLifecycleCallbacks</a> from the Android SDK:</p>
@@ -115,18 +115,18 @@
                  ● <a href="https://github.com/soundcloud/lightcycle/blob/master/lightcycle-lib/src/main/java/com/soundcloud/lightcycle/SupportFragmentLightCycleDispatcher.java">SupportFragmentLightCycleDispatcher</a></br></p>
               <p>Note: these built-in classes are both dispatchers and LightCycles, meaning that you can nest LightCycles.</p>
               <p>Do your view initialization in your activity as usual</p>
-              <pre class="prettyprint">public class MyActivity extends LightCycleAppCompatActivity<MyBaseActivity> {
+              <pre><code class="language-java">public class MyActivity extends LightCycleAppCompatActivity<MyBaseActivity> {
     @LightCycle MyController controller = new MyController();
 
     @Override
     protected void setActivityContentView() {
         setContentView(R.layout.main);
     }
-}</pre>
+}</code></pre>
               <p>Extend your logic class to matching Dispatcher class based on the type
                 (Activity with ActivityLightCycleDispatcher, Fragment with FragmentLightCycleDispatcher, etc)
                 and then you can nest another LightCycles too inside your Dispatcher</p>
-              <pre class="prettyprint">public class MyController extends ActivityLightCycleDispatcher<MyActivity> {
+              <pre><code class="language-java">public class MyController extends ActivityLightCycleDispatcher<MyActivity> {
     @LightCycle MySubController1 controller = new MyController1();
     @LightCycle MySubController2 controller = new MyController2();
 
@@ -135,7 +135,7 @@
         [...] // <- specific init
         super.onCreate(savedInstanceState) // <- call super to dispatch.
     }
-}</pre>
+}</code></pre>
 
             <h5>Provided base dispatcher classes</h5>
             <p>The following base dispatcher classes are provided so far:</p>
@@ -162,7 +162,7 @@
             <p>The same technique applies for Fragment.</p>
             <p>Example</p>
 
-            <pre class="prettyprint">public class MyBaseActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<MyBaseActivity>> {
+            <pre><code class="language-java">public class MyBaseActivity extends Activity implements LightCycleDispatcher<ActivityLightCycle<MyBaseActivity>> {
 
     private final ActivityLightCycleDispatcher<MyBaseActivity> lightCycleDispatcher;
 
@@ -185,7 +185,7 @@
         lightCycleDispatcher.onDestroy((MyBaseActivity) this);
         super.onDestroy();
     }
-}</pre>
+}</code></pre>
 <p>See <a href="https://github.com/soundcloud/lightcycle/blob/master/lightcycle-lib/src/main/java/com/soundcloud/lightcycle/LightCycleActionBarActivity.java">LightCycleActionBarActivity</a>
    and <a href="https://github.com/soundcloud/lightcycle/blob/master/lightcycle-lib/src/main/java/com/soundcloud/lightcycle/LightCycleSupportFragment.java">LightCycleSupportFragment</a> for example</p>
             </section>
@@ -195,12 +195,12 @@
               <p>You can check full source code of LightCycle on <a href="https://github.com/soundcloud/lightcycle">GitHub</a>.</p>
 
               <h4>Gradle</h4>
-              <pre class="prettyprint">dependencies {
+              <pre><code class="language-gradle">dependencies {
   compile 'com.soundcloud.lightcycle:lightcycle-lib:<span class="version pln"><em>(insert latest version)</em></span>'
   annotationProcessor 'com.soundcloud.lightcycle:lightcycle-processor:<span class="version pln"><em>(insert latest version)</em></span>'
-}</pre>
+}</code></pre>
               <p>Or if you're using a version of the Android gradle plugin below 2.2.0</p>
-              <pre class="prettyprint">buildscript {
+              <pre><code class="language-gradle">buildscript {
   dependencies {
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
   }
@@ -213,7 +213,7 @@ ext.lightCycleVersion=<LATEST_VERSION>
   dependencies {
   compile 'com.soundcloud.lightcycle:lightcycle-lib:<span class="version pln"><em>(insert latest version)</em></span>'
   apt 'com.soundcloud.lightcycle:lightcycle-processor:<span class="version pln"><em>(insert latest version)</em></span>'
-}</pre>
+}</code></pre>
             </section>
 
             <section id="license">
@@ -233,23 +233,38 @@ See the License for the specific language governing permissions and
 limitations under the License.</pre>
             </section>
           </div>
+          <div class="span3">
+            <div class="content-nav" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+              <ul class="nav nav-tabs nav-stacked primary">
+                <li class="active"><a href="#introduction">Introduction</a><hr/></li>
+                <li><a href="#examples">Examples</a><hr/></li>
+                <li><a href="#documentation">Documentation</a><hr/></li>
+                <li><a href="#download">Download</a><hr/></li>
+                <li><a href="#license">License</a><hr/></li>
+              </ul>
+              <ul class="nav nav-pills nav-stacked secondary">
+                <li><a href="https://twitter.com/SoundCloudDev">@SoundCloudDev</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="span12 logo">
-            <a href="https://soundcloud.com/"><img src="static/logo-soundcloud.png" alt="Soundcloud Limited"/></a>
+            <a href="https://soundcloud.com/"><img src="assets/images/logo-soundcloud.png" alt="Soundcloud Limited"/></a>
           </div>
         </div>
       </div>
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="static/bootstrap.min.js"></script>
-    <script src="static/jquery.smooth-scroll.min.js"></script>
-    <script src="static/jquery-maven-artifact.min.js"></script>
-    <script src="static/prettify.js"></script>
+    <script src="assets/javascripts/bootstrap.min.js"></script>
+    <script src="assets/javascripts/jquery.smooth-scroll.min.js"></script>
+    <script src="assets/javascripts/jquery-maven-artifact.min.js"></script>
+    <script src="assets/javascripts/highlight.pack.js"></script>
+    <script></script>
     <script type="text/javascript">
       $(function() {
-        // Syntax highlight code blocks.
-        prettyPrint();
+        // Highlight code block
+        hljs.initHighlightingOnLoad();
 
         // Spy on scroll position for real-time updating of current section.
         $('body').scrollspy();

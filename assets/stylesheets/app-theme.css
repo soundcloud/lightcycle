@@ -23,8 +23,11 @@ header menu li a:visited, a:link {
   color: #fff;
   text-decoration: none;
 }
-a {
+p a, p a:visited, p a:link {
   color: #f50;
+}
+p a:hover {
+  color: #482B58
 }
 
 /****************************************************************\
