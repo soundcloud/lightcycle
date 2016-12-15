@@ -1,4 +1,4 @@
-package com.soundcloud.lightcycle.sample.real_world;
+package com.soundcloud.lightcycle.sample.real_world.home;
 
 import com.soundcloud.lightcycle.ActivityLightCycleDispatcher;
 import com.soundcloud.lightcycle.LightCycle;
@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-class HomePresenter extends ActivityLightCycleDispatcher<HomeActivity> {
+class HomePresenter extends ActivityLightCycleDispatcher<HomeView> {
     @LightCycle final HeaderPresenter headerPresenter;
     @LightCycle final DescriptionPresenter descriptionPresenter;
 
@@ -20,8 +20,8 @@ class HomePresenter extends ActivityLightCycleDispatcher<HomeActivity> {
     }
 
     @Override
-    public void onCreate(HomeActivity activity, @Nullable Bundle bundle) {
+    public void onCreate(HomeView homeView, @Nullable Bundle bundle) {
         LightCycles.bind(this);
-        super.onCreate(activity, bundle);
+        super.onCreate(homeView, bundle);
     }
 }

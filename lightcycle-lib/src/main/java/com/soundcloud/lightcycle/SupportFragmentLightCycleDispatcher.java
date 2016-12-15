@@ -5,74 +5,73 @@ import com.soundcloud.lightcycle.util.Preconditions;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class SupportFragmentLightCycleDispatcher<T extends Fragment>
-        implements LightCycleDispatcher<SupportFragmentLightCycle<T>>, SupportFragmentLightCycle<T> {
-    private final Set<SupportFragmentLightCycle<T>> fragmentLightCycles;
+public class SupportFragmentLightCycleDispatcher<HostType>
+        implements LightCycleDispatcher<SupportFragmentLightCycle<HostType>>, SupportFragmentLightCycle<HostType> {
+
+    private final Set<SupportFragmentLightCycle<HostType>> fragmentLightCycles;
 
     public SupportFragmentLightCycleDispatcher() {
         this.fragmentLightCycles = new HashSet<>();
     }
 
     @Override
-    public void bind(SupportFragmentLightCycle<T> lightCycle) {
+    public void bind(SupportFragmentLightCycle<HostType> lightCycle) {
         Preconditions.checkBindingTarget(lightCycle);
         fragmentLightCycles.add(lightCycle);
     }
 
     @Override
-    public void onAttach(T fragment, Activity activity) {
-        LightCycles.bind(this);
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onAttach(fragment, activity);
+    public void onAttach(HostType host, Activity activity) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onAttach(host, activity);
         }
     }
 
     @Override
-    public void onCreate(T fragment, @Nullable Bundle bundle) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onCreate(fragment, bundle);
+    public void onCreate(HostType host, @Nullable Bundle bundle) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onCreate(host, bundle);
         }
     }
 
     @Override
-    public void onViewCreated(T fragment, View view, @Nullable Bundle savedInstanceState) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onViewCreated(fragment, view, savedInstanceState);
+    public void onViewCreated(HostType host, View view, @Nullable Bundle savedInstanceState) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onViewCreated(host, view, savedInstanceState);
         }
     }
 
     @Override
-    public void onActivityCreated(T fragment, Bundle bundle) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onActivityCreated(fragment, bundle);
+    public void onActivityCreated(HostType host, Bundle bundle) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onActivityCreated(host, bundle);
         }
     }
 
     @Override
-    public void onStart(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onStart(fragment);
+    public void onStart(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onStart(host);
         }
     }
 
     @Override
-    public void onResume(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onResume(fragment);
+    public void onResume(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onResume(host);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(T fragment, MenuItem item) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            if (component.onOptionsItemSelected(fragment, item)) {
+    public boolean onOptionsItemSelected(HostType host, MenuItem item) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            if (component.onOptionsItemSelected(host, item)) {
                 return true;
             }
         }
@@ -80,44 +79,44 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
     }
 
     @Override
-    public void onPause(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onPause(fragment);
+    public void onPause(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onPause(host);
         }
     }
 
     @Override
-    public void onStop(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onStop(fragment);
+    public void onStop(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onStop(host);
         }
     }
 
     @Override
-    public void onSaveInstanceState(T fragment, Bundle bundle) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onSaveInstanceState(fragment, bundle);
+    public void onSaveInstanceState(HostType host, Bundle bundle) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onSaveInstanceState(host, bundle);
         }
     }
 
     @Override
-    public void onDestroyView(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onDestroyView(fragment);
+    public void onDestroyView(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onDestroyView(host);
         }
     }
 
     @Override
-    public void onDestroy(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onDestroy(fragment);
+    public void onDestroy(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onDestroy(host);
         }
     }
 
     @Override
-    public void onDetach(T fragment) {
-        for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
-            component.onDetach(fragment);
+    public void onDetach(HostType host) {
+        for (SupportFragmentLightCycle<HostType> component : fragmentLightCycles) {
+            component.onDetach(host);
         }
     }
 }

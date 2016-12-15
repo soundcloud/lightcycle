@@ -1,7 +1,8 @@
-package com.soundcloud.lightcycle.sample.real_world;
+package com.soundcloud.lightcycle.sample.real_world.home;
 
 import static org.mockito.Mockito.verify;
 
+import com.soundcloud.lightcycle.sample.real_world.R;
 import com.soundcloud.lightcycle.sample.real_world.utils.DateProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +13,7 @@ import android.os.Bundle;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HeaderPresenterTest {
-    @Mock private HomeActivity activity;
+    @Mock private HomeView view;
 
     @Test
     public void sayHelloWhenNotMorning() {
@@ -23,9 +24,9 @@ public class HeaderPresenterTest {
             }
         });
 
-        presenter.onCreate(activity, Bundle.EMPTY);
+        presenter.onCreate(view, Bundle.EMPTY);
 
-        verify(activity).sayHello(R.string.hello);
+        verify(view).sayHello(R.string.hello);
     }
 
     @Test
@@ -37,8 +38,8 @@ public class HeaderPresenterTest {
             }
         });
 
-        presenter.onCreate(activity, Bundle.EMPTY);
+        presenter.onCreate(view, Bundle.EMPTY);
 
-        verify(activity).sayHello(R.string.good_morning);
+        verify(view).sayHello(R.string.good_morning);
     }
 }

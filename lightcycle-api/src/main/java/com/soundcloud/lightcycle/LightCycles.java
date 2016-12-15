@@ -53,7 +53,7 @@ public final class LightCycles {
         return lightCycleInjectionMethod;
     }
 
-    public static <Source extends Activity, Target extends Source> ActivityLightCycle<Target> lift(final ActivityLightCycle<Source> lightCycle) {
+    public static <Source, Target extends Source> ActivityLightCycle<Target> lift(final ActivityLightCycle<Source> lightCycle) {
         return new ActivityLightCycle<Target>() {
 
             @Override
@@ -109,7 +109,7 @@ public final class LightCycles {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static <Source extends android.app.Fragment, Target extends Source> FragmentLightCycle<Target> lift(final FragmentLightCycle<Source> lightCycle) {
+    public static <Source, Target extends Source> FragmentLightCycle<Target> lift(final FragmentLightCycle<Source> lightCycle) {
         return new FragmentLightCycle<Target>() {
 
             @Override
@@ -185,7 +185,7 @@ public final class LightCycles {
     }
 
 
-    public static <Source extends android.support.v4.app.Fragment, Target extends Source> SupportFragmentLightCycle<Target> lift(final SupportFragmentLightCycle<Source> lightCycle) {
+    public static <Source, Target extends Source> SupportFragmentLightCycle<Target> lift(final SupportFragmentLightCycle<Source> lightCycle) {
         return new SupportFragmentLightCycle<Target>() {
 
             @Override
