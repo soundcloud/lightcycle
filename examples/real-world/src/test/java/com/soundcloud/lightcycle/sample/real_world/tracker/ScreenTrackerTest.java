@@ -2,7 +2,7 @@ package com.soundcloud.lightcycle.sample.real_world.tracker;
 
 import static org.mockito.Mockito.verify;
 
-import com.soundcloud.lightcycle.sample.real_world.HomeActivity;
+import com.soundcloud.lightcycle.sample.real_world.home.HomeActivity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

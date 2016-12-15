@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/my_fragment"
-        android:name="com.soundcloud.lightcycle.sample.real_world.LicenseFragment"
+        android:name="com.soundcloud.lightcycle.sample.real_world.license.LicenseFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />

@@ -17,8 +17,6 @@ public final class LightCycles {
     private static final String ANDROID_PREFIX = "android.";
     private static final String JAVA_PREFIX = "java.";
 
-
-
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public static void bind(LightCycleDispatcher<?> target) {
         Method bindingMethod;
@@ -55,21 +53,21 @@ public final class LightCycles {
         return lightCycleInjectionMethod;
     }
 
-    public static <Source extends Activity, Target extends Source> ActivityLightCycle<Target> lift(final ActivityLightCycle<Source> lightCycle) {
+    public static <Source, Target extends Source> ActivityLightCycle<Target> lift(final ActivityLightCycle<Source> lightCycle) {
         return new LiftedActivityLightCycle<>(lightCycle);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static <Source extends android.app.Fragment, Target extends Source> FragmentLightCycle<Target> lift(final FragmentLightCycle<Source> lightCycle) {
+    public static <Source, Target extends Source> FragmentLightCycle<Target> lift(final FragmentLightCycle<Source> lightCycle) {
         return new LiftedFragmentLightCycle<>(lightCycle);
     }
 
 
-    public static <Source extends android.support.v4.app.Fragment, Target extends Source> SupportFragmentLightCycle<Target> lift(final SupportFragmentLightCycle<Source> lightCycle) {
+    public static <Source, Target extends Source> SupportFragmentLightCycle<Target> lift(final SupportFragmentLightCycle<Source> lightCycle) {
         return new LiftedSupportFragmentLightCycle<>(lightCycle);
     }
 
-    static final class LiftedActivityLightCycle<Source extends Activity, Target extends Source> implements ActivityLightCycle<Target> {
+    static final class LiftedActivityLightCycle<Source, Target extends Source> implements ActivityLightCycle<Target> {
 
         private final ActivityLightCycle<Source> lightCycle;
 
@@ -148,8 +146,7 @@ public final class LightCycles {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    static final class LiftedFragmentLightCycle<Source extends android.app.Fragment, Target extends Source> implements FragmentLightCycle<Target> {
-
+    static final class LiftedFragmentLightCycle<Source, Target extends Source> implements FragmentLightCycle<Target> {
         private final FragmentLightCycle<Source> lightCycle;
 
         LiftedFragmentLightCycle(FragmentLightCycle<Source> lightCycle) {
@@ -247,7 +244,7 @@ public final class LightCycles {
         }
     }
 
-    static final class LiftedSupportFragmentLightCycle<Source extends android.support.v4.app.Fragment, Target extends Source> implements SupportFragmentLightCycle<Target> {
+    static final class LiftedSupportFragmentLightCycle<Source, Target extends Source> implements SupportFragmentLightCycle<Target> {
 
         private final SupportFragmentLightCycle<Source> lightCycle;
 
