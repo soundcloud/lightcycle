@@ -49,10 +49,10 @@ abstract class LightCycleBinder {
             private CodeBlock generateLiftAndBind(Element element, String liftedName, List<? extends TypeMirror> typeArguments) {
                 final String lightCycleLiftedType = dispatcherKind.toTypeName(typeArguments.get(0).toString());
                 return CodeBlock.builder()
-                        .addStatement("final $N $N = $N($N.$N)",
+                        .addStatement("final $N $N = $N.$N",
                                 lightCycleLiftedType,
                                 liftedName,
-                                METHOD_LIFT_NAME,
+                                //METHOD_LIFT_NAME,
                                 METHOD_BIND_ARGUMENT_NAME,
                                 element.getSimpleName())
                         .addStatement("$N.$N($N)", METHOD_BIND_ARGUMENT_NAME, METHOD_BIND_NAME, liftedName)

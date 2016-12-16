@@ -14,7 +14,11 @@ public abstract class LightCycleAppCompatActivity<HostType>
     private final ActivityLightCycleDispatcher<HostType> lightCycleDispatcher;
 
     public LightCycleAppCompatActivity() {
-        lightCycleDispatcher = new ActivityLightCycleDispatcher<>();
+        this(new ActivityLightCycleDispatcher<HostType>());
+    }
+
+    public LightCycleAppCompatActivity(ActivityLightCycleDispatcher<HostType> dispatcher) {
+        this.lightCycleDispatcher = dispatcher;
     }
 
     @Override

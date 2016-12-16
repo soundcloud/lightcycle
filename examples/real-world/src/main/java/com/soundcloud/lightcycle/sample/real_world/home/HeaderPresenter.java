@@ -1,15 +1,12 @@
 package com.soundcloud.lightcycle.sample.real_world.home;
 
-import com.soundcloud.lightcycle.DefaultActivityLightCycle;
 import com.soundcloud.lightcycle.sample.real_world.R;
+import com.soundcloud.lightcycle.sample.real_world.experiment.MyLightCycle;
 import com.soundcloud.lightcycle.sample.real_world.utils.DateProvider;
-
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-class HeaderPresenter extends DefaultActivityLightCycle<HomeView> {
+class HeaderPresenter implements MyLightCycle<HomeView> {
     private final DateProvider dateProvider;
 
     @Inject
@@ -18,7 +15,7 @@ class HeaderPresenter extends DefaultActivityLightCycle<HomeView> {
     }
 
     @Override
-    public void onCreate(HomeView homeView, @Nullable Bundle bundle) {
+    public void onScreen(HomeView homeView) {
         if (dateProvider.isMorning()) {
             homeView.sayHello(R.string.good_morning);
         } else {
@@ -26,4 +23,8 @@ class HeaderPresenter extends DefaultActivityLightCycle<HomeView> {
         }
     }
 
+    @Override
+    public void offScreen(HomeView host) {
+
+    }
 }
