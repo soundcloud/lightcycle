@@ -1,5 +1,6 @@
 package com.soundcloud.lightcycle;
 
+import com.soundcloud.lightcycle.util.LightCycleBinderHelper;
 import com.soundcloud.lightcycle.util.Preconditions;
 
 import android.app.Activity;
@@ -16,10 +17,11 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
         implements LightCycleDispatcher<SupportFragmentLightCycle<T>>, SupportFragmentLightCycle<T> {
 
     private final Set<SupportFragmentLightCycle<T>> fragmentLightCycles;
-    private boolean bound;
+    private final LightCycleBinderHelper binderHelper;
 
     public SupportFragmentLightCycleDispatcher() {
         this.fragmentLightCycles = new HashSet<>();
+        this.binderHelper = new LightCycleBinderHelper(this);
     }
 
     @Override
@@ -30,16 +32,9 @@ public class SupportFragmentLightCycleDispatcher<T extends Fragment>
 
     @Override
     public void onAttach(T fragment, Activity activity) {
-        bindIfNecessary();
+        binderHelper.bindIfNecessary();
         for (SupportFragmentLightCycle<T> component : fragmentLightCycles) {
             component.onAttach(fragment, activity);
-        }
-    }
-
-    private void bindIfNecessary() {
-        if (!bound) {
-            LightCycles.bind(this);
-            bound = true;
         }
     }
 

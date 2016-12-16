@@ -1,5 +1,8 @@
 package com.soundcloud.lightcycle;
 
+import com.soundcloud.lightcycle.util.LightCycleBinderHelper;
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,16 +12,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.soundcloud.lightcycle.util.Preconditions;
-
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class LightCycleFragment<FragmentType extends Fragment> extends Fragment implements LightCycleDispatcher<FragmentLightCycle<FragmentType>> {
 
     private final FragmentLightCycleDispatcher<FragmentType> lifeCycleDispatcher;
-    private boolean bound;
+    private final LightCycleBinderHelper binderHelper;
 
     public LightCycleFragment() {
-        lifeCycleDispatcher = new FragmentLightCycleDispatcher<>();
+        this.lifeCycleDispatcher = new FragmentLightCycleDispatcher<>();
+        this.binderHelper = new LightCycleBinderHelper(this);
     }
 
     @Override
@@ -31,7 +33,7 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     @TargetApi(23)
     public void onAttach(Context context) {
         super.onAttach(context);
-        bindIfNecessary();
+        binderHelper.bindIfNecessary();
         lifeCycleDispatcher.onAttach(fragment(), context);
     }
 
@@ -43,15 +45,8 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        bindIfNecessary();
+        binderHelper.bindIfNecessary();
         lifeCycleDispatcher.onAttach(fragment(), activity);
-    }
-
-    private void bindIfNecessary() {
-        if (!bound) {
-            LightCycles.bind(this);
-            bound = true;
-        }
     }
 
     @Override
