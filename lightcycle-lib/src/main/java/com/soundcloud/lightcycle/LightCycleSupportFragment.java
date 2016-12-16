@@ -1,20 +1,22 @@
 package com.soundcloud.lightcycle;
 
+import com.soundcloud.lightcycle.util.LightCycleBinderHelper;
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.soundcloud.lightcycle.util.Preconditions;
-
 public abstract class LightCycleSupportFragment<FragmentType extends Fragment> extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle<FragmentType>> {
 
     private final SupportFragmentLightCycleDispatcher<FragmentType> lifeCycleDispatcher;
-    private boolean bound;
+    private final LightCycleBinderHelper binderHelper;
 
     public LightCycleSupportFragment() {
-        lifeCycleDispatcher = new SupportFragmentLightCycleDispatcher<>();
+        this.lifeCycleDispatcher = new SupportFragmentLightCycleDispatcher<>();
+        this.binderHelper = new LightCycleBinderHelper(this);
     }
 
     @Override
@@ -26,15 +28,8 @@ public abstract class LightCycleSupportFragment<FragmentType extends Fragment> e
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        bindIfNecessary();
+        binderHelper.bindIfNecessary();
         lifeCycleDispatcher.onAttach(fragment(), activity);
-    }
-
-    private void bindIfNecessary() {
-        if (!bound) {
-            LightCycles.bind(this);
-            bound = true;
-        }
     }
 
     @Override

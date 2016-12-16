@@ -1,21 +1,21 @@
 package com.soundcloud.lightcycle.integration_test;
 
-import android.os.Bundle;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.BooleanSubject;
 import com.soundcloud.lightcycle.integration_test.callback.FragmentLifecycleCallback;
 import com.soundcloud.lightcycle.sample.basic.BuildConfig;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.FragmentController;
+import utils.FragmentTestHelper;
+
+import android.os.Bundle;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 22)
@@ -128,6 +128,18 @@ public class FragmentLoggerTest {
                         FragmentLifecycleCallback.onDestroy,
                         FragmentLifecycleCallback.onDetach)
         );
+    }
+
+    @Test
+    public void bindFragmentOnlyOnceWhenReAttched() {
+        FragmentTestHelper
+                .from(sampleFragment)
+                .addFragment()
+                .removeFragment()
+                .addFragment();
+
+        assertThat(sampleFragment.onAttachCount).is(2);
+        assertThat(sampleFragment.bindCount).is(1);
     }
 
     private void assertLifecycleCallbackCallIsCorrect(List<FragmentLifecycleCallback> callbacks) {
