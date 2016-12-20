@@ -1,0 +1,216 @@
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+body {
+  background-color: #f6f6f6;
+  padding-bottom: 50px;
+  padding-top: 80px;
+}
+
+header {
+  min-height: 80px;
+  color: #f6f6f6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+}
+header h1 {
+  margin: 10px 0;
+  font-size: 50px;
+  line-height: 60px;
+  font-weight: 100;
+  text-rendering: auto;
+}
+header menu {
+  margin: 20px 0 0;
+  padding: 0;
+  height: 40px;
+}
+header menu ul {
+  margin: 0;
+  padding: 0;
+  float: right;
+}
+header menu li {
+  list-style: none;
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+header menu li a {
+  display: inline-block;
+  height: 40px;
+  font-size: 17px;
+  line-height: 40px;
+  padding: 0 20px;
+  color: #f6f6f6;
+}
+header menu li a:hover {
+  color: #f6f6f6;
+  text-decoration: none;
+}
+header menu li a img {
+  margin: 0;
+  padding: 5px 0;
+  vertical-align: bottom;
+  width: 30px;
+  height: 30px;
+}
+
+#subtitle {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  width: 100%;
+}
+h2 {
+  font-weight: 200;
+  font-size: 26px;
+  line-height: 30px;
+  padding: 15px 0;
+  margin: 0;
+  color: #eee;
+}
+h2 strong {
+  font-weight: 300;
+}
+
+.content-nav {
+  margin-top: 130px;
+  width: 220px;
+}
+.content-nav.affix {
+  top: 0;
+}
+.content-nav li.active a, .content-nav li.active a:hover {
+  background-color: transparent;
+  color: #555;
+  border-left-width: 2px;
+}
+.content-nav .secondary a {
+  color: #aaa;
+}
+.content-nav .secondary a:hover {
+  color: #888;
+}
+
+.nav-tabs.nav-stacked {
+  border-left: 2px solid;
+  border-color: #f50;
+}
+
+.nav-tabs.nav-stacked > li > a {
+  font-size: 18px;
+  color: #919191;
+  border: 0px;
+  border-radius: 0px !important;
+}
+
+.nav-tabs.nav-stacked > li > a:hover {
+  color: #000;
+  font-weight: bolder;
+}
+
+.nav-tabs.nav-stacked > li.active > a {
+  color: #000;
+  font-weight: bolder;
+  z-index: 0;
+  border: 0px;
+  background-color: #f6f6f6;
+}
+
+hr {
+    display: block;
+    height: 2px;
+    border: 0;
+    border-top: 2px solid #e2e2e2;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 5px;
+    padding: 0;
+}
+
+h3 {
+  font-weight: bold;
+  color: #000;
+  font-size: 30px;
+  padding-top: 100px;
+  /*
+    Trick to fit scrolling by scrollspy from nav bar
+    http://stackoverflow.com/questions/9288482/how-do-i-set-the-offset-for-scrollspy-in-bootstrap
+  */
+  margin-top: -70px;
+}
+
+h4 {
+  font-weight: bold;
+  color: #333;
+  font-size: 25px;
+  padding-top: 20px;
+}
+
+h5 {
+  font-weight: bold;
+  color: #333;
+  font-size: 18px;
+  padding-top: 10px;
+}
+
+p.license {
+  font-family: fixed-width;
+}
+
+.row .logo {
+  text-align: center;
+  margin-top: 100px;
+}
+.row .logo img {
+  height: 50px;
+}
+.line {
+  height: 5px;
+}
+.soundcloud-background-color {
+  background-color: #f50
+}
+
+/* Widescreen desktop. */
+@media (min-width: 1200px) {
+  .content-nav {
+    width: 270px;
+  }
+}
+
+/* Smaller width browser, tablets. */
+@media (max-width: 979px) {
+  .content-nav {
+    width: 166px;
+  }
+}
+
+/* One-column mobile display. */
+@media (max-width: 767px) {
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 20px;
+  }
+  header menu {
+    display: none;
+  }
+  #subtitle {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    padding-left: 20px;
+  }
+  .content-nav {
+    display: none;
+  }
+}
