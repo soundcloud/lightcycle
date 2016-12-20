@@ -1,5 +1,7 @@
 package com.soundcloud.lightcycle.sample.real_world;
 
+import com.soundcloud.lightcycle.sample.real_world.home.HomeActivity;
+import com.soundcloud.lightcycle.sample.real_world.license.LicenseFragment;
 import dagger.Module;
 import dagger.Provides;
 

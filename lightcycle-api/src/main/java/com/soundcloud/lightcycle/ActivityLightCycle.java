@@ -1,19 +1,18 @@
 package com.soundcloud.lightcycle;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public interface ActivityLightCycle<T extends Activity> {
-    void onCreate(T activity, Bundle bundle);
-    void onNewIntent(T activity, Intent intent);
-    void onStart(T activity);
-    void onResume(T activity);
-    boolean onOptionsItemSelected(T activity, MenuItem item);
-    void onPause(T activity);
-    void onStop(T activity);
-    void onSaveInstanceState(T activity, Bundle bundle);
-    void onRestoreInstanceState(T activity, Bundle bundle);
-    void onDestroy(T activity);
+public interface ActivityLightCycle<T> {
+    void onCreate(T host, Bundle bundle);
+    void onNewIntent(T host, Intent intent);
+    void onStart(T host);
+    void onResume(T host);
+    boolean onOptionsItemSelected(T host, MenuItem item);
+    void onPause(T host);
+    void onStop(T host);
+    void onSaveInstanceState(T host, Bundle bundle);
+    void onRestoreInstanceState(T host, Bundle bundle);
+    void onDestroy(T host);
 }

@@ -2,7 +2,6 @@ package com.soundcloud.lightcycle;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,48 +9,48 @@ import android.view.MenuItem;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class DefaultFragmentLightCycle<T extends Fragment> implements FragmentLightCycle<T> {
+public class DefaultFragmentLightCycle<HostType> implements FragmentLightCycle<HostType> {
     @Override
-    public void onAttach(T fragment, Activity activity) { /* no-op */ }
+    public void onAttach(HostType host, Activity activity) { /* no-op */ }
 
     @Override
-    public void onAttach(T fragment, Context context) { /* no-op */ }
+    public void onAttach(HostType host, Context context) { /* no-op */ }
 
     @Override
-    public void onCreate(T fragment, Bundle bundle) { /* no-op */ }
+    public void onCreate(HostType host, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onViewCreated(T fragment, View view, Bundle savedInstanceState) { /* no-op */ }
+    public void onViewCreated(HostType host, View view, Bundle savedInstanceState) { /* no-op */ }
 
     @Override
-    public void onActivityCreated(T fragment, Bundle bundle) { /* no-op */ }
+    public void onActivityCreated(HostType host, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onStart(T fragment) { /* no-op */ }
+    public void onStart(HostType host) { /* no-op */ }
 
     @Override
-    public void onResume(T fragment) { /* no-op */ }
+    public void onResume(HostType host) { /* no-op */ }
 
     @Override
-    public boolean onOptionsItemSelected(T fragment, MenuItem item) {
+    public boolean onOptionsItemSelected(HostType host, MenuItem item) {
         return false;
     }
 
     @Override
-    public void onPause(T fragment) { /* no-op */ }
+    public void onPause(HostType host) { /* no-op */ }
 
     @Override
-    public void onStop(T fragment) { /* no-op */ }
+    public void onStop(HostType host) { /* no-op */ }
 
     @Override
-    public void onSaveInstanceState(T fragment, Bundle bundle) { /* no-op */ }
+    public void onSaveInstanceState(HostType host, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onDestroyView(T fragment) { /* no-op */ }
+    public void onDestroyView(HostType host) { /* no-op */ }
 
     @Override
-    public void onDestroy(T fragment) { /* no-op */ }
+    public void onDestroy(HostType host) { /* no-op */ }
 
     @Override
-    public void onDetach(T fragment) { /* no-op */ }
+    public void onDetach(HostType host) { /* no-op */ }
 }

@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public abstract class LightCycleFragment<FragmentType extends Fragment> extends Fragment implements LightCycleDispatcher<FragmentLightCycle<FragmentType>> {
+public abstract class LightCycleFragment<HostType> extends Fragment implements LightCycleDispatcher<FragmentLightCycle<HostType>> {
 
-    private final FragmentLightCycleDispatcher<FragmentType> lifeCycleDispatcher;
+    private final FragmentLightCycleDispatcher<HostType> lifeCycleDispatcher;
     private final LightCycleBinderHelper binderHelper;
 
     public LightCycleFragment() {
@@ -24,7 +24,7 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     }
 
     @Override
-    public void bind(FragmentLightCycle<FragmentType> lifeCycleComponent) {
+    public void bind(FragmentLightCycle<HostType> lifeCycleComponent) {
         Preconditions.checkBindingTarget(lifeCycleComponent);
         lifeCycleDispatcher.bind(lifeCycleComponent);
     }
@@ -34,7 +34,7 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     public void onAttach(Context context) {
         super.onAttach(context);
         binderHelper.bindIfNecessary();
-        lifeCycleDispatcher.onAttach(fragment(), context);
+        lifeCycleDispatcher.onAttach(host(), context);
     }
 
     /*
@@ -46,82 +46,82 @@ public abstract class LightCycleFragment<FragmentType extends Fragment> extends 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         binderHelper.bindIfNecessary();
-        lifeCycleDispatcher.onAttach(fragment(), activity);
+        lifeCycleDispatcher.onAttach(host(), activity);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lifeCycleDispatcher.onCreate(fragment(), savedInstanceState);
+        lifeCycleDispatcher.onCreate(host(), savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lifeCycleDispatcher.onViewCreated(fragment(), view, savedInstanceState);
+        lifeCycleDispatcher.onViewCreated(host(), view, savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        lifeCycleDispatcher.onActivityCreated(fragment(), savedInstanceState);
+        lifeCycleDispatcher.onActivityCreated(host(), savedInstanceState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        lifeCycleDispatcher.onStart(fragment());
+        lifeCycleDispatcher.onStart(host());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        lifeCycleDispatcher.onResume(fragment());
+        lifeCycleDispatcher.onResume(host());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return lifeCycleDispatcher.onOptionsItemSelected(fragment(), item);
+        return lifeCycleDispatcher.onOptionsItemSelected(host(), item);
     }
 
     @Override
     public void onPause() {
-        lifeCycleDispatcher.onPause(fragment());
+        lifeCycleDispatcher.onPause(host());
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        lifeCycleDispatcher.onStop(fragment());
+        lifeCycleDispatcher.onStop(host());
         super.onStop();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        lifeCycleDispatcher.onSaveInstanceState(fragment(), outState);
+        lifeCycleDispatcher.onSaveInstanceState(host(), outState);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroyView() {
-        lifeCycleDispatcher.onDestroyView(fragment());
+        lifeCycleDispatcher.onDestroyView(host());
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        lifeCycleDispatcher.onDestroy(fragment());
+        lifeCycleDispatcher.onDestroy(host());
         super.onDestroy();
     }
 
     @Override
     public void onDetach() {
-        lifeCycleDispatcher.onDetach(fragment());
+        lifeCycleDispatcher.onDetach(host());
         super.onDetach();
     }
 
     @SuppressWarnings("unchecked")
-    private FragmentType fragment() {
-        return (FragmentType) this;
+    private HostType host() {
+        return (HostType) this;
     }
 }
