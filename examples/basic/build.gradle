@@ -1,17 +1,14 @@
 buildscript {
   repositories {
-    mavenCentral()
+    jcenter()
   }
   dependencies {
     // replace with the current version of the Android plugin
-    classpath 'com.android.tools.build:gradle:1.5.0'
-    // the latest version of the android-apt plugin
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    classpath 'com.android.tools.build:gradle:2.2.0'
   }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -32,7 +29,7 @@ android {
 }
 
 dependencies {
-  apt project(":lightcycle-processor")
+  annotationProcessor project(":lightcycle-processor")
 
   compile project(":lightcycle-lib")
   compile deps.appcompat_v7

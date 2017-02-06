@@ -1,37 +1,36 @@
 buildscript {
   repositories {
     mavenLocal()
-    mavenCentral()
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath 'com.android.tools.build:gradle:2.2.2'
     classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
   }
 }
 
 task wrapper(type: Wrapper) {
   description 'Creates the gradle wrapper.'
-  gradleVersion '2.5'
+  gradleVersion '2.14.1'
 }
 
 allprojects {
   repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
   }
 }
 
 ext {
-  minSdkVersion = 8
-  targetSdkVersion = 23
-  compileSdkVersion = 23
-  buildToolsVersion = '23.0.1'
+  minSdkVersion = 9
+  targetSdkVersion = 25
+  compileSdkVersion = 25
+  buildToolsVersion = '25.0.1'
   sourceCompatibilityVersion = JavaVersion.VERSION_1_7
   targetCompatibilityVersion = JavaVersion.VERSION_1_7
 }
 
-def supportLibVersion = '23.1.1'
+def supportLibVersion = '25.0.1'
 
 ext.deps = [
   // Android
@@ -47,12 +46,30 @@ ext.deps = [
   junit                 : 'junit:junit:4.12',
   mockito               : 'org.mockito:mockito-all:1.10.19',
   compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
+  roboelectric          : 'org.robolectric:robolectric:3.1.2',
+  robolectric_support   : 'org.robolectric:shadows-support-v4:3.1.2',
+  equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8'
 ]
 
 // Static analysis
 subprojects { project ->
+  apply plugin: 'checkstyle'
   apply plugin: 'pmd'
   apply plugin: 'findbugs'
+
+  checkstyle {
+    toolVersion = "7.2"
+    configFile rootProject.file('checkstyle.xml')
+  }
+
+  task checkstyle(type: Checkstyle) {
+    source 'src/main/java'
+    ignoreFailures false
+    showViolations true
+    include '**/*.java'
+
+    classpath = files()
+  }
 
   task pmd(type: Pmd) {
     description 'Finds common programming flaws throw static analysis of code.'

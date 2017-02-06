@@ -1,6 +1,7 @@
 package com.soundcloud.lightcycle;
 
-import android.app.Activity;
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +10,9 @@ import android.view.MenuItem;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ActivityLightCycleDispatcher<T extends Activity>
-        implements LightCycleDispatcher<ActivityLightCycle<T>>, ActivityLightCycle<T> {
-    private final Set<ActivityLightCycle<T>> activityLightCycles;
+public class ActivityLightCycleDispatcher<HostType>
+        implements LightCycleDispatcher<ActivityLightCycle<HostType>>, ActivityLightCycle<HostType> {
+    private final Set<ActivityLightCycle<HostType>> activityLightCycles;
 
     public ActivityLightCycleDispatcher() {
         this.activityLightCycles = new HashSet<>();
@@ -19,42 +20,44 @@ public class ActivityLightCycleDispatcher<T extends Activity>
 
 
     @Override
-    public void bind(ActivityLightCycle<T> lightCycle) {
+    public void bind(ActivityLightCycle<HostType> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         this.activityLightCycles.add(lightCycle);
     }
 
     @Override
-    public void onCreate(T activity, @Nullable Bundle bundle) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onCreate(activity, bundle);
+    public void onCreate(HostType host, @Nullable Bundle bundle) {
+        LightCycles.bind(this);
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onCreate(host, bundle);
         }
     }
 
     @Override
-    public void onNewIntent(T activity, Intent intent) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onNewIntent(activity, intent);
+    public void onNewIntent(HostType host, Intent intent) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onNewIntent(host, intent);
         }
     }
 
     @Override
-    public void onStart(T activity) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onStart(activity);
+    public void onStart(HostType host) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onStart(host);
         }
     }
 
     @Override
-    public void onResume(T activity) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onResume(activity);
+    public void onResume(HostType host) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onResume(host);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(T activity, MenuItem item) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            if (component.onOptionsItemSelected(activity, item)) {
+    public boolean onOptionsItemSelected(HostType host, MenuItem item) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            if (component.onOptionsItemSelected(host, item)) {
                 return true;
             }
         }
@@ -62,37 +65,37 @@ public class ActivityLightCycleDispatcher<T extends Activity>
     }
 
     @Override
-    public void onPause(T activity) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onPause(activity);
+    public void onPause(HostType host) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onPause(host);
         }
     }
 
     @Override
-    public void onStop(T activity) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onStop(activity);
+    public void onStop(HostType host) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onStop(host);
         }
     }
 
     @Override
-    public void onSaveInstanceState(T activity, Bundle bundle) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onSaveInstanceState(activity, bundle);
+    public void onSaveInstanceState(HostType host, Bundle bundle) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onSaveInstanceState(host, bundle);
         }
     }
 
     @Override
-    public void onRestoreInstanceState(T activity, Bundle bundle) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onRestoreInstanceState(activity, bundle);
+    public void onRestoreInstanceState(HostType host, Bundle bundle) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onRestoreInstanceState(host, bundle);
         }
     }
 
     @Override
-    public void onDestroy(T activity) {
-        for (ActivityLightCycle<T> component : activityLightCycles) {
-            component.onDestroy(activity);
+    public void onDestroy(HostType host) {
+        for (ActivityLightCycle<HostType> component : activityLightCycles) {
+            component.onDestroy(host);
         }
     }
 }

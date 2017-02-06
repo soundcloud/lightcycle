@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -20,6 +21,7 @@ public class FragmentLightCycleDispatcherTest {
     @Mock private FragmentLightCycle<Fragment> lifeCycleComponent2;
     @Mock private Fragment fragment;
     @Mock private Activity activity;
+    @Mock private Context context;
     private FragmentLightCycleDispatcher<Fragment> dispatcher;
 
     @Before
@@ -35,6 +37,14 @@ public class FragmentLightCycleDispatcherTest {
 
         verify(lifeCycleComponent1).onAttach(fragment, activity);
         verify(lifeCycleComponent2).onAttach(fragment, activity);
+    }
+
+    @Test
+    public void shouldNotifyOnAttachAPI23() {
+        dispatcher.onAttach(fragment, context);
+
+        verify(lifeCycleComponent1).onAttach(fragment, context);
+        verify(lifeCycleComponent2).onAttach(fragment, context);
     }
 
     @Test
@@ -132,5 +142,10 @@ public class FragmentLightCycleDispatcherTest {
 
         verify(lifeCycleComponent1).onDestroyView(fragment);
         verify(lifeCycleComponent2).onDestroyView(fragment);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullBinderTarget() {
+        dispatcher.bind(null);
     }
 }

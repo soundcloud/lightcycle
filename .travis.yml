@@ -5,15 +5,18 @@ before_script:
 
 android:
   components:
-    - build-tools-23.0.1
-    - android-23
+    - tools
     - platform-tools
+    - tools # This duplication is intented to make travis accept license, please check https://github.com/travis-ci/docs-travis-ci-com/issues/779
+    - build-tools-25.0.1
+    - android-25
     - extra-android-m2repository
   licenses:
-    - android-sdk-license-.*
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 jdk:
-  - oraclejdk7
   - oraclejdk8
 
 branches:

@@ -1,22 +1,25 @@
 package com.soundcloud.lightcycle;
 
+import com.soundcloud.lightcycle.util.Preconditions;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public abstract class LightCycleAppCompatActivity<ActivityType extends LightCycleAppCompatActivity>
+public abstract class LightCycleAppCompatActivity<HostType>
         extends AppCompatActivity
-        implements LightCycleDispatcher<ActivityLightCycle<ActivityType>> {
+        implements LightCycleDispatcher<ActivityLightCycle<HostType>> {
 
-    private final ActivityLightCycleDispatcher<ActivityType> lightCycleDispatcher;
+    private final ActivityLightCycleDispatcher<HostType> lightCycleDispatcher;
 
     public LightCycleAppCompatActivity() {
         lightCycleDispatcher = new ActivityLightCycleDispatcher<>();
     }
 
     @Override
-    public void bind(ActivityLightCycle<ActivityType> lightCycle) {
+    public void bind(ActivityLightCycle<HostType> lightCycle) {
+        Preconditions.checkBindingTarget(lightCycle);
         lightCycleDispatcher.bind(lightCycle);
     }
 
@@ -84,7 +87,7 @@ public abstract class LightCycleAppCompatActivity<ActivityType extends LightCycl
     }
 
     @SuppressWarnings("unchecked")
-    private ActivityType activity() {
-        return (ActivityType) this;
+    private HostType activity() {
+        return (HostType) this;
     }
 }

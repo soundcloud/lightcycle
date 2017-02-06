@@ -1,40 +1,39 @@
 package com.soundcloud.lightcycle;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class DefaultActivityLightCycle<T extends Activity> implements ActivityLightCycle<T> {
+public class DefaultActivityLightCycle<HostType> implements ActivityLightCycle<HostType> {
     @Override
-    public void onCreate(T activity, Bundle bundle) { /* no-op */ }
+    public void onCreate(HostType host, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onNewIntent(T activity, Intent intent) { /* no-op */ }
+    public void onNewIntent(HostType host, Intent intent) { /* no-op */ }
 
     @Override
-    public void onStart(T activity) { /* no-op */ }
+    public void onStart(HostType host) { /* no-op */ }
 
     @Override
-    public void onResume(T activity) { /* no-op */ }
+    public void onResume(HostType host) { /* no-op */ }
 
     @Override
-    public boolean onOptionsItemSelected(T activity, MenuItem item) {
+    public boolean onOptionsItemSelected(HostType host, MenuItem item) {
         return false;
     }
 
     @Override
-    public void onPause(T activity) { /* no-op */ }
+    public void onPause(HostType host) { /* no-op */ }
 
     @Override
-    public void onStop(T activity) { /* no-op */ }
+    public void onStop(HostType host) { /* no-op */ }
 
     @Override
-    public void onSaveInstanceState(T activity, Bundle bundle) { /* no-op */ }
+    public void onSaveInstanceState(HostType host, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onRestoreInstanceState(T activity, Bundle bundle) { /* no-op */ }
+    public void onRestoreInstanceState(HostType host, Bundle bundle) { /* no-op */ }
 
     @Override
-    public void onDestroy(T activity) { /* no-op */ }
+    public void onDestroy(HostType host) { /* no-op */ }
 }
