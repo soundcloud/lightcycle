@@ -6,6 +6,15 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -21,16 +30,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @SupportedAnnotationTypes("com.soundcloud.lightcycle.LightCycle")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
@@ -63,8 +63,6 @@ public class LightCycleProcessor extends AbstractProcessor {
 
         verifyFieldsAccessible(annotatedFields);
 
-        note("processing " + annotatedFields.size() + " fields");
-
         Map<Element, List<Element>> lightCyclesByHostElement = new HashMap<>();
         Set<String> erasedTargetNames = new HashSet<>();
         for (Element lightCycle : annotatedFields) {
@@ -95,7 +93,6 @@ public class LightCycleProcessor extends AbstractProcessor {
         final String simpleClassName = binderName(hostElement.getSimpleName().toString());
         final String qualifiedClassName = packageElement.getQualifiedName() + "." + simpleClassName;
 
-        note("writing class " + qualifiedClassName);
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
                 qualifiedClassName, elements.toArray(new Element[elements.size()]));
 
@@ -187,9 +184,5 @@ public class LightCycleProcessor extends AbstractProcessor {
                         + element.getEnclosingElement() + "#" + element + "(" + element.asType() + ")");
             }
         }
-    }
-
-    private void note(String message) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "LightCycleProcessor: " + message);
     }
 }
