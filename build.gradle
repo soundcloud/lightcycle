@@ -4,14 +4,14 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.2'
+    classpath 'com.android.tools.build:gradle:2.3.3'
     classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
   }
 }
 
 task wrapper(type: Wrapper) {
   description 'Creates the gradle wrapper.'
-  gradleVersion '2.14.1'
+  gradleVersion '4.0'
 }
 
 allprojects {
