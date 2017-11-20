@@ -1,4 +1,4 @@
 -keep class com.soundcloud.lightcycle.** { *; }
 -dontwarn com.soundcloud.lightcycle.**
 -keep class **$LightCycleBinder { *; }
--keep class * implements com.soundcloud.lightcycle.LightCycleDispatcher`
+-keep class * implements com.soundcloud.lightcycle.LightCycleDispatcher
