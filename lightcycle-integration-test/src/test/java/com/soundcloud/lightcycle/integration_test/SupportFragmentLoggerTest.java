@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config(constants = BuildConfig.class, sdk = 27)
 public class SupportFragmentLoggerTest {
     private final SampleSupportFragment sampleSupportFragment = new SampleSupportFragment();
     private final SupportFragmentLogger supportFragmentLogger = sampleSupportFragment.supportFragmentLogger;
@@ -95,13 +95,10 @@ public class SupportFragmentLoggerTest {
     @Test
     public void onDestroy() {
         controller.create()
-                .destroy();
+                  .destroy();
         assertLifecycleCallbackCallIsCorrect(
                 Arrays.asList(FragmentLifecycleCallback.onAttach,
                         FragmentLifecycleCallback.onCreate,
-                        FragmentLifecycleCallback.onViewCreated,
-                        FragmentLifecycleCallback.onActivityCreated,
-                        FragmentLifecycleCallback.onDestroyView,
                         FragmentLifecycleCallback.onDestroy,
                         FragmentLifecycleCallback.onDetach)
         );

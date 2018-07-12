@@ -4,7 +4,6 @@ apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
 
   defaultConfig {
     minSdkVersion rootProject.ext.minSdkVersion
@@ -41,12 +40,13 @@ checkstyle {
 }
 
 dependencies {
-  compile project(':lightcycle-api')
-  provided deps.support_v4
-  compile deps.appcompat_v7
-  compile deps.preference_v7
-  compile deps.support_annotations
+  compileOnly deps.support_v4
 
-  testCompile deps.mockito
-  testCompile deps.junit
+  api project(':lightcycle-api')
+  implementation deps.appcompat_v7
+  implementation deps.preference_v7
+  implementation deps.support_annotations
+
+  testImplementation deps.mockito
+  testImplementation deps.junit
 }

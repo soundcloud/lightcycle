@@ -11,7 +11,7 @@ import org.robolectric.annotation.Config;
 import android.app.Activity;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config(constants = BuildConfig.class, sdk = 27)
 public class SampleSupportFragmentDispatcherTest {
     private SampleSupportFragment fragment = new SampleSupportFragment();
     private Activity activity = new SampleAppCompatActivity();
