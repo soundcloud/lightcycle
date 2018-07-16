@@ -8,8 +8,8 @@ android:
     - tools
     - platform-tools
     - tools # This duplication is intented to make travis accept license, please check https://github.com/travis-ci/docs-travis-ci-com/issues/779
-    - build-tools-25.0.1
-    - android-25
+    - build-tools-27.0.3
+    - android-27
     - extra-android-m2repository
   licenses:
     - 'android-sdk-preview-license-52d11cd2'
