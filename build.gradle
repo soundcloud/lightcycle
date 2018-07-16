@@ -27,8 +27,8 @@ ext {
   minSdkVersion = 14
   targetSdkVersion = 27
   compileSdkVersion = 27
-  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-  targetCompatibilityVersion = JavaVersion.VERSION_1_7
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+  targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
 def supportLibVersion = '27.1.1'

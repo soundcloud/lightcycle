@@ -33,7 +33,7 @@ import javax.lang.model.util.Types;
 import javax.tools.JavaFileObject;
 
 @SupportedAnnotationTypes("com.soundcloud.lightcycle.LightCycle")
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class LightCycleProcessor extends AbstractProcessor {
 
     static final String LIB_PACKAGE = "com.soundcloud.lightcycle";
