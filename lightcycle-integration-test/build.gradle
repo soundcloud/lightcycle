@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
         sourceCompatibility rootProject.ext.sourceCompatibilityVersion
@@ -16,15 +15,21 @@ android {
         versionName "1.0"
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     annotationProcessor project(":lightcycle-processor")
 
-    compile project(":lightcycle-lib")
-    compile deps.appcompat_v7
+    implementation project(":lightcycle-lib")
 
-    testCompile deps.roboelectric
-    testCompile deps.robolectric_support
-    testCompile deps.compiletesting
+    implementation deps.appcompat_v7
+
+    testImplementation deps.roboelectric
+    testImplementation deps.robolectric_support
+    testImplementation deps.compiletesting
 }

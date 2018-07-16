@@ -1,3 +1,4 @@
+apply plugin: 'java-library'
 apply plugin: 'checkstyle'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
@@ -5,10 +6,13 @@ checkstyle {
   configFile rootProject.file('checkstyle.xml')
   showViolations true
 }
-dependencies {
-  provided deps.android
-  provided deps.support_v4
 
-  testCompile deps.junit
-  testCompile deps.equalsverifier
+dependencies {
+  compileOnly deps.android
+  compileOnly deps.support_v4
+
+  testImplementation deps.android
+  testImplementation deps.support_v4
+  testImplementation deps.junit
+  testImplementation deps.equalsverifier
 }

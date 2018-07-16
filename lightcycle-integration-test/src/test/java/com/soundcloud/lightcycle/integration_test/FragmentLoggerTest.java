@@ -8,8 +8,8 @@ import com.soundcloud.lightcycle.sample.basic.BuildConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
-import org.robolectric.util.FragmentController;
 import utils.FragmentTestHelper;
 
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config(constants = BuildConfig.class, sdk = 27)
 public class FragmentLoggerTest {
     private final SampleFragment sampleFragment = new SampleFragment();
     private final FragmentLogger fragmentLogger = sampleFragment.fragmentLogger;

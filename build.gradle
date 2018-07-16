@@ -1,36 +1,37 @@
 buildscript {
   repositories {
     mavenLocal()
+    google()
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'com.android.tools.build:gradle:3.1.3'
     classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
   }
 }
 
 task wrapper(type: Wrapper) {
   description 'Creates the gradle wrapper.'
-  gradleVersion '4.0'
+  gradleVersion '4.9'
 }
 
 allprojects {
   repositories {
     mavenLocal()
+    google()
     jcenter()
   }
 }
 
 ext {
-  minSdkVersion = 9
-  targetSdkVersion = 25
-  compileSdkVersion = 25
-  buildToolsVersion = '25.0.1'
+  minSdkVersion = 14
+  targetSdkVersion = 27
+  compileSdkVersion = 27
   sourceCompatibilityVersion = JavaVersion.VERSION_1_7
   targetCompatibilityVersion = JavaVersion.VERSION_1_7
 }
 
-def supportLibVersion = '25.0.1'
+def supportLibVersion = '27.1.1'
 
 ext.deps = [
   // Android
@@ -46,8 +47,8 @@ ext.deps = [
   junit                 : 'junit:junit:4.12',
   mockito               : 'org.mockito:mockito-all:1.10.19',
   compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
-  roboelectric          : 'org.robolectric:robolectric:3.1.2',
-  robolectric_support   : 'org.robolectric:shadows-support-v4:3.1.2',
+  roboelectric          : 'org.robolectric:robolectric:3.8',
+  robolectric_support   : 'org.robolectric:shadows-supportv4:3.8',
   equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8'
 ]
 

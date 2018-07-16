@@ -12,7 +12,7 @@ import android.app.Activity;
 import android.app.Fragment;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@Config(constants = BuildConfig.class, sdk = 27)
 public class SampleFragmentDispatcherTest {
     private Fragment fragment = new SampleFragment();
     private Activity activity = new SampleActivity();

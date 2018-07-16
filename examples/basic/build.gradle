@@ -1,10 +1,11 @@
 buildscript {
   repositories {
+    google()
     jcenter()
   }
   dependencies {
     // replace with the current version of the Android plugin
-    classpath 'com.android.tools.build:gradle:2.2.0'
+    classpath 'com.android.tools.build:gradle:3.1.3'
   }
 }
 
@@ -12,7 +13,6 @@ apply plugin: 'com.android.application'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
 
   compileOptions {
     sourceCompatibility rootProject.ext.sourceCompatibilityVersion
@@ -31,6 +31,6 @@ android {
 dependencies {
   annotationProcessor project(":lightcycle-processor")
 
-  compile project(":lightcycle-lib")
-  compile deps.appcompat_v7
+  implementation project(":lightcycle-lib")
+  implementation deps.appcompat_v7
 }
