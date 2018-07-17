@@ -16,6 +16,7 @@ public final class LightCycles {
     private static final String TAG = LightCycles.class.getSimpleName();
     private static final String ANDROID_PREFIX = "android.";
     private static final String JAVA_PREFIX = "java.";
+    private static boolean debugLoggingEnabled = false;
 
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public static void bind(LightCycleDispatcher<?> target) {
@@ -30,6 +31,16 @@ public final class LightCycles {
         }
     }
 
+    public static void enableDebugLogging(boolean enabled) {
+        debugLoggingEnabled = enabled;
+    }
+
+    private static void debugLog(String message, Object... args) {
+        if (debugLoggingEnabled) {
+            Log.d(TAG, String.format(message, args));
+        }
+    }
+
     private static String getInjectorClassName(String clsName) {
         return clsName + "$LightCycleBinder";
     }
@@ -39,15 +50,15 @@ public final class LightCycles {
         Method lightCycleInjectionMethod;
         String clsName = cls.getName();
         if (clsName.startsWith(ANDROID_PREFIX) || clsName.startsWith(JAVA_PREFIX)) {
-            Log.d(TAG, "MISS: Reached framework class. Abandoning search.");
+            debugLog("MISS: Reached framework class. Abandoning search.");
             return null;
         }
         try {
             Class<?> binder = Class.forName(getInjectorClassName(clsName));
             lightCycleInjectionMethod = binder.getMethod("bind", cls);
-            Log.d(TAG, "HIT: Loaded LightCycle binder class.");
+            debugLog("HIT: Loaded LightCycle binder class.");
         } catch (ClassNotFoundException e) {
-            Log.d(TAG, "Not found. Trying superclass " + cls.getSuperclass().getName());
+            debugLog("Not found. Trying superclass %s", cls.getSuperclass().getName());
             lightCycleInjectionMethod = findBinderForClass(cls.getSuperclass());
         }
         return lightCycleInjectionMethod;
