@@ -5,14 +5,9 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.3'
+    classpath 'com.android.tools.build:gradle:3.5.3'
     classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
   }
-}
-
-task wrapper(type: Wrapper) {
-  description 'Creates the gradle wrapper.'
-  gradleVersion '4.9'
 }
 
 allprojects {
@@ -24,22 +19,21 @@ allprojects {
 }
 
 ext {
-  minSdkVersion = 14
+  minSdkVersion = 21
   targetSdkVersion = 27
-  compileSdkVersion = 27
+  compileSdkVersion = 28
   sourceCompatibilityVersion = JavaVersion.VERSION_1_8
   targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
-def supportLibVersion = '27.1.1'
+def supportLibVersion = '1.1.0'
 
 ext.deps = [
   // Android
-  android               : 'com.google.android:android:4.1.1.4',
-  support_v4            : 'com.google.android:support-v4:r7',
-  preference_v7         : "com.android.support:preference-v7:${supportLibVersion}",
-  appcompat_v7          : "com.android.support:appcompat-v7:${supportLibVersion}",
-  support_annotations   : "com.android.support:support-annotations:${supportLibVersion}",
+  android               : "com.google.android:android:4.1.1.4",
+  preference_x          : "androidx.preference:preference:${supportLibVersion}",
+  appcompat_x           : "androidx.appcompat:appcompat:${supportLibVersion}",
+  annotations_x         : "androidx.annotation:annotation:${supportLibVersion}",
   // Processor
   javapoet              : 'com.squareup:javapoet:1.6.1',
 
@@ -47,9 +41,10 @@ ext.deps = [
   junit                 : 'junit:junit:4.12',
   mockito               : 'org.mockito:mockito-all:1.10.19',
   compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
-  roboelectric          : 'org.robolectric:robolectric:3.8',
-  robolectric_support   : 'org.robolectric:shadows-supportv4:3.8',
-  equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8'
+  roboelectric          : 'org.robolectric:robolectric:4.3.1',
+  equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8',
+  fragment_testing      : 'androidx.fragment:fragment-testing:1.2.0',
+  android_x_test        : 'androidx.test.ext:junit:1.1.1'
 ]
 
 // Static analysis

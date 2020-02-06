@@ -40,12 +40,12 @@ checkstyle {
 }
 
 dependencies {
-  compileOnly deps.support_v4
+  compileOnly deps.appcompat_x
 
   api project(':lightcycle-api')
-  implementation deps.appcompat_v7
-  implementation deps.preference_v7
-  implementation deps.support_annotations
+  implementation deps.appcompat_x
+  implementation deps.preference_x
+  implementation deps.annotations_x
 
   testImplementation deps.mockito
   testImplementation deps.junit
