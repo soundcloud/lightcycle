@@ -1,11 +1,12 @@
 package com.soundcloud.lightcycle.sample.real_world.home;
 
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+
 import com.soundcloud.lightcycle.DefaultActivityLightCycle;
 import com.soundcloud.lightcycle.sample.real_world.R;
 import com.soundcloud.lightcycle.sample.real_world.utils.DateProvider;
-
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 

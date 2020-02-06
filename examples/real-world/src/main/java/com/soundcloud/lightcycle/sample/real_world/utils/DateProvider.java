@@ -1,6 +1,6 @@
 package com.soundcloud.lightcycle.sample.real_world.utils;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import javax.inject.Inject;
 import java.util.Calendar;

@@ -3,18 +3,17 @@ package com.soundcloud.lightcycle.integration_test;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import com.google.common.truth.BooleanSubject;
 import com.soundcloud.lightcycle.integration_test.callback.ActivityLifecycleCallback;
-import com.soundcloud.lightcycle.sample.basic.BuildConfig;
 import com.soundcloud.lightcycle.sample.basic.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
 import java.util.Arrays;
@@ -23,8 +22,7 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 27)
+@RunWith(AndroidJUnit4.class)
 public class AppCompatActivityLoggerTest {
     private final ActivityController<SampleAppCompatActivity> controller = Robolectric.buildActivity(SampleAppCompatActivity.class);
     private final SampleAppCompatActivity sampleAppCompatActivity = controller.get();

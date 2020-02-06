@@ -3,6 +3,8 @@ package com.soundcloud.lightcycle.integration_test;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import com.google.common.truth.BooleanSubject;
 import com.soundcloud.lightcycle.integration_test.callback.ActivityLifecycleCallback;
 import com.soundcloud.lightcycle.sample.basic.BuildConfig;
@@ -23,8 +25,7 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 27)
+@RunWith(AndroidJUnit4.class)
 public class ActivityLoggerTest {
     private final ActivityController<SampleActivity> controller = Robolectric.buildActivity(SampleActivity.class);
     private final SampleActivity sampleActivity = controller.get();

@@ -4,8 +4,9 @@ import com.soundcloud.lightcycle.util.Preconditions;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class LightCycleAppCompatActivity<HostType>
         extends AppCompatActivity

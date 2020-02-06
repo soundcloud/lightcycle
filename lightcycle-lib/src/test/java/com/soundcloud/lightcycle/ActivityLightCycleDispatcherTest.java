@@ -1,8 +1,10 @@
 package com.soundcloud.lightcycle;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.fragment.app.FragmentActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,10 +12,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ActivityLightCycleDispatcherTest {

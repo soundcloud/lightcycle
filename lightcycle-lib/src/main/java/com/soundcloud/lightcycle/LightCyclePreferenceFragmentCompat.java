@@ -1,15 +1,14 @@
 package com.soundcloud.lightcycle;
 
-import com.soundcloud.lightcycle.util.Preconditions;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.soundcloud.lightcycle.util.LightCycleBinderHelper;
 import com.soundcloud.lightcycle.util.Preconditions;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.view.MenuItem;
-import android.view.View;
 
 public abstract class LightCyclePreferenceFragmentCompat<HostType>
         extends PreferenceFragmentCompat implements LightCycleDispatcher<SupportFragmentLightCycle<HostType>> {

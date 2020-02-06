@@ -6,6 +6,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsSame.sameInstance;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+
 import org.junit.Test;
 
 import android.app.Activity;
@@ -50,9 +51,9 @@ public class LightCyclesTest {
 
     @Test
     public void liftedSupportFragmentLightCycleAreEqualsWhenTheSourceIsTheSame() {
-        final DefaultSupportFragmentLightCycle<android.support.v4.app.Fragment> lightCycle = new DefaultSupportFragmentLightCycle<>();
-        final SupportFragmentLightCycle<android.support.v4.app.Fragment> lift1 = LightCycles.lift(lightCycle);
-        final SupportFragmentLightCycle<android.support.v4.app.Fragment> lift2 = LightCycles.lift(lightCycle);
+        final DefaultSupportFragmentLightCycle<Fragment> lightCycle = new DefaultSupportFragmentLightCycle<>();
+        final SupportFragmentLightCycle<Fragment> lift1 = LightCycles.lift(lightCycle);
+        final SupportFragmentLightCycle<Fragment> lift2 = LightCycles.lift(lightCycle);
 
         assertThat(lift1, not(sameInstance(lift2)));
         assertThat(lift1, equalTo(lift2));
