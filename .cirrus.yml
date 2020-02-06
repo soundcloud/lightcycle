@@ -1,0 +1,10 @@
+task:
+  name: Check
+  container:
+    image: cirrusci/android-sdk:27
+  check_script: ./gradlew check
+  always:
+    junit_result_artifacts:
+      path: "**/test-results/**/*.xml"
+      format: junit
+      type: text/xml
