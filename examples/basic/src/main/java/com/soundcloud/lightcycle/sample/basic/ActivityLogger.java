@@ -1,11 +1,11 @@
 package com.soundcloud.lightcycle.sample.basic;
 
-
 import com.soundcloud.lightcycle.DefaultActivityLightCycle;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 class ActivityLogger extends DefaultActivityLightCycle<AppCompatActivity> {
 
