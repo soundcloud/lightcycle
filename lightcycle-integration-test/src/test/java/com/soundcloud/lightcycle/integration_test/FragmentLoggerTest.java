@@ -2,10 +2,7 @@ package com.soundcloud.lightcycle.integration_test;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.lifecycle.Lifecycle;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.google.common.truth.BooleanSubject;
