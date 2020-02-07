@@ -21,19 +21,17 @@ allprojects {
 ext {
   minSdkVersion = 21
   targetSdkVersion = 27
-  compileSdkVersion = 28
+  compileSdkVersion = 29
   sourceCompatibilityVersion = JavaVersion.VERSION_1_8
   targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
-def supportLibVersion = '1.1.0'
-
 ext.deps = [
   // Android
   android               : "com.google.android:android:4.1.1.4",
-  preference_x          : "androidx.preference:preference:${supportLibVersion}",
-  appcompat_x           : "androidx.appcompat:appcompat:${supportLibVersion}",
-  annotations_x         : "androidx.annotation:annotation:${supportLibVersion}",
+  preference_x          : "androidx.preference:preference:1.1.0",
+  appcompat_x           : "androidx.appcompat:appcompat:1.1.0",
+  annotations_x         : "androidx.annotation:annotation:1.1.0",
   // Processor
   javapoet              : 'com.squareup:javapoet:1.6.1',
 
@@ -51,7 +49,6 @@ ext.deps = [
 subprojects { project ->
   apply plugin: 'checkstyle'
   apply plugin: 'pmd'
-  apply plugin: 'findbugs'
 
   checkstyle {
     toolVersion = "7.2"
@@ -70,18 +67,6 @@ subprojects { project ->
   task pmd(type: Pmd) {
     description 'Finds common programming flaws throw static analysis of code.'
     ignoreFailures false
-  }
-
-  findbugs {
-    ignoreFailures = false
-    toolVersion = "3.0.0"
-  }
-
-  tasks.withType(FindBugs) {
-    reports {
-      xml.enabled = false
-      html.enabled = true
-    }
   }
 }
 
