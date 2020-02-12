@@ -25,6 +25,6 @@ public class SampleSupportFragmentDispatcherTest {
         dispatcher.onAttach(fragment, activity);
         dispatcher.onAttach(fragment, activity);
 
-        assertThat(dispatcher.bindCount).is(1);
+        assertThat(dispatcher.bindCount).isEqualTo(1);
     }
 }

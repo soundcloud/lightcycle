@@ -38,7 +38,7 @@ ext.deps = [
   // Test dependencies
   junit                 : 'junit:junit:4.12',
   mockito               : 'org.mockito:mockito-all:1.10.19',
-  compiletesting        : 'com.google.testing.compile:compile-testing:0.7',
+  compiletesting        : 'com.google.testing.compile:compile-testing:0.18',
   roboelectric          : 'org.robolectric:robolectric:4.3.1',
   equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8',
   fragment_testing      : 'androidx.fragment:fragment-testing:1.2.0',
@@ -48,7 +48,6 @@ ext.deps = [
 // Static analysis
 subprojects { project ->
   apply plugin: 'checkstyle'
-  apply plugin: 'pmd'
 
   checkstyle {
     toolVersion = "7.2"
@@ -62,11 +61,6 @@ subprojects { project ->
     include '**/*.java'
 
     classpath = files()
-  }
-
-  task pmd(type: Pmd) {
-    description 'Finds common programming flaws throw static analysis of code.'
-    ignoreFailures false
   }
 }
 

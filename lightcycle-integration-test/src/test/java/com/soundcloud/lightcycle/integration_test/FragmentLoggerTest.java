@@ -149,8 +149,8 @@ public class FragmentLoggerTest {
                 .removeFragment()
                 .addFragment();
 
-        assertThat(sampleFragment.onAttachCount).is(2);
-        assertThat(sampleFragment.bindCount).is(1);
+        assertThat(sampleFragment.onAttachCount).isEqualTo(2);
+        assertThat(sampleFragment.bindCount).isEqualTo(1);
     }
 
     private void assertLifecycleCallbackCallIsCorrect(List<FragmentLifecycleCallback> callbacks) {

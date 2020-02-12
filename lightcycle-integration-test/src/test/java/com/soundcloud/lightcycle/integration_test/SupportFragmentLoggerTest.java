@@ -112,8 +112,8 @@ public class SupportFragmentLoggerTest {
                 .removeFragment()
                 .addFragment();
 
-        assertThat(sampleSupportFragment.onAttachCount).is(2);
-        assertThat(sampleSupportFragment.bindCount).is(1);
+        assertThat(sampleSupportFragment.onAttachCount).isEqualTo(2);
+        assertThat(sampleSupportFragment.bindCount).isEqualTo(1);
     }
 
     private void assertLifecycleCallbackCallIsCorrect(List<FragmentLifecycleCallback> callbacks) {

@@ -28,7 +28,7 @@ dependencies {
     implementation project(":lightcycle-lib")
 
     implementation deps.appcompat_x
-    debugImplementation deps.fragment_testing
+    implementation deps.fragment_testing
 
     testImplementation deps.roboelectric
     testImplementation deps.compiletesting
