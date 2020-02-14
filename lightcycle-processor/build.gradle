@@ -1,3 +1,5 @@
+import org.gradle.internal.jvm.Jvm
+
 apply plugin: 'checkstyle'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
@@ -10,5 +12,8 @@ dependencies {
   implementation project(':lightcycle-api')
   implementation deps.javapoet
 
+  testImplementation deps.android
   testImplementation deps.compiletesting
+
+  testImplementation files(Jvm.current().toolsJar)
 }
