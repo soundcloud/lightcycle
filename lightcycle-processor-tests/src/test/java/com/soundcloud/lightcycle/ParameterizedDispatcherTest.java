@@ -2,20 +2,19 @@ package com.soundcloud.lightcycle;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.Truth;
+import com.google.testing.compile.JavaFileObjects;
+import com.google.testing.compile.JavaSourcesSubjectFactory;
 
 import org.junit.Test;
 
 import javax.tools.JavaFileObject;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static com.google.testing.compile.JavaFileObjects.forSourceString;
-import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
-
 public class ParameterizedDispatcherTest {
 
     @Test
     public void shouldGenerateInjectorForParameterizedDispatcher() {
-        JavaFileObject validTestParameterizedDispatcher = forSourceString("com/test/ValidTestParameterizedDispatcher", Joiner.on("\n").join(
+        JavaFileObject validTestParameterizedDispatcher = JavaFileObjects.forSourceString("com/test/ValidTestParameterizedDispatcher", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.FragmentLightCycle;",
@@ -35,7 +34,7 @@ public class ParameterizedDispatcherTest {
 
         // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
         // we have to create a fake `LightCycleActionBarActivity` here for testing purpose.
-        JavaFileObject fakeFragmentLightCycleDispatcher = forSourceString("com/soundcloud/lightcycle/FragmentLightCycleDispatcher", Joiner.on("\n").join(
+        JavaFileObject fakeFragmentLightCycleDispatcher = JavaFileObjects.forSourceString("com/soundcloud/lightcycle/FragmentLightCycleDispatcher", Joiner.on("\n").join(
                 "package com.soundcloud.lightcycle;",
                 "",
                 "import android.annotation.TargetApi;",
@@ -102,7 +101,7 @@ public class ParameterizedDispatcherTest {
                 "    public void onDetach(T fragment) { }",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestParameterizedDispatcher$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestParameterizedDispatcher$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestParameterizedDispatcher$LightCycleBinder {",
@@ -117,7 +116,7 @@ public class ParameterizedDispatcherTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSources())
+        Truth.assertAbout(JavaSourcesSubjectFactory.javaSources())
                 .that(ImmutableList.of(validTestParameterizedDispatcher, fakeFragmentLightCycleDispatcher))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()

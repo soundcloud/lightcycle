@@ -2,21 +2,20 @@ package com.soundcloud.lightcycle;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.Truth;
+import com.google.testing.compile.JavaFileObjects;
+import com.google.testing.compile.JavaSourceSubjectFactory;
+import com.google.testing.compile.JavaSourcesSubjectFactory;
 
 import org.junit.Test;
 
 import javax.tools.JavaFileObject;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static com.google.testing.compile.JavaFileObjects.forSourceString;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
-
 public class ActivityInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForActivity() {
-        JavaFileObject validTestActivity = forSourceString("com/test/ValidTestActivity", Joiner.on("\n").join(
+        JavaFileObject validTestActivity = JavaFileObjects.forSourceString("com/test/ValidTestActivity", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -46,7 +45,7 @@ public class ActivityInjectionTest {
                 "class LightCycle2 extends DefaultActivityLightCycle<ValidTestActivity> {",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestActivity$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestActivity$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestActivity$LightCycleBinder {",
@@ -61,7 +60,7 @@ public class ActivityInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(validTestActivity)
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
@@ -70,7 +69,7 @@ public class ActivityInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForActivityHierarchy() {
-        JavaFileObject validTestHierarchyActivity = forSourceString("com/test/ValidTestHierarchyActivity", Joiner.on("\n").join(
+        JavaFileObject validTestHierarchyActivity = JavaFileObjects.forSourceString("com/test/ValidTestHierarchyActivity", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -104,7 +103,7 @@ public class ActivityInjectionTest {
                 "class LightCycle2 extends DefaultActivityLightCycle<BaseActivity> {",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestHierarchyActivity$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestHierarchyActivity$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestHierarchyActivity$LightCycleBinder {",
@@ -117,7 +116,7 @@ public class ActivityInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(validTestHierarchyActivity)
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
@@ -126,7 +125,7 @@ public class ActivityInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForLightCycleAppCompatActivity() {
-        JavaFileObject validTestLightCycleAppCompatActivity = forSourceString("com/test/ValidTestLightCycleAppCompatActivity", Joiner.on("\n").join(
+        JavaFileObject validTestLightCycleAppCompatActivity = JavaFileObjects.forSourceString("com/test/ValidTestLightCycleAppCompatActivity", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -152,7 +151,7 @@ public class ActivityInjectionTest {
 
         // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
         // we have to create a fake `LightCycleAppCompatActivity` here for testing purpose.
-        JavaFileObject fakeLightCycleAppCompatActivity = forSourceString("com/soundcloud/lightcycle/LightCycleAppCompatActivity", Joiner.on("\n").join(
+        JavaFileObject fakeLightCycleAppCompatActivity = JavaFileObjects.forSourceString("com/soundcloud/lightcycle/LightCycleAppCompatActivity", Joiner.on("\n").join(
                 "package com.soundcloud.lightcycle;",
                 "",
                 "import android.app.Activity;",
@@ -166,7 +165,7 @@ public class ActivityInjectionTest {
                 "",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleAppCompatActivity$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestLightCycleAppCompatActivity$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestLightCycleAppCompatActivity$LightCycleBinder {",
@@ -181,7 +180,7 @@ public class ActivityInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSources())
+        Truth.assertAbout(JavaSourcesSubjectFactory.javaSources())
                 .that(ImmutableList.of(validTestLightCycleAppCompatActivity, fakeLightCycleAppCompatActivity))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
@@ -190,7 +189,7 @@ public class ActivityInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForLightCycleActionBarActivity() {
-        JavaFileObject validTestLightCycleActionBarActivity = forSourceString("com/test/ValidTestLightCycleActionBarActivity", Joiner.on("\n").join(
+        JavaFileObject validTestLightCycleActionBarActivity = JavaFileObjects.forSourceString("com/test/ValidTestLightCycleActionBarActivity", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -216,7 +215,7 @@ public class ActivityInjectionTest {
 
         // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
         // we have to create a fake `LightCycleActionBarActivity` here for testing purpose.
-        JavaFileObject fakeLightCycleActionBarActivity = forSourceString("com/soundcloud/lightcycle/LightCycleActionBarActivity", Joiner.on("\n").join(
+        JavaFileObject fakeLightCycleActionBarActivity = JavaFileObjects.forSourceString("com/soundcloud/lightcycle/LightCycleActionBarActivity", Joiner.on("\n").join(
                 "package com.soundcloud.lightcycle;",
                 "",
                 "import android.app.Activity;",
@@ -230,7 +229,7 @@ public class ActivityInjectionTest {
                 "",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleActionBarActivity$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestLightCycleActionBarActivity$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestLightCycleActionBarActivity$LightCycleBinder {",
@@ -245,7 +244,7 @@ public class ActivityInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSources())
+        Truth.assertAbout(JavaSourcesSubjectFactory.javaSources())
                 .that(ImmutableList.of(validTestLightCycleActionBarActivity, fakeLightCycleActionBarActivity))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()

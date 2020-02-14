@@ -2,21 +2,20 @@ package com.soundcloud.lightcycle;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.Truth;
+import com.google.testing.compile.JavaFileObjects;
+import com.google.testing.compile.JavaSourceSubjectFactory;
+import com.google.testing.compile.JavaSourcesSubjectFactory;
 
 import org.junit.Test;
 
 import javax.tools.JavaFileObject;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static com.google.testing.compile.JavaFileObjects.forSourceString;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
-
 public class SupportFragmentInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForSupportFragment() {
-        JavaFileObject validTestSupportFragment = forSourceString("com/test/ValidTestSupportFragment", Joiner.on("\n").join(
+        JavaFileObject validTestSupportFragment = JavaFileObjects.forSourceString("com/test/ValidTestSupportFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.DefaultSupportFragmentLightCycle;",
@@ -45,7 +44,7 @@ public class SupportFragmentInjectionTest {
                 "class LightCycle2 extends DefaultSupportFragmentLightCycle<ValidTestSupportFragment> {",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestSupportFragment$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestSupportFragment$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestSupportFragment$LightCycleBinder {",
@@ -60,7 +59,7 @@ public class SupportFragmentInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(validTestSupportFragment)
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
@@ -69,7 +68,7 @@ public class SupportFragmentInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForLightCycleSupportFragment() {
-        JavaFileObject validTestLightCycleSupportFragment = forSourceString("com/test/ValidTestLightCycleSupportFragment", Joiner.on("\n").join(
+        JavaFileObject validTestLightCycleSupportFragment = JavaFileObjects.forSourceString("com/test/ValidTestLightCycleSupportFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -95,7 +94,7 @@ public class SupportFragmentInjectionTest {
 
         // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
         // we have to create a fake `LightCycleSupportFragment` here for testing purpose.
-        JavaFileObject fakeLightCycleSupportFragment = forSourceString("com/soundcloud/lightcycle/LightCycleSupportFragment", Joiner.on("\n").join(
+        JavaFileObject fakeLightCycleSupportFragment = JavaFileObjects.forSourceString("com/soundcloud/lightcycle/LightCycleSupportFragment", Joiner.on("\n").join(
                 "package com.soundcloud.lightcycle;",
                 "",
                 "import android.app.Fragment;",
@@ -109,7 +108,7 @@ public class SupportFragmentInjectionTest {
                 "",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleSupportFragment$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestLightCycleSupportFragment$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestLightCycleSupportFragment$LightCycleBinder {",
@@ -124,7 +123,7 @@ public class SupportFragmentInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSources())
+        Truth.assertAbout(JavaSourcesSubjectFactory.javaSources())
                 .that(ImmutableList.of(validTestLightCycleSupportFragment, fakeLightCycleSupportFragment))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
@@ -133,7 +132,7 @@ public class SupportFragmentInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForLightCycleSupportDialogFragment() {
-        JavaFileObject validTestLightCycleSupportDialogFragment = forSourceString("com/test/ValidTestLightCycleSupportDialogFragment", Joiner.on("\n").join(
+        JavaFileObject validTestLightCycleSupportDialogFragment = JavaFileObjects.forSourceString("com/test/ValidTestLightCycleSupportDialogFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -161,7 +160,7 @@ public class SupportFragmentInjectionTest {
 
         // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
         // we have to create a fake `LightCycleSupportDialogFragment` here for testing purpose.
-        JavaFileObject fakeLightCycleSupportDialogFragment = forSourceString("com/soundcloud/lightcycle/LightCycleSupportDialogFragment", Joiner.on("\n").join(
+        JavaFileObject fakeLightCycleSupportDialogFragment = JavaFileObjects.forSourceString("com/soundcloud/lightcycle/LightCycleSupportDialogFragment", Joiner.on("\n").join(
                 "package com.soundcloud.lightcycle;",
                 "",
                 "import android.app.DialogFragment;",
@@ -176,7 +175,7 @@ public class SupportFragmentInjectionTest {
                 "",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleSupportDialogFragment$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestLightCycleSupportDialogFragment$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestLightCycleSupportDialogFragment$LightCycleBinder {",
@@ -191,7 +190,7 @@ public class SupportFragmentInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSources())
+        Truth.assertAbout(JavaSourcesSubjectFactory.javaSources())
                 .that(ImmutableList.of(validTestLightCycleSupportDialogFragment, fakeLightCycleSupportDialogFragment))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()

@@ -2,21 +2,20 @@ package com.soundcloud.lightcycle;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.Truth;
+import com.google.testing.compile.JavaFileObjects;
+import com.google.testing.compile.JavaSourceSubjectFactory;
+import com.google.testing.compile.JavaSourcesSubjectFactory;
 
 import org.junit.Test;
 
 import javax.tools.JavaFileObject;
 
-import static com.google.common.truth.Truth.assertAbout;
-import static com.google.testing.compile.JavaFileObjects.forSourceString;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
-
 public class FragmentInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForFragment() {
-        JavaFileObject validTestFragment = forSourceString("com/test/ValidTestFragment", Joiner.on("\n").join(
+        JavaFileObject validTestFragment = JavaFileObjects.forSourceString("com/test/ValidTestFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.FragmentLightCycle;",
@@ -45,7 +44,7 @@ public class FragmentInjectionTest {
                 "class LightCycle2 extends DefaultFragmentLightCycle<Fragment> {",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestFragment$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestFragment$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestFragment$LightCycleBinder {",
@@ -60,7 +59,7 @@ public class FragmentInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(validTestFragment)
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()
@@ -69,7 +68,7 @@ public class FragmentInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForLightCycleFragment() {
-        JavaFileObject validTestLightCycleFragment = forSourceString("com/test/ValidTestLightCycleFragment", Joiner.on("\n").join(
+        JavaFileObject validTestLightCycleFragment = JavaFileObjects.forSourceString("com/test/ValidTestLightCycleFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.DefaultFragmentLightCycle;",
@@ -94,7 +93,7 @@ public class FragmentInjectionTest {
 
         // Because neither the processor or the lib (java libraries) can depend on the api (Android library),
         // we have to create a fake `LightCycleFragment` here for testing purpose.
-        JavaFileObject fakeLightCycleFragment = forSourceString("com/soundcloud/lightcycle/LightCycleFragment", Joiner.on("\n").join(
+        JavaFileObject fakeLightCycleFragment = JavaFileObjects.forSourceString("com/soundcloud/lightcycle/LightCycleFragment", Joiner.on("\n").join(
                 "package com.soundcloud.lightcycle;",
                 "",
                 "import android.app.Fragment;",
@@ -108,7 +107,7 @@ public class FragmentInjectionTest {
                 "",
                 "}"));
 
-        JavaFileObject expectedSource = forSourceString("com.test.ValidTestLightCycleFragment$LightCycleBinder", Joiner.on("\n").join(
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("com.test.ValidTestLightCycleFragment$LightCycleBinder", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "public final class ValidTestLightCycleFragment$LightCycleBinder {",
@@ -123,7 +122,7 @@ public class FragmentInjectionTest {
                 "    }",
                 "}"));
 
-        assertAbout(javaSources())
+        Truth.assertAbout(JavaSourcesSubjectFactory.javaSources())
                 .that(ImmutableList.of(validTestLightCycleFragment, fakeLightCycleFragment))
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError()

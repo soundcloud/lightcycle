@@ -1,6 +1,7 @@
 include ':lightcycle-api'
 include ':lightcycle-lib'
 include ':lightcycle-processor'
+include ':lightcycle-processor-tests'
 include ':lightcycle-integration-test'
 include ':examples:basic'
 include ':examples:real-world'
