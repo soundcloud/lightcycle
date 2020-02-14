@@ -34,7 +34,7 @@ dependencies {
   annotationProcessor "com.squareup.dagger:dagger-compiler:1.2.2"
   implementation "com.squareup.dagger:dagger:1.2.2"
 
-  implementation deps.appcompat_x
+  implementation deps.appcompat
 
   testImplementation deps.junit
   testImplementation deps.mockito

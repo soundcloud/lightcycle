@@ -32,5 +32,5 @@ dependencies {
   annotationProcessor project(":lightcycle-processor")
 
   implementation project(":lightcycle-lib")
-  implementation deps.appcompat_x
+  implementation deps.appcompat
 }

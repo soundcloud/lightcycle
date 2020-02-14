@@ -29,9 +29,10 @@ ext {
 ext.deps = [
   // Android
   android               : "com.google.android:android:4.1.1.4",
-  preference_x          : "androidx.preference:preference:1.1.0",
-  appcompat_x           : "androidx.appcompat:appcompat:1.1.0",
-  annotations_x         : "androidx.annotation:annotation:1.1.0",
+  preference            : "androidx.preference:preference:1.1.0",
+  appcompat             : "androidx.appcompat:appcompat:1.1.0",
+  annotations           : "androidx.annotation:annotation:1.1.0",
+
   // Processor
   javapoet              : 'com.squareup:javapoet:1.6.1',
 
@@ -42,7 +43,7 @@ ext.deps = [
   roboelectric          : 'org.robolectric:robolectric:4.3.1',
   equalsverifier        : 'nl.jqno.equalsverifier:equalsverifier:2.1.8',
   fragment_testing      : 'androidx.fragment:fragment-testing:1.2.0',
-  android_x_test        : 'androidx.test.ext:junit:1.1.1'
+  androidx_junit        : 'androidx.test.ext:junit:1.1.1'
 ]
 
 // Static analysis

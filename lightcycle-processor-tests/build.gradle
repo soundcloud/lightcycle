@@ -13,8 +13,7 @@ android {
     versionCode 1
     versionName "1.0"
 
-    // this is required for having an annotation processor in the compiling classpath
-    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
+    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true // this is required for having an annotation processor in the compiling classpath
   }
 
   compileOptions {
@@ -37,7 +36,7 @@ dependencies {
   testImplementation deps.javapoet
 
   testImplementation deps.android
-  testImplementation deps.appcompat_x
+  testImplementation deps.appcompat
   testImplementation deps.compiletesting
 
   testImplementation files(getRuntimeJar())
