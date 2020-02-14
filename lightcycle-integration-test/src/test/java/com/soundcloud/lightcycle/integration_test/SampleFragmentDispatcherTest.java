@@ -1,8 +1,8 @@
 package com.soundcloud.lightcycle.integration_test;
 
 import android.app.Activity;
+import android.app.Fragment;
 
-import androidx.fragment.app.Fragment;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;

@@ -22,7 +22,6 @@ import static com.google.common.truth.Truth.assertThat;
 @RunWith(AndroidJUnit4.class)
 public class SupportFragmentLoggerTest {
 
-    private final SampleSupportFragment sampleSupportFragment = new SampleSupportFragment();
     private SupportFragmentLogger supportFragmentLogger;
     private FragmentScenario controller;
 
@@ -102,18 +101,6 @@ public class SupportFragmentLoggerTest {
                         FragmentLifecycleCallback.onDetach
                 )
         );
-    }
-
-    @Test
-    public void bindFragmentOnlyOnceWhenReAttached() {
-        FragmentTestHelper
-                .from(sampleSupportFragment)
-                .addFragment()
-                .removeFragment()
-                .addFragment();
-
-        assertThat(sampleSupportFragment.onAttachCount).isEqualTo(2);
-        assertThat(sampleSupportFragment.bindCount).isEqualTo(1);
     }
 
     private void assertLifecycleCallbackCallIsCorrect(List<FragmentLifecycleCallback> callbacks) {

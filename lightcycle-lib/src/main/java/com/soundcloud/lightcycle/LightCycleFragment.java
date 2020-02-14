@@ -1,19 +1,20 @@
 package com.soundcloud.lightcycle;
 
-import com.soundcloud.lightcycle.util.LightCycleBinderHelper;
-import com.soundcloud.lightcycle.util.Preconditions;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
+import com.soundcloud.lightcycle.util.LightCycleBinderHelper;
+import com.soundcloud.lightcycle.util.Preconditions;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+/**
+ * @deprecated Platform Fragments are deprecated from API level 28.
+ */
+@Deprecated
 public abstract class LightCycleFragment<HostType> extends Fragment implements LightCycleDispatcher<FragmentLightCycle<HostType>> {
 
     private final FragmentLightCycleDispatcher<HostType> lifeCycleDispatcher;

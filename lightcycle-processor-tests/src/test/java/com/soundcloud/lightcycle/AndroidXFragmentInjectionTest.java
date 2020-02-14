@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import javax.tools.JavaFileObject;
 
-public class SupportFragmentInjectionTest {
+public class AndroidXFragmentInjectionTest {
 
     @Test
     public void shouldGenerateInjectorForSupportFragment() {
