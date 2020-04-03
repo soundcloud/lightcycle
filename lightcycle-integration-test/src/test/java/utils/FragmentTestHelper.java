@@ -4,40 +4,38 @@ import org.robolectric.Robolectric;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentActivity;
 
 public abstract class FragmentTestHelper {
     public abstract FragmentTestHelper removeFragment();
 
     public abstract FragmentTestHelper addFragment();
 
-    public static FragmentTestHelper from(android.support.v4.app.Fragment fragment) {
-        return SupportFragmentTestHelper.create(fragment);
-    }
-
     public static FragmentTestHelper from(Fragment fragment) {
-        return MyFragmentTestHelper.create(fragment);
+        return SupportFragmentTestHelper.create(fragment);
     }
 
     private static final class SupportFragmentTestHelper extends FragmentTestHelper {
 
-        private final android.support.v4.app.FragmentManager fragmentManager;
-        private final android.support.v4.app.Fragment fragment;
+        private final FragmentManager fragmentManager;
+        private final Fragment fragment;
 
-        SupportFragmentTestHelper(FragmentManager fragmentManager, android.support.v4.app.Fragment fragment) {
+        SupportFragmentTestHelper(FragmentManager fragmentManager, Fragment fragment) {
             this.fragmentManager = fragmentManager;
             this.fragment = fragment;
         }
 
-        static SupportFragmentTestHelper create(android.support.v4.app.Fragment fragment) {
-            return new SupportFragmentTestHelper(Robolectric.buildActivity(SupportFragmentControllerActivity.class)
-                                                            .create()
-                                                            .get()
-                                                            .getSupportFragmentManager(),
-                                                 fragment);
+        static SupportFragmentTestHelper create(Fragment fragment) {
+            return new SupportFragmentTestHelper(
+                    Robolectric.buildActivity(SupportFragmentControllerActivity.class)
+                            .create()
+                            .get()
+                            .getFragmentManager(),
+                    fragment);
         }
 
         @Override
@@ -81,10 +79,10 @@ public abstract class FragmentTestHelper {
 
         static MyFragmentTestHelper create(android.app.Fragment fragment) {
             return new MyFragmentTestHelper(Robolectric.buildActivity(FragmentControllerActivity.class)
-                                                       .create()
-                                                       .get()
-                                                       .getFragmentManager(),
-                                            fragment);
+                    .create()
+                    .get()
+                    .getFragmentManager(),
+                    fragment);
         }
 
         @Override

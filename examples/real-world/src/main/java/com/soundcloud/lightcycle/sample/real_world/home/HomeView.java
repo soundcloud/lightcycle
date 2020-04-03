@@ -1,8 +1,8 @@
 package com.soundcloud.lightcycle.sample.real_world.home;
 
-import com.soundcloud.lightcycle.sample.real_world.tracker.Screen;
+import androidx.annotation.StringRes;
 
-import android.support.annotation.StringRes;
+import com.soundcloud.lightcycle.sample.real_world.tracker.Screen;
 
 interface HomeView extends Screen {
 

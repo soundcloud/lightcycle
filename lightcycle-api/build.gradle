@@ -9,10 +9,8 @@ checkstyle {
 
 dependencies {
   compileOnly deps.android
-  compileOnly deps.support_v4
 
   testImplementation deps.android
-  testImplementation deps.support_v4
   testImplementation deps.junit
   testImplementation deps.equalsverifier
 }

@@ -5,9 +5,10 @@ import com.soundcloud.lightcycle.util.Preconditions;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
 
 public abstract class LightCycleSupportFragment<HostType> extends Fragment implements LightCycleDispatcher<SupportFragmentLightCycle<HostType>> {
 

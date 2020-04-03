@@ -1,0 +1,60 @@
+import org.gradle.internal.jvm.Jvm
+
+apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+
+    versionCode 1
+    versionName "1.0"
+
+    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true // this is required for having an annotation processor in the compiling classpath
+  }
+
+  compileOptions {
+    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+    targetCompatibility rootProject.ext.targetCompatibilityVersion
+  }
+
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
+}
+
+checkstyle {
+  configFile rootProject.file('checkstyle.xml')
+  showViolations true
+}
+
+dependencies {
+  testImplementation project(':lightcycle-processor')
+  testImplementation deps.javapoet
+
+  testImplementation deps.android
+  testImplementation deps.appcompat
+  testImplementation deps.compiletesting
+
+  testImplementation files(getRuntimeJar())
+  testImplementation files(Jvm.current().getToolsJar())
+}
+
+// Taken from:
+// https://github.com/JakeWharton/butterknife/blob/bac9b737fdc7e37a30cd8407289e626bd5a161bc/butterknife-runtime/build.gradle
+static def getRuntimeJar() {
+  try {
+    final File javaBase = new File(System.getProperty("java.home")).getCanonicalFile();
+    File runtimeJar = new File(javaBase, "lib/rt.jar");
+    if (runtimeJar.exists()) {
+      return runtimeJar;
+    }
+    runtimeJar = new File(javaBase, "jre/lib/rt.jar");
+    return runtimeJar.exists() ? runtimeJar : null;
+  } catch (IOException e) {
+    throw new RuntimeException(e);
+  }
+}

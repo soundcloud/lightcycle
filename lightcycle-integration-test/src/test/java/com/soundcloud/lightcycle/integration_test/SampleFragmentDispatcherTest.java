@@ -1,18 +1,16 @@
 package com.soundcloud.lightcycle.integration_test;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import com.soundcloud.lightcycle.sample.basic.BuildConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
 import android.app.Activity;
 import android.app.Fragment;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 27)
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static com.google.common.truth.Truth.assertThat;
+
+@RunWith(AndroidJUnit4.class)
 public class SampleFragmentDispatcherTest {
     private Fragment fragment = new SampleFragment();
     private Activity activity = new SampleActivity();
@@ -24,6 +22,6 @@ public class SampleFragmentDispatcherTest {
         dispatcher.onAttach(fragment, activity);
         dispatcher.onAttach(fragment, activity);
 
-        assertThat(dispatcher.bindCount).is(1);
+        assertThat(dispatcher.bindCount).isEqualTo(1);
     }
 }

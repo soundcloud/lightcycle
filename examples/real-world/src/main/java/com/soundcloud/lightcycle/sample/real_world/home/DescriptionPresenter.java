@@ -3,14 +3,16 @@ package com.soundcloud.lightcycle.sample.real_world.home;
 import com.soundcloud.lightcycle.DefaultActivityLightCycle;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import javax.inject.Inject;
 
 class DescriptionPresenter extends DefaultActivityLightCycle<HomeView> {
 
     @Inject
-    public DescriptionPresenter() {}
+    public DescriptionPresenter() {
+    }
 
     @Override
     public void onCreate(HomeView homeView, @Nullable Bundle bundle) {

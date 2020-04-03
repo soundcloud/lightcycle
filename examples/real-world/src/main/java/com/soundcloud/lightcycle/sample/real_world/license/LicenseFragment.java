@@ -1,19 +1,20 @@
 package com.soundcloud.lightcycle.sample.real_world.license;
 
-import com.soundcloud.lightcycle.LightCycle;
-import com.soundcloud.lightcycle.LightCycleSupportFragment;
-import com.soundcloud.lightcycle.sample.real_world.R;
-import com.soundcloud.lightcycle.sample.real_world.SampleApp;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.soundcloud.lightcycle.LightCycle;
+import com.soundcloud.lightcycle.LightCycleSupportFragment;
+import com.soundcloud.lightcycle.sample.real_world.R;
+import com.soundcloud.lightcycle.sample.real_world.SampleApp;
+
 import javax.inject.Inject;
 
 public class LicenseFragment extends LightCycleSupportFragment<LicenseView> implements LicenseView {
+
     @Inject @LightCycle LicensePresenter licensePresenter;
 
     public LicenseFragment() {

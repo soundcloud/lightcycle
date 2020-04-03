@@ -1,3 +1,5 @@
+import org.gradle.internal.jvm.Jvm
+
 apply plugin: 'checkstyle'
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
@@ -7,14 +9,11 @@ checkstyle {
 }
 
 dependencies {
-  compile project(':lightcycle-api')
-  compile deps.javapoet
+  implementation project(':lightcycle-api')
+  implementation deps.javapoet
 
-  testCompile deps.android
-  testCompile deps.support_v4
-  testCompile deps.compiletesting
-  // compile-testing fails with JavacTool ClassNotFoundException, so add tools.jar manually
-  // (this should be the correct cross-platform solution to do this)
-  // cf. http://stackoverflow.com/questions/11345193/gradle-does-not-find-tools-jar
-  testCompile files(((URLClassLoader) javax.tools.ToolProvider.getSystemToolClassLoader()).getURLs())
+  testImplementation deps.android
+  testImplementation deps.compiletesting
+
+  testImplementation files(Jvm.current().toolsJar)
 }

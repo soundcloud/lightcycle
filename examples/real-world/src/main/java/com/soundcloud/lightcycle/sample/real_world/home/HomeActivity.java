@@ -6,8 +6,9 @@ import com.soundcloud.lightcycle.sample.real_world.R;
 import com.soundcloud.lightcycle.sample.real_world.SampleApp;
 import com.soundcloud.lightcycle.sample.real_world.tracker.ScreenTracker;
 
-import android.support.annotation.StringRes;
 import android.widget.TextView;
+
+import androidx.annotation.StringRes;
 
 import javax.inject.Inject;
 

@@ -27,9 +27,12 @@ dependencies {
 
     implementation project(":lightcycle-lib")
 
-    implementation deps.appcompat_v7
+    implementation deps.appcompat
+    implementation deps.fragment_testing
 
     testImplementation deps.roboelectric
-    testImplementation deps.robolectric_support
     testImplementation deps.compiletesting
+    testImplementation deps.fragment_testing
+    testImplementation deps.junit
+    testImplementation deps.androidx_junit
 }

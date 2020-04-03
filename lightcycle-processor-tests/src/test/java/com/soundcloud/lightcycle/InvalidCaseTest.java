@@ -1,16 +1,15 @@
 package com.soundcloud.lightcycle;
 
 import com.google.common.base.Joiner;
+import com.google.common.truth.Truth;
+import com.google.testing.compile.JavaFileObjects;
+import com.google.testing.compile.JavaSourceSubjectFactory;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javax.tools.JavaFileObject;
-
-import static com.google.common.truth.Truth.assertAbout;
-import static com.google.testing.compile.JavaFileObjects.forSourceString;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 public class InvalidCaseTest {
 
@@ -23,7 +22,7 @@ public class InvalidCaseTest {
         expectedException.expectMessage("Annotated fields cannot be private: "
                 + "com.test.PrivateFieldsTestFragment#lightCycle1(com.test.LightCycle1)");
 
-        JavaFileObject privateFieldsTestFragment = forSourceString("com/test/PrivateFieldsTestFragment", Joiner.on("\n").join(
+        JavaFileObject privateFieldsTestFragment = JavaFileObjects.forSourceString("com/test/PrivateFieldsTestFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.DefaultSupportFragmentLightCycle;",
@@ -31,7 +30,7 @@ public class InvalidCaseTest {
                 "import com.soundcloud.lightcycle.LightCycleDispatcher;",
                 "import com.soundcloud.lightcycle.SupportFragmentLightCycle;",
                 "",
-                "import android.support.v4.app.Fragment;",
+                "import androidx.fragment.app.Fragment;",
                 "",
                 "public class PrivateFieldsTestFragment extends Fragment ",
                 "        implements LightCycleDispatcher<SupportFragmentLightCycle> {",
@@ -52,7 +51,7 @@ public class InvalidCaseTest {
                 "class LightCycle2 extends DefaultSupportFragmentLightCycle {",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(privateFieldsTestFragment)
                 .processedWith(new LightCycleProcessor())
                 .compilesWithoutError();
@@ -60,7 +59,7 @@ public class InvalidCaseTest {
 
     @Test
     public void lightCycleFieldIsNotALightCycle() {
-        JavaFileObject privateFieldsTestFragment = forSourceString("com/test/FieldsNotLightCyclesTestFragment", Joiner.on("\n").join(
+        JavaFileObject privateFieldsTestFragment = JavaFileObjects.forSourceString("com/test/FieldsNotLightCyclesTestFragment", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.DefaultSupportFragmentLightCycle;",
@@ -68,7 +67,7 @@ public class InvalidCaseTest {
                 "import com.soundcloud.lightcycle.LightCycleDispatcher;",
                 "import com.soundcloud.lightcycle.SupportFragmentLightCycle;",
                 "",
-                "import android.support.v4.app.Fragment;",
+                "import android.app.Fragment;",
                 "",
                 "public class FieldsNotLightCyclesTestFragment extends Fragment ",
                 "        implements LightCycleDispatcher<SupportFragmentLightCycle> {",
@@ -89,7 +88,7 @@ public class InvalidCaseTest {
                 "class LightCycle2 {",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(privateFieldsTestFragment)
                 .processedWith(new LightCycleProcessor())
                 .failsToCompile()
@@ -98,7 +97,7 @@ public class InvalidCaseTest {
 
     @Test
     public void missingGenericTestActivity() {
-        JavaFileObject missingGenericTestActivity = forSourceString("com/test/MissingGenericTestActivity", Joiner.on("\n").join(
+        JavaFileObject missingGenericTestActivity = JavaFileObjects.forSourceString("com/test/MissingGenericTestActivity", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -127,7 +126,7 @@ public class InvalidCaseTest {
                 "class LightCycle2 extends DefaultActivityLightCycle<MissingGenericTestActivity> {",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(missingGenericTestActivity)
                 .processedWith(new LightCycleProcessor())
                 .failsToCompile()
@@ -137,7 +136,7 @@ public class InvalidCaseTest {
 
     @Test
     public void dispatcherNotFound() {
-        JavaFileObject dispatcherNotFoundTestActivity = forSourceString("com/test/DispatcherNotFoundTestActivity", Joiner.on("\n").join(
+        JavaFileObject dispatcherNotFoundTestActivity = JavaFileObjects.forSourceString("com/test/DispatcherNotFoundTestActivity", Joiner.on("\n").join(
                 "package com.test;",
                 "",
                 "import com.soundcloud.lightcycle.ActivityLightCycle;",
@@ -160,7 +159,7 @@ public class InvalidCaseTest {
                 "class LightCycle2 extends DefaultActivityLightCycle<InvalidTestActivity> {",
                 "}"));
 
-        assertAbout(javaSource())
+        Truth.assertAbout(JavaSourceSubjectFactory.javaSource())
                 .that(dispatcherNotFoundTestActivity)
                 .processedWith(new LightCycleProcessor())
                 .failsToCompile()
